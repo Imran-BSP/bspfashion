@@ -8,14 +8,14 @@
   <meta name="keywords" content="BSP Fashion, clothing manufacturer Kolkata, wholesale clothing, kids wear wholesale, mens wear wholesale, ladies wear wholesale, Bengal Solution Point, bulk clothing supplier India, baba suit manufactuer, frock manufacturer, sasta kapda Kolkata, bachho ka kapda, kids wear manufacturer, kids wear exporter Kolkata, Metiabruz kids wear manufacturer, cord set manufacturer" />
   <meta name="author" content="BSP Fashion" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://bspfashion.netlify.app/" />
+  <link rel="canonical" href="https://bspfashion.vercel.app/" />
   
   <!-- Open Graph / Facebook / WhatsApp Preview -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://bspfashion.netlify.app/" />
+  <meta property="og:url" content="https://bspfashion.vercel.app/" />
   <meta property="og:title" content="BSP Fashion - Premium Clothing Manufacturer & Wholesaler" />
   <meta property="og:description" content="Manufacturer • Wholesaler • Trader of Kids, Men's & Ladies Wear. Est. 2017 | Kolkata | MOQ ₹5000 | Pan India Shipping" />
-  <meta property="og:image" content="https://bspfashion.netlify.app/og-image.jpg" />
+  <meta property="og:image" content="https://bspfashion.vercel.app/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:site_name" content="BSP Fashion" />
@@ -25,7 +25,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="BSP Fashion - Premium Clothing Manufacturer & Wholesaler" />
   <meta name="twitter:description" content="Manufacturer • Wholesaler • Trader of Kids, Men's & Ladies Wear. Est. 2017 | Kolkata | MOQ ₹5000" />
-  <meta name="twitter:image" content="https://bspfashion.netlify.app/og-image.jpg" />
+  <meta name="twitter:image" content="https://bspfashion.vercel.app/og-image.jpg" />
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
@@ -39,9 +39,9 @@
     "name": "BSP Fashion",
     "alternateName": "Bengal Solution Point",
     "description": "Manufacturer, Wholesaler and Trader of premium Kids Wear, Men's Wear and Ladies Wear based in Kolkata.",
-    "url": "https://bspfashion.netlify.app/",
-    "logo": "https://bspfashion.netlify.app/og-image.jpg",
-    "image": "https://bspfashion.netlify.app/og-image.jpg",
+    "url": "https://bspfashion.vercel.app/",
+    "logo": "https://bspfashion.vercel.app/og-image.jpg",
+    "image": "https://bspfashion.vercel.app/og-image.jpg",
     "telephone": "+918981839702",
     "email": "bspkolkata.business@gmail.com",
     "address": {
@@ -267,6 +267,23 @@
       100% { transform: translateX(-50%); }
     }
   </style>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAe0xwPlUOhr4nf57oxw1QpbyyHriH20d8",
+      authDomain: "bsp-fashion-kol.firebaseapp.com",
+      projectId: "bsp-fashion-kol",
+      storageBucket: "bsp-fashion-kol.firebasestorage.app",
+      messagingSenderId: "79061706940",
+      appId: "1:79061706940:web:c58f63a6ef266cbe0988b9",
+      measurementId: "G-W169890F15"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
 </head>
 <body class="bg-dark-900 text-white overflow-x-hidden">
 
@@ -1335,26 +1352,83 @@
                 <option value="women">Ladies Wear</option>
               </select>
             </div>
-            <div>
+            <div class="sm:col-span-2">
               <label class="text-xs text-gray-400 mb-1 block">MOQ (pcs) *</label>
               <input id="sp-moq" type="number" min="1" value="12" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none">
             </div>
-            <div>
-              <label class="text-xs text-gray-400 mb-1 block">Image URL *</label>
-              <input id="sp-image" type="url" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="https://...">
+            <div class="sm:col-span-2">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-xs text-gray-400">Image URLs * (multiple allowed)</label>
+                <button type="button" onclick="addSpImageRow()" class="text-xs text-gold-400 hover:underline">+ Add Image</button>
+              </div>
+              <div id="sp-images-list" class="space-y-2">
+                <input type="url" class="sp-image-input w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="https://image-url-1.jpg">
+              </div>
             </div>
-            <div>
-              <label class="text-xs text-gray-400 mb-1 block">Size (e.g. M or 2-3 Yr) *</label>
-              <input id="sp-size" type="text" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="M">
-            </div>
-            <div>
-              <label class="text-xs text-gray-400 mb-1 block">Price (₹) *</label>
-              <input id="sp-price" type="number" min="1" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="299">
+            <div class="sm:col-span-2">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-xs text-gray-400">Sizes & Prices * (each size can have different price)</label>
+                <button type="button" onclick="addSpSizeRow()" class="text-xs text-gold-400 hover:underline">+ Add Size</button>
+              </div>
+              <div id="sp-sizes-list" class="space-y-2">
+                <div class="sp-size-row flex gap-2">
+                  <input type="text" class="sp-size-input flex-1 bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="Size e.g. M / 2-3 Yr">
+                  <input type="number" min="1" class="sp-price-input w-28 bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="₹ Price">
+                </div>
+              </div>
             </div>
           </div>
           <button onclick="sellerAddProduct()" class="mt-4 px-6 py-2.5 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 font-semibold text-sm">Add Product</button>
+          <p class="text-xs text-gray-500 mt-2">After adding, product shows on customer catalog immediately (same browser).</p>
         </div>
         <div id="seller-products-list" class="space-y-3"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ==================== EDIT PRODUCT MODAL ==================== -->
+  <div id="edit-product-modal" class="modal-overlay fixed inset-0 z-[80] flex items-center justify-center p-4 bg-dark-900/80 backdrop-blur-sm">
+    <div class="modal-content glass-strong rounded-2xl max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeEditProduct()" class="absolute top-4 right-4 p-2 hover:text-gold-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      <h3 class="font-serif text-2xl font-bold mb-4 text-gold-400">Edit Product</h3>
+      <input type="hidden" id="ep-id">
+      <div class="space-y-4">
+        <div>
+          <label class="text-xs text-gray-400 mb-1 block">Product Name *</label>
+          <input id="ep-name" type="text" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none">
+        </div>
+        <div>
+          <label class="text-xs text-gray-400 mb-1 block">Category *</label>
+          <select id="ep-category" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none">
+            <option value="kids">Kids Wear</option>
+            <option value="men">Men's Wear</option>
+            <option value="women">Ladies Wear</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-gray-400 mb-1 block">MOQ (pcs) *</label>
+          <input id="ep-moq" type="number" min="1" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none">
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs text-gray-400">Image URLs *</label>
+            <button type="button" onclick="addEpImageRow()" class="text-xs text-gold-400 hover:underline">+ Add Image</button>
+          </div>
+          <div id="ep-images-list" class="space-y-2"></div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs text-gray-400">Sizes & Prices *</label>
+            <button type="button" onclick="addEpSizeRow()" class="text-xs text-gold-400 hover:underline">+ Add Size</button>
+          </div>
+          <div id="ep-sizes-list" class="space-y-2"></div>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="ep-oos" class="rounded border-white/20">
+          <label for="ep-oos" class="text-sm text-gray-300">Out of Stock</label>
+        </div>
+        <button onclick="saveEditProduct()" class="w-full py-3 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 font-semibold">Save Changes</button>
       </div>
     </div>
   </div>
@@ -3358,24 +3432,174 @@
             }
     ];
 
-    function loadProductsCatalog() {
-      try {
-        const s = localStorage.getItem('bsp_products_data');
-        if (s) {
-          const parsed = JSON.parse(s);
-          if (Array.isArray(parsed) && parsed.length) return parsed;
-        }
-      } catch (e) {}
-      try {
-        return JSON.parse(JSON.stringify(baseProducts));
-      } catch (e2) {
-        return baseProducts.slice();
+    function cloneBaseProducts() {
+      try { return JSON.parse(JSON.stringify(baseProducts)); }
+      catch (e) {
+        return baseProducts.map(p => Object.assign({}, p, {
+          images: (p.images || []).slice(),
+          sizes: (p.sizes || []).map(s => Object.assign({}, s))
+        }));
       }
     }
+
+    function loadProductsCatalog() {
+      let list = cloneBaseProducts();
+      try {
+        const ov = JSON.parse(localStorage.getItem('bsp_product_overrides') || '{}');
+        const deleted = new Set((ov.deleted || []).map(String));
+        list = list.filter(p => !deleted.has(String(p.id)));
+        list.forEach(p => {
+          if (ov.stock && (ov.stock[p.id] || ov.stock[String(p.id)])) p.outOfStock = true;
+        });
+        if (Array.isArray(ov.custom) && ov.custom.length) {
+          list = ov.custom.concat(list);
+        }
+      } catch (e) {}
+      return list;
+    }
+
     function persistProductsCatalog() {
-      localStorage.setItem('bsp_products_data', JSON.stringify(products));
+      try {
+        const baseIds = new Set(baseProducts.map(p => p.id));
+        const custom = products.filter(p => p.isCustom || !baseIds.has(p.id));
+        const currentIds = new Set(products.map(p => p.id));
+        const deleted = baseProducts.filter(p => !currentIds.has(p.id)).map(p => p.id);
+        const stock = {};
+        products.forEach(p => { if (p.outOfStock) stock[p.id] = true; });
+        localStorage.setItem('bsp_product_overrides', JSON.stringify({ custom, deleted, stock }));
+        try { localStorage.removeItem('bsp_products_data'); } catch (e) {}
+        return true;
+      } catch (e) {
+        console.error('Product save failed', e);
+        showToast('Could not save product (storage full)');
+        return false;
+      }
     }
     let products = loadProductsCatalog();
+
+    // ==================== FIREBASE SYNC ====================
+    async function loadProductsFromFirebase() {
+      try {
+        const snap = await db.collection('products').get();
+        const cloud = [];
+        snap.forEach(doc => {
+          const d = doc.data();
+          cloud.push({
+            id: d.localId || doc.id,
+            firestoreId: doc.id,
+            name: d.name || '',
+            category: d.category || 'kids',
+            moq: d.moq || 12,
+            images: Array.isArray(d.images) ? d.images : [],
+            sizes: Array.isArray(d.sizes) ? d.sizes : [],
+            outOfStock: !!d.outOfStock,
+            isCustom: true
+          });
+        });
+        // Merge: cloud custom products first, then base (avoid duplicate ids)
+        const cloudIds = new Set(cloud.map(p => String(p.id)));
+        const baseList = loadProductsCatalog().filter(p => !p.isCustom || !cloudIds.has(String(p.id)));
+        // Prefer cloud version of custom products
+        const localCustom = baseList.filter(p => p.isCustom);
+        const pureBase = baseList.filter(p => !p.isCustom);
+        products = cloud.concat(pureBase);
+        // apply local stock overrides on base products
+        try {
+          const ov = JSON.parse(localStorage.getItem('bsp_product_overrides') || '{}');
+          if (ov.stock) {
+            products.forEach(p => {
+              if (ov.stock[p.id] || ov.stock[String(p.id)]) p.outOfStock = true;
+            });
+          }
+          if (Array.isArray(ov.deleted) && ov.deleted.length) {
+            const del = new Set(ov.deleted.map(String));
+            products = products.filter(p => !del.has(String(p.id)) || p.isCustom);
+          }
+        } catch (e) {}
+        renderProducts('all');
+        if (typeof refreshSellerStats === 'function') refreshSellerStats();
+        console.log('Firebase products loaded:', cloud.length);
+      } catch (e) {
+        console.error('Firebase product load failed', e);
+        showToast('Cloud products load failed — showing local catalog');
+      }
+    }
+
+    async function saveProductToFirebase(product) {
+      try {
+        const data = {
+          localId: product.id,
+          name: product.name,
+          category: product.category,
+          moq: product.moq || 12,
+          images: product.images || [],
+          sizes: product.sizes || [],
+          outOfStock: !!product.outOfStock,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        if (product.firestoreId) {
+          await db.collection('products').doc(product.firestoreId).set(data, { merge: true });
+          return product.firestoreId;
+        } else {
+          const ref = await db.collection('products').add(data);
+          product.firestoreId = ref.id;
+          return ref.id;
+        }
+      } catch (e) {
+        console.error('Firebase product save failed', e);
+        showToast('Cloud save failed — saved locally only');
+        return null;
+      }
+    }
+
+    async function deleteProductFromFirebase(product) {
+      try {
+        if (product.firestoreId) {
+          await db.collection('products').doc(product.firestoreId).delete();
+        } else {
+          // try find by localId
+          const snap = await db.collection('products').where('localId', '==', product.id).get();
+          snap.forEach(doc => doc.ref.delete());
+        }
+      } catch (e) {
+        console.error('Firebase product delete failed', e);
+      }
+    }
+
+    async function saveOrderToFirebase(order) {
+      try {
+        await db.collection('orders').doc(order.id).set({
+          ...order,
+          date: order.date || new Date().toISOString(),
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        return true;
+      } catch (e) {
+        console.error('Firebase order save failed', e);
+        showToast('Order saved locally — cloud sync failed');
+        return false;
+      }
+    }
+
+    async function loadOrdersFromFirebase() {
+      try {
+        const snap = await db.collection('orders').limit(100).get();
+        const list = [];
+        snap.forEach(doc => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        // merge with local
+        const local = getOrdersLocal();
+        const ids = new Set(list.map(o => o.id));
+        local.forEach(o => { if (!ids.has(o.id)) list.push(o); });
+        list.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+        saveOrdersLocal(list);
+        return list;
+      } catch (e) {
+        console.error('Firebase orders load failed', e);
+        return getOrdersLocal();
+      }
+    }
 
     // ==================== STATE ====================
     let cart = JSON.parse(localStorage.getItem('bsp_cart') || '[]');
@@ -3801,6 +4025,11 @@
       startHeroSlider();
       loadVisitorCount();
       restoreSession();
+      // Load cloud products + orders (sync across all phones)
+      loadProductsFromFirebase();
+      loadOrdersFromFirebase().then(() => {
+        if (typeof refreshSellerStats === 'function') refreshSellerStats();
+      });
 
       // Mobile menu
       const mobileBtn = document.getElementById('mobile-menu-btn');
@@ -4207,9 +4436,37 @@
         showToast('Minimum order is ₹5,000!');
         return;
       }
+
+      if (currentCustomer) {
+        const order = {
+          id: 'ORD' + Date.now(),
+          date: new Date().toISOString(),
+          customerId: currentCustomer.id,
+          customerName: currentCustomer.name || '',
+          customerPhone: currentCustomer.phone || '',
+          customerAddress: currentCustomer.address || '',
+          customerEmail: currentCustomer.email || '',
+          items: cart.map(i => ({ name: i.name, size: i.size, qty: i.qty, price: i.price, image: i.image })),
+          total: total,
+          status: 'New',
+          source: 'WhatsApp'
+        };
+        const orders = getOrders();
+        orders.unshift(order);
+        saveOrders(orders);
+        saveOrderToFirebase(order);
+        showToast('Order saved for seller · Opening WhatsApp');
+      } else {
+        showToast('Tip: Login + Place Order so seller sees customer details');
+      }
       
       let message = `*BSP Fashion - New Order*%0A%0A`;
       message += `*Date:* ${new Date().toLocaleDateString('en-IN')}%0A%0A`;
+      if (currentCustomer) {
+        message += `*Customer:* ${currentCustomer.name || ''}%0A`;
+        message += `*Phone:* ${currentCustomer.phone || ''}%0A`;
+        message += `*Address:* ${currentCustomer.address || ''}%0A%0A`;
+      }
       message += `*Order Details:*%0A`;
       message += `━━━━━━━━━━━━━━%0A`;
       
@@ -4288,7 +4545,7 @@
       el.textContent = total.toLocaleString('en-IN');
       // Optional live API (non-blocking)
       try {
-        const res = await fetch('https://api.countapi.xyz/hit/bspfashion-netlify-app/visits', { signal: AbortSignal.timeout(2500) });
+        const res = await fetch('https://api.countapi.xyz/hit/bspfashion-vercel-app/visits', { signal: AbortSignal.timeout(2500) });
         if (res.ok) {
           const data = await res.json();
           if (data && data.value) {
@@ -4314,11 +4571,17 @@
     function saveCustomers(list) {
       localStorage.setItem('bsp_customers', JSON.stringify(list));
     }
-    function getOrders() {
+    function getOrdersLocal() {
       try { return JSON.parse(localStorage.getItem('bsp_orders') || '[]'); } catch { return []; }
     }
-    function saveOrders(list) {
+    function saveOrdersLocal(list) {
       localStorage.setItem('bsp_orders', JSON.stringify(list));
+    }
+    function getOrders() {
+      return getOrdersLocal();
+    }
+    function saveOrders(list) {
+      saveOrdersLocal(list);
     }
 
     function restoreSession() {
@@ -4514,23 +4777,39 @@
         showToast('Name, phone & address required');
         return;
       }
+      if (!currentCustomer) {
+        showToast('Please login as customer first');
+        closeCheckout();
+        openCustomerAuth('login');
+        return;
+      }
+      if (cart.length === 0) {
+        showToast('Cart is empty');
+        return;
+      }
       const total = getCartTotal();
       const order = {
         id: 'ORD' + Date.now(),
         date: new Date().toISOString(),
-        customerId: currentCustomer.id,
+        customerId: currentCustomer.id || '',
         customerName: name,
         customerPhone: phone,
         customerAddress: address,
         customerEmail: currentCustomer.email || '',
         items: cart.map(i => ({ name: i.name, size: i.size, qty: i.qty, price: i.price, image: i.image })),
         total: total,
-        status: 'New'
+        status: 'New',
+        source: 'Website'
       };
-      const orders = getOrders();
-      orders.unshift(order);
-      saveOrders(orders);
-      // Update customer address if changed
+      try {
+        const orders = getOrders();
+        orders.unshift(order);
+        saveOrders(orders);
+        saveOrderToFirebase(order);
+      } catch (e) {
+        showToast('Failed to save order');
+        return;
+      }
       currentCustomer.name = name;
       currentCustomer.phone = phone;
       currentCustomer.address = address;
@@ -4543,9 +4822,8 @@
       saveCart();
       updateCartUI();
       closeCheckout();
-      showToast('Order placed successfully! #' + order.id.slice(-6));
+      showToast('Order placed! All devices pe seller dekh sakta hai · #' + order.id.slice(-6));
 
-      // Also open WhatsApp with order
       let message = `*BSP Fashion - New Order*%0A%0A`;
       message += `*Order ID:* ${order.id}%0A`;
       message += `*Customer:* ${name}%0A`;
@@ -4602,9 +4880,10 @@
       refreshSellerStats();
     }
 
-    function renderSellerOrders() {
-      const orders = getOrders();
+    async function renderSellerOrders() {
       const list = document.getElementById('seller-orders-list');
+      list.innerHTML = `<div class="text-center py-10 text-gray-500">Loading orders...</div>`;
+      const orders = await loadOrdersFromFirebase();
       if (orders.length === 0) {
         list.innerHTML = `<div class="text-center py-16 text-gray-500">No orders yet</div>`;
         return;
@@ -4615,20 +4894,23 @@
             <div>
               <span class="text-gold-400 font-semibold">${o.id}</span>
               <span class="text-xs text-gray-500 ml-2">${new Date(o.date).toLocaleString('en-IN')}</span>
+              ${o.source ? `<span class="text-xs text-gray-600 ml-1">· ${o.source}</span>` : ''}
             </div>
             <span class="px-2.5 py-0.5 rounded-full text-xs bg-green-500/20 text-green-400">${o.status || 'New'}</span>
           </div>
-          <div class="grid sm:grid-cols-2 gap-3 mb-4 text-sm">
-            <div><span class="text-gray-500">Customer:</span> <span class="text-white font-medium">${o.customerName}</span></div>
-            <div><span class="text-gray-500">Phone:</span> <a href="tel:${o.customerPhone}" class="text-gold-400">${o.customerPhone}</a></div>
-            <div class="sm:col-span-2"><span class="text-gray-500">Address:</span> <span class="text-gray-300">${o.customerAddress}</span></div>
+          <div class="bg-dark-700/40 rounded-xl p-3 mb-4 text-sm space-y-1">
+            <div class="text-xs text-gold-400 font-medium uppercase tracking-wide mb-1">Customer Details</div>
+            <div><span class="text-gray-500">Name:</span> <span class="text-white font-medium">${o.customerName || '—'}</span></div>
+            <div><span class="text-gray-500">Phone:</span> <a href="tel:${o.customerPhone}" class="text-gold-400">${o.customerPhone || '—'}</a></div>
+            ${o.customerEmail ? `<div><span class="text-gray-500">Email:</span> <span class="text-gray-300">${o.customerEmail}</span></div>` : ''}
+            <div><span class="text-gray-500">Address:</span> <span class="text-gray-300">${o.customerAddress || '—'}</span></div>
           </div>
           <div class="border-t border-white/5 pt-3 space-y-1 text-sm">
-            ${o.items.map(i => `<div class="flex justify-between text-gray-400"><span>${i.name} (${i.size}) × ${i.qty}</span><span>₹${(i.price*i.qty).toLocaleString('en-IN')}</span></div>`).join('')}
-            <div class="flex justify-between font-semibold text-gold-400 pt-2 border-t border-white/5"><span>Total</span><span>₹${o.total.toLocaleString('en-IN')}</span></div>
+            ${(o.items || []).map(i => `<div class="flex justify-between text-gray-400"><span>${i.name} (${i.size}) × ${i.qty}</span><span>₹${(i.price*i.qty).toLocaleString('en-IN')}</span></div>`).join('')}
+            <div class="flex justify-between font-semibold text-gold-400 pt-2 border-t border-white/5"><span>Total</span><span>₹${(o.total||0).toLocaleString('en-IN')}</span></div>
           </div>
           <div class="mt-3 flex gap-2">
-            <a href="https://wa.me/91${String(o.customerPhone).replace(/\D/g,'').slice(-10)}" target="_blank" class="text-xs px-3 py-1.5 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30">WhatsApp Customer</a>
+            <a href="https://wa.me/91${String(o.customerPhone||'').replace(/\D/g,'').slice(-10)}" target="_blank" class="text-xs px-3 py-1.5 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30">WhatsApp Customer</a>
           </div>
         </div>
       `).join('');
@@ -4662,18 +4944,22 @@
         list.innerHTML = `<div class="text-center py-10 text-gray-500">No products</div>`;
         return;
       }
-      list.innerHTML = products.map((p, idx) => {
-        const minPrice = Math.min(...(p.sizes || [{price:0}]).map(s => s.price));
+      list.innerHTML = products.map((p) => {
+        const sizes = p.sizes || [];
+        const minPrice = Math.min(...sizes.map(s => s.price).concat([0]));
         const oos = !!p.outOfStock;
+        const sizeStr = sizes.map(s => `${s.size}:₹${s.price}`).join(' · ');
         return `
           <div class="glass rounded-xl p-4 border border-white/5 flex flex-wrap gap-4 items-center">
             <img src="${(p.images&&p.images[0])||''}" class="w-16 h-16 rounded-lg object-cover flex-shrink-0" onerror="this.src='https://via.placeholder.com/64'">
-            <div class="flex-1 min-w-[160px]">
+            <div class="flex-1 min-w-[180px]">
               <div class="font-medium text-sm text-white">${p.name}</div>
-              <div class="text-xs text-gray-500 mt-0.5">${p.category} · MOQ ${p.moq||1} · from ₹${minPrice}</div>
+              <div class="text-xs text-gray-500 mt-0.5">${p.category} · MOQ ${p.moq||1} · ${(p.images||[]).length} image(s) · from ₹${minPrice}</div>
+              <div class="text-xs text-gray-400 mt-1">${sizeStr || 'No sizes'}</div>
               <span class="inline-block mt-1 px-2 py-0.5 rounded text-[10px] ${oos ? 'bg-red-500/20 text-red-400' : 'bg-green-500/20 text-green-400'}">${oos ? 'Out of Stock' : 'In Stock'}</span>
             </div>
             <div class="flex flex-wrap gap-2">
+              <button onclick="openEditProduct(${p.id})" class="text-xs px-3 py-1.5 rounded-lg border border-gold-500/40 text-gold-400 hover:bg-gold-500/10">Edit</button>
               <button onclick="sellerToggleStock(${p.id})" class="text-xs px-3 py-1.5 rounded-lg border border-white/10 hover:border-gold-500/40 ${oos ? 'text-green-400' : 'text-amber-400'}">${oos ? 'Mark In Stock' : 'Mark Out of Stock'}</button>
               <button onclick="sellerDeleteProduct(${p.id})" class="text-xs px-3 py-1.5 rounded-lg border border-red-500/30 text-red-400 hover:bg-red-500/10">Delete</button>
             </div>
@@ -4682,56 +4968,196 @@
       }).join('');
     }
 
+
+    function addEpImageRow(val) {
+      const wrap = document.getElementById('ep-images-list');
+      if (!wrap) return;
+      const input = document.createElement('input');
+      input.type = 'url';
+      input.className = 'ep-image-input w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none';
+      input.placeholder = 'https://image-url.jpg';
+      if (val) input.value = val;
+      wrap.appendChild(input);
+    }
+    function addEpSizeRow(size, price) {
+      const wrap = document.getElementById('ep-sizes-list');
+      if (!wrap) return;
+      const row = document.createElement('div');
+      row.className = 'ep-size-row flex gap-2';
+      row.innerHTML = `
+        <input type="text" class="ep-size-input flex-1 bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="Size" value="${size || ''}">
+        <input type="number" min="1" class="ep-price-input w-28 bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="₹" value="${price || ''}">
+        <button type="button" onclick="this.parentElement.remove()" class="px-3 text-red-400 text-sm hover:bg-red-500/10 rounded-xl">✕</button>
+      `;
+      wrap.appendChild(row);
+    }
+
+    function openEditProduct(id) {
+      const p = products.find(x => x.id === id || String(x.id) === String(id));
+      if (!p) { showToast('Product not found'); return; }
+      document.getElementById('ep-id').value = p.id;
+      document.getElementById('ep-name').value = p.name || '';
+      document.getElementById('ep-category').value = p.category || 'kids';
+      document.getElementById('ep-moq').value = p.moq || 12;
+      document.getElementById('ep-oos').checked = !!p.outOfStock;
+      const imgList = document.getElementById('ep-images-list');
+      imgList.innerHTML = '';
+      (p.images && p.images.length ? p.images : ['']).forEach(u => addEpImageRow(u));
+      const sizeList = document.getElementById('ep-sizes-list');
+      sizeList.innerHTML = '';
+      const sizes = p.sizes && p.sizes.length ? p.sizes : [{ size: '', price: '' }];
+      sizes.forEach(s => addEpSizeRow(s.size, s.price));
+      document.getElementById('edit-product-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeEditProduct() {
+      document.getElementById('edit-product-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    async function saveEditProduct() {
+      const idRaw = document.getElementById('ep-id').value;
+      const p = products.find(x => String(x.id) === String(idRaw));
+      if (!p) { showToast('Product not found'); return; }
+
+      const name = document.getElementById('ep-name').value.trim();
+      const category = document.getElementById('ep-category').value;
+      const moq = parseInt(document.getElementById('ep-moq').value) || 12;
+      const images = Array.from(document.querySelectorAll('.ep-image-input')).map(el => el.value.trim()).filter(Boolean);
+      const sizes = [];
+      document.querySelectorAll('.ep-size-row').forEach(row => {
+        const sizeVal = (row.querySelector('.ep-size-input') || {}).value;
+        const priceVal = parseInt((row.querySelector('.ep-price-input') || {}).value);
+        if (sizeVal && String(sizeVal).trim() && priceVal > 0) {
+          sizes.push({ size: String(sizeVal).trim(), price: priceVal });
+        }
+      });
+      if (!name || !images.length || !sizes.length) {
+        showToast('Name + at least 1 image + 1 size/price required');
+        return;
+      }
+
+      p.name = name;
+      p.category = category;
+      p.moq = moq;
+      p.images = images;
+      p.sizes = sizes;
+      p.outOfStock = document.getElementById('ep-oos').checked;
+      // Base products edited become custom so they sync to cloud
+      p.isCustom = true;
+
+      persistProductsCatalog();
+      await saveProductToFirebase(p);
+      closeEditProduct();
+      renderSellerProducts();
+      renderProducts('all');
+      refreshSellerStats();
+      showToast('Product updated · Cloud synced');
+    }
+
     function sellerToggleStock(id) {
       const p = products.find(x => x.id === id);
       if (!p) return;
       p.outOfStock = !p.outOfStock;
       persistProductsCatalog();
+      if (p.isCustom) saveProductToFirebase(p);
       renderSellerProducts();
       renderProducts('all');
       showToast(p.outOfStock ? 'Marked Out of Stock' : 'Marked In Stock');
     }
 
-    function sellerDeleteProduct(id) {
+    async function sellerDeleteProduct(id) {
       if (!confirm('Delete this product permanently?')) return;
+      const p = products.find(x => x.id === id);
       products = products.filter(x => x.id !== id);
       persistProductsCatalog();
+      if (p && p.isCustom) await deleteProductFromFirebase(p);
       renderSellerProducts();
       renderProducts('all');
       refreshSellerStats();
       showToast('Product deleted');
     }
 
+    function addSpImageRow() {
+      const wrap = document.getElementById('sp-images-list');
+      if (!wrap) return;
+      const input = document.createElement('input');
+      input.type = 'url';
+      input.className = 'sp-image-input w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none';
+      input.placeholder = 'https://another-image.jpg';
+      wrap.appendChild(input);
+    }
+    function addSpSizeRow() {
+      const wrap = document.getElementById('sp-sizes-list');
+      if (!wrap) return;
+      const row = document.createElement('div');
+      row.className = 'sp-size-row flex gap-2';
+      row.innerHTML = `
+        <input type="text" class="sp-size-input flex-1 bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="Size e.g. L / 3-4 Yr">
+        <input type="number" min="1" class="sp-price-input w-28 bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="₹ Price">
+        <button type="button" onclick="this.parentElement.remove()" class="px-3 text-red-400 text-sm hover:bg-red-500/10 rounded-xl">✕</button>
+      `;
+      wrap.appendChild(row);
+    }
+
     function sellerAddProduct() {
       const name = document.getElementById('sp-name').value.trim();
       const category = document.getElementById('sp-category').value;
       const moq = parseInt(document.getElementById('sp-moq').value) || 12;
-      const image = document.getElementById('sp-image').value.trim();
-      const size = document.getElementById('sp-size').value.trim();
-      const price = parseInt(document.getElementById('sp-price').value);
-      if (!name || !image || !size || !price) {
-        showToast('Fill all required product fields');
+
+      const images = Array.from(document.querySelectorAll('.sp-image-input'))
+        .map(el => el.value.trim())
+        .filter(Boolean);
+
+      const sizes = [];
+      document.querySelectorAll('.sp-size-row').forEach(row => {
+        const sizeVal = (row.querySelector('.sp-size-input') || {}).value;
+        const priceVal = parseInt((row.querySelector('.sp-price-input') || {}).value);
+        if (sizeVal && String(sizeVal).trim() && priceVal > 0) {
+          sizes.push({ size: String(sizeVal).trim(), price: priceVal });
+        }
+      });
+
+      if (!name || !images.length || !sizes.length) {
+        showToast('Name + at least 1 image URL + 1 size/price required');
         return;
       }
-      const maxId = products.reduce((m, p) => Math.max(m, Number(p.id) || 0), 0);
-      products.unshift({
+
+      const maxId = products.reduce((m, p) => Math.max(m, Number(p.id) || 0), 1000);
+      const newProduct = {
         id: maxId + 1,
         name,
         category,
         moq,
-        images: [image],
-        sizes: [{ size, price }],
-        outOfStock: false
+        images,
+        sizes,
+        outOfStock: false,
+        isCustom: true
+      };
+      products.unshift(newProduct);
+      const ok = persistProductsCatalog();
+      if (!ok) {
+        products.shift();
+        return;
+      }
+
+      // Save to Firebase → all customer phones pe dikhega
+      saveProductToFirebase(newProduct).then(fid => {
+        if (fid) showToast('Product added · Cloud synced — sab phones pe dikhega');
+        else showToast('Product added locally (cloud sync failed)');
       });
-      persistProductsCatalog();
+
       document.getElementById('sp-name').value = '';
-      document.getElementById('sp-image').value = '';
-      document.getElementById('sp-size').value = '';
-      document.getElementById('sp-price').value = '';
+      document.getElementById('sp-images-list').innerHTML = '<input type="url" class="sp-image-input w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="https://image-url-1.jpg">';
+      document.getElementById('sp-sizes-list').innerHTML = `
+        <div class="sp-size-row flex gap-2">
+          <input type="text" class="sp-size-input flex-1 bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="Size e.g. M / 2-3 Yr">
+          <input type="number" min="1" class="sp-price-input w-28 bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="₹ Price">
+        </div>`;
+
       renderSellerProducts();
       renderProducts('all');
       refreshSellerStats();
-      showToast('Product added');
     }
 
     function openMyOrders() {
