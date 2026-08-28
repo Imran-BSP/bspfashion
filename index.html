@@ -266,6 +266,130 @@
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
+
+    /* Cool 3D Slide Gallery */
+    .cool-gallery-wrap {
+      position: relative;
+      width: 100%;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      perspective: 1400px;
+      touch-action: pan-y;
+      user-select: none;
+    }
+    .cool-gallery-stage {
+      position: relative;
+      width: min(320px, 78vw);
+      height: min(400px, 95vw);
+      transform-style: preserve-3d;
+    }
+    @media (min-width: 768px) {
+      .cool-gallery-stage { width: 360px; height: 440px; }
+      .cool-gallery-wrap { min-height: 540px; }
+    }
+    .cool-card {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 100%;
+      height: 100%;
+      margin-left: 0;
+      border-radius: 1.25rem;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transform-origin: center center;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.55s ease, filter 0.55s ease;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);
+      background: #1a1a1a;
+      cursor: pointer;
+    }
+    .cool-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+    .cool-card .cool-dim {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      pointer-events: none;
+      transition: opacity 0.55s ease;
+    }
+    .cool-card .cool-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 2;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(212, 175, 55, 0.9);
+      color: #111;
+    }
+    .cool-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 28px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+    }
+    .cool-controls button {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.6);
+      transition: all 0.2s;
+    }
+    .cool-controls button:hover {
+      color: #d4af37;
+      background: rgba(212, 175, 55, 0.15);
+    }
+    .cool-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      max-width: 180px;
+      overflow: hidden;
+    }
+    .cool-dot {
+      height: 6px;
+      width: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.35);
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .cool-dot.active {
+      width: 22px;
+      background: #d4af37;
+      opacity: 1;
+    }
+    .cool-counter {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.45);
+      tabular-nums;
+      min-width: 48px;
+      text-align: center;
+    }
+
   </style>
 
   <!-- Firebase SDK -->
@@ -650,65 +774,32 @@
   </section>
 
   <!-- ==================== GALLERY ==================== -->
-  <section id="gallery" class="py-16 md:py-24">
+  <section id="gallery" class="py-16 md:py-24 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4">
-      <div class="text-center mb-12">
+      <div class="text-center mb-10">
         <h2 class="font-serif text-3xl md:text-5xl font-bold mb-3">Photo <span class="text-gold-gradient">Gallery</span></h2>
         <p class="text-gray-400">Hamari premium collection aur finishing ki jhalak</p>
       </div>
-      
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-10">
-        <div class="gallery-item relative aspect-square rounded-xl overflow-hidden cursor-pointer group" onclick="openLightbox(0)">
-          <img src="https://i.ibb.co/0RqxsYmT/1777788000451.jpg" alt="Gallery 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" decoding="async">
-          <div class="absolute inset-0 bg-dark-900/0 group-hover:bg-dark-900/40 transition-colors flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item relative aspect-square rounded-xl overflow-hidden cursor-pointer group" onclick="openLightbox(1)">
-          <img src="https://i.ibb.co/tpmt9MwK/6.jpg" alt="Gallery 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" decoding="async">
-          <div class="absolute inset-0 bg-dark-900/0 group-hover:bg-dark-900/40 transition-colors flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item relative aspect-square rounded-xl overflow-hidden cursor-pointer group" onclick="openLightbox(2)">
-          <img src="https://i.ibb.co/8LMbmjYb/2.jpg" alt="Gallery 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" decoding="async">
-          <div class="absolute inset-0 bg-dark-900/0 group-hover:bg-dark-900/40 transition-colors flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item relative aspect-square rounded-xl overflow-hidden cursor-pointer group" onclick="openLightbox(3)">
-          <img src="https://i.ibb.co/RTMh8mxz/1782817862779.jpg" alt="Gallery 4" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" decoding="async">
-          <div class="absolute inset-0 bg-dark-900/0 group-hover:bg-dark-900/40 transition-colors flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item relative aspect-square rounded-xl overflow-hidden cursor-pointer group" onclick="openLightbox(4)">
-          <img src="https://i.ibb.co/1fdmH1cM/1782814036198.jpg" alt="Gallery 5" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" decoding="async">
-          <div class="absolute inset-0 bg-dark-900/0 group-hover:bg-dark-900/40 transition-colors flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item relative aspect-square rounded-xl overflow-hidden cursor-pointer group" onclick="openLightbox(5)">
-          <img src="https://i.ibb.co/qMZrz8v8/1782813906245-1.jpg" alt="Gallery 6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" decoding="async">
-          <div class="absolute inset-0 bg-dark-900/0 group-hover:bg-dark-900/40 transition-colors flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item relative aspect-square rounded-xl overflow-hidden cursor-pointer group" onclick="openLightbox(6)">
-          <img src="https://i.ibb.co/hxXfcHGX/1783835518369.jpg" alt="Gallery 7" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" decoding="async">
-          <div class="absolute inset-0 bg-dark-900/0 group-hover:bg-dark-900/40 transition-colors flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
-        </div>
-        <div class="gallery-item relative aspect-square rounded-xl overflow-hidden cursor-pointer group" onclick="openLightbox(7)">
-          <img src="https://i.ibb.co/fdqZnJW9/1783835505815.jpg" alt="Gallery 8" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" decoding="async">
-          <div class="absolute inset-0 bg-dark-900/0 group-hover:bg-dark-900/40 transition-colors flex items-center justify-center">
-            <svg class="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-          </div>
+
+      <!-- Cool 3D Slide Gallery (gallery images) -->
+      <div class="cool-gallery-wrap" id="cool-gallery"
+           onpointerdown="coolPointerDown(event)"
+           onpointerup="coolPointerUp(event)"
+           onpointercancel="coolPointerUp(event)">
+        <div class="cool-gallery-stage" id="cool-stage"></div>
+        <div class="cool-controls">
+          <button type="button" onclick="coolStep(-1)" aria-label="Previous">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div class="cool-dots" id="cool-dots"></div>
+          <span class="cool-counter" id="cool-counter">1 / 1</span>
+          <button type="button" onclick="coolStep(1)" aria-label="Next">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
         </div>
       </div>
-      
-      <div class="text-center">
+
+      <div class="text-center mt-10">
         <a href="gallery.html" class="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 font-semibold rounded-full hover:from-gold-400 hover:to-gold-500 transition-all shadow-lg shadow-gold-500/20">
           Puri Gallery Dekho
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -3569,6 +3660,46 @@
     let products = loadProductsCatalog();
 
     // ==================== FIREBASE SYNC ====================
+
+    function normalizeSizes(d) {
+      // Accept sizes, size, or single size+price fields from Firestore
+      let raw = d.sizes || d.size || d.Size || d.Sizes || [];
+      if (!Array.isArray(raw)) {
+        // single map object
+        if (raw && typeof raw === 'object') raw = [raw];
+        else raw = [];
+      }
+      const out = [];
+      raw.forEach(item => {
+        if (item == null) return;
+        if (typeof item === 'string' || typeof item === 'number') {
+          // skip invalid
+          return;
+        }
+        // item may be { size, price } or { "20x30": 285 } wrong format
+        let sizeVal = item.size != null ? item.size : (item.Size != null ? item.Size : null);
+        let priceVal = item.price != null ? item.price : (item.Price != null ? item.Price : null);
+        if (sizeVal == null || priceVal == null) {
+          // try first key/value pair as size/price
+          const keys = Object.keys(item).filter(k => k !== 'size' && k !== 'price');
+          if (keys.length && sizeVal == null) {
+            sizeVal = keys[0];
+            priceVal = item[keys[0]];
+          }
+        }
+        const priceNum = Number(priceVal);
+        if (sizeVal != null && String(sizeVal).trim() !== '' && !isNaN(priceNum) && priceNum > 0) {
+          out.push({ size: String(sizeVal).trim(), price: priceNum });
+        }
+      });
+      // fallback: top-level size + price on document
+      if (!out.length && d.price != null && (d.sizeLabel || d.sizeName)) {
+        const pn = Number(d.price);
+        if (!isNaN(pn) && pn > 0) out.push({ size: String(d.sizeLabel || d.sizeName), price: pn });
+      }
+      return out;
+    }
+
     async function loadProductsFromFirebase() {
       try {
         const snap = await db.collection('products').get();
@@ -3580,9 +3711,9 @@
             firestoreId: doc.id,
             name: d.name || '',
             category: d.category || 'kids',
-            moq: d.moq || 12,
-            images: Array.isArray(d.images) ? d.images : [],
-            sizes: Array.isArray(d.sizes) ? d.sizes : [],
+            moq: Number(d.moq) || 12,
+            images: Array.isArray(d.images) ? d.images : (d.image ? [d.image] : []),
+            sizes: normalizeSizes(d),
             outOfStock: !!d.outOfStock,
             isCustom: true
           });
@@ -4278,12 +4409,13 @@
       
       grid.innerHTML = filtered.map(p => {
         const sizes = p.sizes || [];
-        const minPrice = Math.min(...sizes.map(s => s.price).concat([0]));
         const oos = !!p.outOfStock;
-        const sizeLines = sizes.slice(0, 4).map(s =>
-          `<div class="flex justify-between text-[11px] text-gray-400"><span>${s.size}</span><span class="text-gold-400/90">₹${s.price}</span></div>`
+        const safeSizes = (sizes || []).filter(s => s && s.size != null && String(s.size) !== 'undefined' && s.price != null && !isNaN(Number(s.price)));
+        const minPrice = safeSizes.length ? Math.min(...safeSizes.map(s => Number(s.price))) : 0;
+        const sizeLines = safeSizes.slice(0, 4).map(s =>
+          `<div class="flex justify-between text-[11px] text-gray-400"><span>${s.size}</span><span class="text-gold-400/90">₹${Number(s.price)}</span></div>`
         ).join('');
-        const moreSizes = sizes.length > 4 ? `<div class="text-[10px] text-gray-500">+${sizes.length - 4} more sizes</div>` : '';
+        const moreSizes = safeSizes.length > 4 ? `<div class="text-[10px] text-gray-500">+${safeSizes.length - 4} more sizes</div>` : '';
         const img0 = (p.images && p.images[0]) ? p.images[0].replace(/'/g, "\\'") : '';
         return `
           <div class="product-card glass rounded-2xl overflow-hidden group ${oos ? 'opacity-70' : ''}">
@@ -4310,7 +4442,7 @@
               </div>
               <div class="flex items-center justify-between gap-2 mb-3">
                 <span class="text-gold-400 font-semibold text-sm">From ₹${minPrice}</span>
-                <span class="text-[10px] text-gray-500">${sizes.length} size(s)</span>
+                <span class="text-[10px] text-gray-500">${safeSizes.length} size(s)</span>
               </div>
               ${oos ? `
                 <button type="button" disabled class="w-full py-2 rounded-xl text-xs font-medium bg-dark-700 text-gray-500 cursor-not-allowed">Out of Stock</button>
@@ -4452,6 +4584,15 @@
       if (!currentProduct) return;
       if (currentProduct.outOfStock) {
         showToast('This product is currently Out of Stock');
+        return;
+      }
+      // ensure sizes valid
+      if (!Array.isArray(currentProduct.sizes) || !currentProduct.sizes.length) {
+        currentProduct.sizes = normalizeSizes(currentProduct);
+      }
+      currentProduct.sizes = (currentProduct.sizes || []).filter(s => s && s.size && !isNaN(Number(s.price)));
+      if (!currentProduct.sizes.length) {
+        showToast('Is product mein size/price set nahi hai — seller se contact karein');
         return;
       }
       selectedSize = currentProduct.sizes[0];
@@ -4816,6 +4957,474 @@
     }
 
     // ==================== LIGHTBOX ====================
+
+    // ==================== COOL 3D SLIDE GALLERY ====================
+    let coolActive = 0;
+    let coolLock = false;
+    let coolDragX = 0;
+    let coolDragging = false;
+    // Use up to 24 gallery images for smooth 3D carousel (full set on gallery.html)
+    let coolSlides = [];
+
+    // Explicit carousel images (BSP product gallery)
+    const COOL_GALLERY_IMAGES = [
+      "https://i.ibb.co/0RqxsYmT/1777788000451.jpg",
+      "https://i.ibb.co/tpmt9MwK/6.jpg",
+      "https://i.ibb.co/8LMbmjYb/2.jpg",
+      "https://i.ibb.co/RTMh8mxz/1782817862779.jpg",
+      "https://i.ibb.co/1fdmH1cM/1782814036198.jpg",
+      "https://i.ibb.co/qMZrz8v8/1782813906245-1.jpg",
+      "https://i.ibb.co/hxXfcHGX/1783835518369.jpg",
+      "https://i.ibb.co/fdqZnJW9/1783835505815.jpg",
+      "https://i.ibb.co/nsMWwxz0/1783835496862.jpg",
+      "https://i.ibb.co/mFRQFqJL/1783835477664.jpg",
+      "https://i.ibb.co/HDVpbsWq/1783835469478.jpg",
+      "https://i.ibb.co/v4Tsd4kR/1783835463355.jpg",
+      "https://i.ibb.co/YFMpjGQG/5.jpg",
+      "https://i.ibb.co/mF6prHGq/4.jpg",
+      "https://i.ibb.co/mV3nnc0R/3.jpg",
+      "https://i.ibb.co/rfq8rZ1b/snrc-dig-sleep-white-1.png",
+      "https://i.ibb.co/xS5CKT8p/snrc-dig-sleep-pink-1.png",
+      "https://i.ibb.co/1BF0gRn/snrc-dig-sleep-cream-1.png",
+      "https://i.ibb.co/Dfz4tGKF/Picsart-26-03-30-00-27-24-279.jpg",
+      "https://i.ibb.co/6L3mLHh/Picsart-26-03-30-00-26-57-460.jpg",
+      "https://i.ibb.co/HfFS6j8b/Picsart-26-03-30-00-24-52-022.jpg",
+      "https://i.ibb.co/5WpvdC33/Picsart-26-03-30-00-25-21-818.jpg",
+      "https://i.ibb.co/xtSr1Z35/Picsart-26-03-30-00-23-26-511.jpg",
+      "https://i.ibb.co/TSbfr2j/Photoroom-20240729-231533-4.png",
+      "https://i.ibb.co/r2fX64C0/Photoroom-20240729-231533-3.png",
+      "https://i.ibb.co/N2fyX2nb/Photoroom-20240729-231532-2.png",
+      "https://i.ibb.co/8gccqwmq/Photoroom-20240729-231532-1.png",
+      "https://i.ibb.co/7NZ9tPkM/Raima-Catalog-7.jpg",
+      "https://i.ibb.co/8n8v0Rby/image-18.png",
+      "https://i.ibb.co/0pNbRDXp/image-10.png",
+      "https://i.ibb.co/S4XDybfX/image-9.png",
+      "https://i.ibb.co/VY8m9qty/image-8.png",
+      "https://i.ibb.co/hxXPxZQy/image-7.png",
+      "https://i.ibb.co/RpfnpGHj/image-6.png",
+      "https://i.ibb.co/Jws7Y2y1/IMG-20251231-WA0033.jpg",
+      "https://i.ibb.co/N6hGrzC3/IMG-20251231-WA0029.jpg",
+      "https://i.ibb.co/SX8vqhhz/IMG-20251231-WA0025.jpg",
+      "https://i.ibb.co/c94NMhM/IMG-20251231-WA0023.jpg",
+      "https://i.ibb.co/pBL2nVNs/IMG-20251231-WA0017.jpg",
+      "https://i.ibb.co/B2pgyfTq/IMG-20260115-WA0102.jpg",
+      "https://i.ibb.co/q36tTJTc/IMG-20260115-WA0101.jpg",
+      "https://i.ibb.co/r2kSWdQx/IMG-20260115-WA0100.jpg",
+      "https://i.ibb.co/0yf5LwWg/IMG-20260115-WA0099.jpg",
+      "https://i.ibb.co/ycZhhPkk/IMG-20260115-WA0098.jpg",
+      "https://i.ibb.co/cXYM3Qk3/IMG-20260115-WA0097.jpg",
+      "https://i.ibb.co/hRfq7WWc/IMG-20260115-WA0096.jpg",
+      "https://i.ibb.co/4RjvWbGY/IMG-20260115-WA0095.jpg",
+      "https://i.ibb.co/d0SvpVFS/IMG-20260115-WA0016.jpg",
+      "https://i.ibb.co/0knhrZc/IMG-20260115-WA0013.jpg",
+      "https://i.ibb.co/cXwwtcKQ/IMG-20260115-WA0012.jpg",
+      "https://i.ibb.co/sJCf3fzC/IMG-20260427-WA0015.jpg",
+      "https://i.ibb.co/HL8hK9LV/IMG-20260427-WA0014.jpg",
+      "https://i.ibb.co/4w5YdG67/IMG-20260427-WA0013.jpg",
+      "https://i.ibb.co/8nCh99h7/IMG-20260427-WA0012.jpg",
+      "https://i.ibb.co/7J3MnDjr/IMG-20260427-WA0011.jpg",
+      "https://i.ibb.co/SXdMp4Mm/Photoroom-20240926-184327.png",
+      "https://i.ibb.co/q32bJTqg/Photoroom-20240926-182553.png",
+      "https://i.ibb.co/4ZCrcQfy/Photoroom-20240926-180139.png",
+      "https://i.ibb.co/0RwDSTYf/Photoroom-20240926-134247.png",
+      "https://i.ibb.co/5Ws79vFy/Picsart-25-10-27-03-00-45-453.jpg",
+      "https://i.ibb.co/GfvvWWS7/Picsart-25-10-27-02-58-55-764.jpg",
+      "https://i.ibb.co/LDSkBSBL/1783830650006.jpg",
+      "https://i.ibb.co/4RpKjvCR/1783830639885.jpg",
+      "https://i.ibb.co/ZpQKB8WM/1783830532682.jpg",
+      "https://i.ibb.co/tTrxF7q7/IMG-20260206-WA0002.jpg",
+      "https://i.ibb.co/gZXgN3kR/IMG-20260206-WA0001.jpg",
+      "https://i.ibb.co/R4pyCYh4/IMG-20260206-WA0000.jpg",
+      "https://i.ibb.co/v72wCSF/IMG-20250621-WA0043.jpg",
+      "https://i.ibb.co/zW3vTLzQ/IMG-20250621-WA0039.jpg",
+      "https://i.ibb.co/V0fd2gTx/IMG-20250621-WA0038.jpg",
+      "https://i.ibb.co/QjfShnhN/IMG-20240321-WA0044.jpg",
+      "https://i.ibb.co/TxHGsPYp/IMG-20240321-WA0042.jpg",
+      "https://i.ibb.co/m362z62/IMG-20240321-WA0037.jpg",
+      "https://i.ibb.co/5zFvPff/IMG-20240321-WA0032.jpg",
+      "https://i.ibb.co/rRXwZpGJ/IMG-20240321-WA0031.jpg",
+      "https://i.ibb.co/1JKc18c8/IMG-20260331-WA0108.jpg",
+      "https://i.ibb.co/3ndphb8/IMG-20260331-WA0107.jpg",
+      "https://i.ibb.co/21QHxKmv/IMG-20260331-WA0106.jpg",
+      "https://i.ibb.co/xqqcL8rd/IMG-20260331-WA0105.jpg",
+      "https://i.ibb.co/20pL9Dhq/Picsart-26-01-04-16-00-50-091.jpg",
+      "https://i.ibb.co/5Wg3JPxh/Picsart-26-01-04-15-58-29-566.png",
+      "https://i.ibb.co/XfKzyLXW/Picsart-26-01-04-15-56-32-319.jpg",
+      "https://i.ibb.co/4cRH0h4/IMG-20260403-WA0031.jpg",
+      "https://i.ibb.co/Kcs0QCNr/IMG-20260403-WA0030.jpg",
+      "https://i.ibb.co/svkDMgKt/IMG-20260403-WA0029.jpg",
+      "https://i.ibb.co/dCvmmxw/IMG-20260403-WA0028.jpg",
+      "https://i.ibb.co/ccwKXvHn/IMG-20260403-WA0027.jpg",
+      "https://i.ibb.co/TxWj5RbQ/IMG-20260403-WA0026.jpg",
+      "https://i.ibb.co/hFzS0g5H/IMG-20260403-WA0025.jpg",
+      "https://i.ibb.co/SGvMBDN/IMG-20260403-WA0024.jpg",
+      "https://i.ibb.co/23hb95nX/Photoroom-20250205-023005.png",
+      "https://i.ibb.co/tT6pFW5k/IMG-20260502-WA0113.jpg",
+      "https://i.ibb.co/n8M8Dz9N/IMG-20260502-WA0112.jpg",
+      "https://i.ibb.co/HpgBZ0J7/IMG-20260502-WA0111.jpg",
+      "https://i.ibb.co/1tmS4C5c/IMG-20260502-WA0110.jpg",
+      "https://i.ibb.co/mChnYnyv/IMG-20260502-WA0109.jpg",
+      "https://i.ibb.co/JWvJTpsX/IMG-20260502-WA0108.jpg",
+      "https://i.ibb.co/ccnBWjpQ/Photoroom-20250202-210628.png",
+      "https://i.ibb.co/99Nz8jkv/Photoroom-20250202-210446.png",
+      "https://i.ibb.co/Ld1Vj6KS/Photoroom-20250202-210023.png",
+      "https://i.ibb.co/35M4KZh0/Photoroom-20250202-205648.png",
+      "https://i.ibb.co/8Dmk5xDj/IMG-20260502-WA0037.jpg",
+      "https://i.ibb.co/9mPSNLXd/IMG-20260502-WA0036.jpg",
+      "https://i.ibb.co/bgNqp58Z/IMG-20260502-WA0035.jpg",
+      "https://i.ibb.co/Mk7NHrBX/Photoroom-20250119-011852.png",
+      "https://i.ibb.co/F4k9kQTP/Photoroom-20250119-010428.png",
+      "https://i.ibb.co/5hHQ6dbv/Photoroom-20250119-010101.png",
+      "https://i.ibb.co/6RRJJRyM/IMG-20260204-WA0017-1.jpg",
+      "https://i.ibb.co/bjFsVR3w/IMG-20260125-WA0017-1.jpg",
+      "https://i.ibb.co/2YC5HvMZ/Photoroom-20241231-091945.png",
+      "https://i.ibb.co/BVY5f22N/1767930287733-1.jpg",
+      "https://i.ibb.co/5xrYTGFG/1767930140398-1.jpg",
+      "https://i.ibb.co/XfYjXTL0/1767904538405-1.jpg",
+      "https://i.ibb.co/PGnNQ2bw/1767904463162-1.jpg",
+      "https://i.ibb.co/YFhxS7HV/1767904372438-1.jpg",
+      "https://i.ibb.co/VYCVq4jP/1767901587709-1.jpg",
+      "https://i.ibb.co/vxfkzN4N/1767851359961-1.jpg",
+      "https://i.ibb.co/zWn05Lf6/1767851284695-1.jpg",
+      "https://i.ibb.co/qYR200j9/1767851217901-1.jpg",
+      "https://i.ibb.co/YBG2XBBR/1767851150602-1.jpg",
+      "https://i.ibb.co/4wqfJMCB/1767850971694-1.jpg",
+      "https://i.ibb.co/xKhDZRQc/1767850887319-1.jpg",
+      "https://i.ibb.co/4ZPC9XyR/1767849025314-1.jpg",
+      "https://i.ibb.co/WW6WK6NX/1767848953361-1.jpg",
+      "https://i.ibb.co/jPxh74Mv/1767848887989-1.jpg",
+      "https://i.ibb.co/0jNSyHLH/1767848631552-1.jpg",
+      "https://i.ibb.co/DgW0R6v9/1767848558208-1.jpg",
+      "https://i.ibb.co/1fw7wgjK/1767848466141-1.jpg",
+      "https://i.ibb.co/SDndV2LH/1767848390500-1.jpg",
+      "https://i.ibb.co/CpfM7LNH/1767848296131-1.jpg",
+      "https://i.ibb.co/j9H4RxQp/1767848150948-1.jpg",
+      "https://i.ibb.co/W49m9wBy/1767848071227-1.jpg",
+      "https://i.ibb.co/gFJsFfN3/1767847994649-1.jpg",
+      "https://i.ibb.co/jP4w05xK/1767847935410-1.jpg",
+      "https://i.ibb.co/r2rpV0S2/1767847839824-1.jpg",
+      "https://i.ibb.co/9Hk52Rwk/1767847770174-1.jpg",
+      "https://i.ibb.co/4nzZPWJT/1767847690277-1.jpg",
+      "https://i.ibb.co/R402m9Gd/1767847103654-1.jpg",
+      "https://i.ibb.co/cS1RqZNq/IMG-20260107-WA0028-1.jpg",
+      "https://i.ibb.co/wZPTdShc/IMG-20260107-WA0027-1.jpg",
+      "https://i.ibb.co/p6D6n6SX/IMG-20260107-WA0026-1.jpg",
+      "https://i.ibb.co/JW4BtJNq/IMG-20260107-WA0025-2.jpg",
+      "https://i.ibb.co/pjd1Hjdw/IMG-20260107-WA0025-1.jpg",
+      "https://i.ibb.co/vxpQ9ppT/IMG-20260107-WA0024-1.jpg",
+      "https://i.ibb.co/hFkFJqd2/IMG-20260219-WA0054-1.jpg",
+      "https://i.ibb.co/Jfc5VZf/IMG-20260219-WA0053-1.jpg",
+      "https://i.ibb.co/TMMwvSW9/IMG-20260219-WA0052-1.jpg",
+      "https://i.ibb.co/0yFM9YJr/IMG-20260219-WA0051-1.jpg",
+      "https://i.ibb.co/WbMzwkP/IMG-20260219-WA0050-1.jpg",
+      "https://i.ibb.co/GvJ6DHkk/IMG-20260219-WA0049-1.jpg",
+      "https://i.ibb.co/jPMTwCxF/IMG-20260219-WA0048-1.jpg",
+      "https://i.ibb.co/BKSvJJ9S/IMG-20260219-WA0047-1.jpg",
+      "https://i.ibb.co/gLw8LkTs/IMG-20260219-WA0046-1.jpg",
+      "https://i.ibb.co/N5m4Z5M/IMG-20260219-WA0045-1.jpg",
+      "https://i.ibb.co/pvHdxbW1/IMG-20260219-WA0044-1.jpg",
+      "https://i.ibb.co/hF47gpQf/IMG-20260219-WA0043-1.jpg",
+      "https://i.ibb.co/ycK0Bp9X/IMG-20260219-WA0042-1.jpg",
+      "https://i.ibb.co/gMZht552/IMG-20260219-WA0041-1.jpg",
+      "https://i.ibb.co/4wFXZ03X/IMG-20260219-WA0040-1.jpg",
+      "https://i.ibb.co/VYmXxdJG/IMG-20260219-WA0039-1.jpg",
+      "https://i.ibb.co/3Ys77hG3/IMG-20260506-WA0092-1.jpg",
+      "https://i.ibb.co/1Gy11wQ7/IMG-20260506-WA0091-1.jpg",
+      "https://i.ibb.co/RpyX1mvN/IMG-20260506-WA0090-1.jpg",
+      "https://i.ibb.co/1fMcKMC2/IMG-20260506-WA0089-1.jpg",
+      "https://i.ibb.co/vCKsbjSn/IMG-20260506-WA0088-1.jpg",
+      "https://i.ibb.co/q3v4gN46/IMG-20260506-WA0087-1.jpg",
+      "https://i.ibb.co/TDwjjLvW/IMG-20260506-WA0086-1.jpg",
+      "https://i.ibb.co/TDBCp1Lt/IMG-20260506-WA0085-1.jpg",
+      "https://i.ibb.co/BDgPZhr/IMG-20260506-WA0084-1.jpg",
+      "https://i.ibb.co/KkRH0PF/IMG-20260506-WA0083-1.jpg",
+      "https://i.ibb.co/BHZJRxR8/IMG-20260506-WA0082-1.jpg",
+      "https://i.ibb.co/PZ6PvFD7/IMG-20260506-WA0081-1.jpg",
+      "https://i.ibb.co/7xGCq6CB/IMG-20260506-WA0080-1.jpg",
+      "https://i.ibb.co/b5yqxDh9/IMG-20260506-WA0079-1.jpg",
+      "https://i.ibb.co/FkFf1HGs/IMG-20260506-WA0078-1.jpg",
+      "https://i.ibb.co/278rLSNg/IMG-20260506-WA0077-1.jpg",
+      "https://i.ibb.co/HfcnRgX7/IMG-20260506-WA0076-1.jpg",
+      "https://i.ibb.co/2Y7SDyfM/IMG-20260506-WA0075-1.jpg",
+      "https://i.ibb.co/rKMCSKKw/IMG-20260506-WA0074-1.jpg",
+      "https://i.ibb.co/CSPh9XN/IMG-20260506-WA0073-1.jpg",
+      "https://i.ibb.co/hJhFJ6Fq/IMG-20260506-WA0072-1.jpg",
+      "https://i.ibb.co/tphL3jjs/IMG-20260506-WA0071-1.jpg",
+      "https://i.ibb.co/zy9cjvL/IMG-20260506-WA0070-1.jpg",
+      "https://i.ibb.co/pBVqCx9H/IMG-20260506-WA0069-1.jpg",
+      "https://i.ibb.co/svB5PS6r/IMG-20260506-WA0068-1.jpg",
+      "https://i.ibb.co/bMhJ6NMv/IMG-20260506-WA0067-1.jpg",
+      "https://i.ibb.co/DDjwBV2Q/IMG-20260506-WA0066-1.jpg",
+      "https://i.ibb.co/kVNrF5Z6/IMG-20260506-WA0065-1.jpg",
+      "https://i.ibb.co/nNKSKzP7/IMG-20260506-WA0064-1.jpg",
+      "https://i.ibb.co/GvWDVRkv/IMG-20260506-WA0063-1.jpg",
+      "https://i.ibb.co/G46xy4jD/IMG-20260506-WA0062-1.jpg",
+      "https://i.ibb.co/wF0Kkhb7/IMG-20260506-WA0061-1.jpg",
+      "https://i.ibb.co/WNVcMWjG/IMG-20260506-WA0060-1.jpg",
+      "https://i.ibb.co/Z1Kh12ZJ/IMG-20260506-WA0059-1.jpg",
+      "https://i.ibb.co/YTZYf4xT/IMG-20260506-WA0058-1.jpg",
+      "https://i.ibb.co/kVJgstX6/IMG-20260506-WA0057-1.jpg",
+      "https://i.ibb.co/gLYw0KGP/IMG-20260506-WA0056-1.jpg",
+      "https://i.ibb.co/B5BvDsLJ/IMG-20260506-WA0055-1.jpg",
+      "https://i.ibb.co/27zxxWzr/IMG-20260506-WA0054-1.jpg",
+      "https://i.ibb.co/RkGK215K/IMG-20260506-WA0053-1.jpg",
+      "https://i.ibb.co/fdXGPbzh/IMG-20260506-WA0052-1.jpg",
+      "https://i.ibb.co/hxHHpX9z/1780156555853.jpg",
+      "https://i.ibb.co/4RzvhsXg/1780156534223.jpg",
+      "https://i.ibb.co/xwbnqcg/1780156499140.jpg",
+      "https://i.ibb.co/CpHLDZVQ/1777927504202.jpg",
+      "https://i.ibb.co/yB5dRS6x/Photoroom-20250221-121113.png",
+      "https://i.ibb.co/39KFHDdr/Photoroom-20240823-222857-2.png",
+      "https://i.ibb.co/FLkZrfJS/Photoroom-20240823-222857-1.png",
+      "https://i.ibb.co/7JcLGC0p/Photoroom-20250118-131152.png",
+      "https://i.ibb.co/HLXgknG1/Photoroom-20250118-130830.png",
+      "https://i.ibb.co/9H2hQq1V/Photoroom-20250111-114736.png",
+      "https://i.ibb.co/8Dtdbx7R/1771444660130.png",
+      "https://i.ibb.co/vx9QsmDh/1771444591345.png",
+      "https://i.ibb.co/zWvw53Y9/IMG-20260331-WA0071.jpg",
+      "https://i.ibb.co/7tyCY5cp/IMG-20260331-WA0070.jpg",
+      "https://i.ibb.co/Zpb4vgyg/IMG-20260331-WA0069.jpg",
+      "https://i.ibb.co/FL8y5dhQ/IMG-20260331-WA0068.jpg",
+      "https://i.ibb.co/Q3CjC745/IMG-20260331-WA0067.jpg",
+      "https://i.ibb.co/sZKHxtg/IMG-20260331-WA0066.jpg",
+      "https://i.ibb.co/JFmxX705/IMG-20260331-WA0065.jpg",
+      "https://i.ibb.co/sc6B3yd/IMG-20260331-WA0064.jpg",
+      "https://i.ibb.co/5hcrsgMX/IMG-20260331-WA0063.jpg",
+      "https://i.ibb.co/JWkN1NcB/IMG-20260331-WA0062.jpg",
+      "https://i.ibb.co/mCrw0pKh/IMG-20260331-WA0061.jpg",
+      "https://i.ibb.co/tT5LKnBJ/IMG-20260331-WA0060.jpg",
+      "https://i.ibb.co/99W9S16R/IMG-20260331-WA0059.jpg",
+      "https://i.ibb.co/GSTp7GZ/IMG-20260331-WA0058.jpg",
+      "https://i.ibb.co/8nhvcyxm/IMG-20260331-WA0057.jpg",
+      "https://i.ibb.co/Txn9gsFb/IMG-20260331-WA0056.jpg",
+      "https://i.ibb.co/RRvKrB9/IMG-20260331-WA0055.jpg",
+      "https://i.ibb.co/M5CcCVH7/IMG-20260331-WA0054.jpg",
+      "https://i.ibb.co/23rpGyH7/IMG-20260331-WA0053.jpg",
+      "https://i.ibb.co/zhp1pZk8/IMG-20260331-WA0052.jpg",
+      "https://i.ibb.co/cSzJmgnM/IMG-20260331-WA0051.jpg",
+      "https://i.ibb.co/6RBrq4nm/IMG-20260331-WA0050.jpg",
+      "https://i.ibb.co/hJGThHCn/IMG-20260331-WA0048.jpg",
+      "https://i.ibb.co/8DPZGzf7/IMG-20260331-WA0047.jpg",
+      "https://i.ibb.co/5g62jWRK/IMG-20260331-WA0046.jpg",
+      "https://i.ibb.co/NdHfTNH7/IMG-20260331-WA0043.jpg",
+      "https://i.ibb.co/g8KPPV9/IMG-20260331-WA0042.jpg",
+      "https://i.ibb.co/Sw7fXFRf/IMG-20260226-WA0060.jpg",
+      "https://i.ibb.co/tpNQxT5X/IMG-20260226-WA0056.jpg",
+      "https://i.ibb.co/1fXry6DJ/IMG-20260226-WA0051.jpg",
+      "https://i.ibb.co/HLRdyV3r/IMG-20260225-WA0047.jpg",
+      "https://i.ibb.co/d4SC0vKK/IMG-20260225-WA0038.jpg",
+      "https://i.ibb.co/KpKxd90v/IMG-20260225-WA0037.jpg",
+      "https://i.ibb.co/CpqcmMWd/IMG-20260225-WA0020.jpg",
+      "https://i.ibb.co/0yXyVW2H/IMG-20260225-WA0004.jpg",
+      "https://i.ibb.co/84XTsqvV/IMG-20260225-WA0003.jpg",
+      "https://i.ibb.co/SXnyKjXQ/IMG-20260225-WA0002.jpg",
+      "https://i.ibb.co/7tS9tdYt/1768319318103.png",
+      "https://i.ibb.co/5g3BC3wj/IMG-20260517-WA0043.jpg",
+      "https://i.ibb.co/p6yvF1gr/IMG-20260510-WA0077.jpg",
+      "https://i.ibb.co/dwHmCD8q/IMG-20260510-WA0069.jpg",
+      "https://i.ibb.co/V0rNCdWT/IMG-20260510-WA0062.jpg",
+      "https://i.ibb.co/5h1FSc0R/IMG-20260510-WA0061.jpg",
+      "https://i.ibb.co/hFvgsWs3/IMG-20260505-WA0062.jpg",
+      "https://i.ibb.co/N6ZwCKdf/IMG-20260505-WA0060.jpg",
+      "https://i.ibb.co/4nkZkGxq/Photoroom-20240731-192316.png",
+      "https://i.ibb.co/7Jd7MZFn/Photoroom-20240731-192102.png",
+      "https://i.ibb.co/CK7ZF0tD/IMG-20260418-WA0016.jpg",
+      "https://i.ibb.co/4ZMTtBvt/IMG-20260418-WA0011.jpg",
+      "https://i.ibb.co/jPSG6Ypz/IMG-20260418-WA0010.jpg",
+      "https://i.ibb.co/JjtdMD0k/IMG-20260418-WA0009.jpg",
+      "https://i.ibb.co/XZNP4SHF/IMG-20260418-WA0008.jpg",
+      "https://i.ibb.co/V0PF0K4x/IMG-20260220-WA0034.jpg",
+      "https://i.ibb.co/YBLGvGQL/IMG-20260205-WA0020.jpg",
+      "https://i.ibb.co/sd6TbmPV/IMG-20260205-WA0019.jpg",
+      "https://i.ibb.co/KxmjLfng/IMG-20260205-WA0018.jpg",
+      "https://i.ibb.co/rKhQ5F8r/IMG-20260205-WA0017.jpg",
+      "https://i.ibb.co/xS4sp9Jy/IMG-20260205-WA0016.jpg",
+      "https://i.ibb.co/q3m9D6kk/IMG-20260205-WA0015.jpg",
+      "https://i.ibb.co/G3nK6KCR/IMG-20260205-WA0014.jpg",
+      "https://i.ibb.co/xSMvV1Sn/IMG-20260205-WA0013.jpg",
+      "https://i.ibb.co/7dP2LjgM/IMG-20260205-WA0012.jpg",
+      "https://i.ibb.co/hJQ3mJvG/IMG-20260205-WA0011.jpg",
+      "https://i.ibb.co/XxCSwNtD/IMG-20260205-WA0010.jpg",
+      "https://i.ibb.co/PZ01cxJ1/IMG-20260205-WA0009.jpg",
+      "https://i.ibb.co/27jRHJmZ/IMG-20260205-WA0008.jpg",
+      "https://i.ibb.co/R4Mbq4S4/IMG-20260205-WA0007.jpg",
+      "https://i.ibb.co/LdJbbTqx/IMG-20260205-WA0006.jpg",
+      "https://i.ibb.co/B5rHgcNh/IMG-20260205-WA0004.jpg",
+      "https://i.ibb.co/nNB71rRQ/IMG-20251012-WA0032.jpg",
+      "https://i.ibb.co/qMfCMfGm/IMG-20251012-WA0031.jpg",
+      "https://i.ibb.co/DgW1hs37/IMG-20251012-WA0030.jpg",
+      "https://i.ibb.co/PvZynF5P/IMG-20250216-WA0056.jpg",
+      "https://i.ibb.co/wZfKFmfx/Picsart-24-08-29-16-29-39-696.jpg",
+      "https://i.ibb.co/1tM366VB/1783707103260.jpg",
+      "https://i.ibb.co/n8KZCzdG/1783706940796.jpg",
+      "https://i.ibb.co/DPT5CFHW/1783706776699.jpg",
+      "https://i.ibb.co/qM3rS1B4/1783706614131.jpg",
+      "https://i.ibb.co/gLGw1xsB/1783706456138.jpg",
+      "https://i.ibb.co/1fVwkXFC/1783706242403.jpg",
+      "https://i.ibb.co/Pz5JD49D/1783705938494.jpg",
+      "https://i.ibb.co/mVysGWTc/1783705878808.jpg",
+      "https://i.ibb.co/ZzNFhLbR/1783705810110.jpg",
+      "https://i.ibb.co/wZkzQzf5/IMG-20260516-WA0024.jpg",
+      "https://i.ibb.co/pvHh0FQD/IMG-20260516-WA0023.jpg",
+      "https://i.ibb.co/VWY7cw51/IMG-20260516-WA0022.jpg",
+      "https://i.ibb.co/60JC9pdP/IMG-20260516-WA0021.jpg",
+      "https://i.ibb.co/0Rpyb2X1/IMG-20260516-WA0020.jpg",
+      "https://i.ibb.co/chzk3k0H/IMG-20260516-WA0019.jpg",
+      "https://i.ibb.co/sJgsd4B7/IMG-20260516-WA0018.jpg",
+      "https://i.ibb.co/Kz8SFyFV/IMG-20260516-WA0017.jpg",
+      "https://i.ibb.co/Psb2LBpD/IMG-20260516-WA0016.jpg",
+      "https://i.ibb.co/S4rwLbt3/IMG-20260516-WA0015.jpg",
+      "https://i.ibb.co/3m7CyYBM/IMG-20260516-WA0014.jpg",
+      "https://i.ibb.co/whcvHcj9/IMG-20260516-WA0013.jpg",
+      "https://i.ibb.co/xSkKhMYp/IMG-20260516-WA0012.jpg",
+      "https://i.ibb.co/Gvhx0dxV/IMG-20260516-WA0011.jpg",
+      "https://i.ibb.co/twh9PVXT/IMG-20260516-WA0010.jpg",
+      "https://i.ibb.co/x88bCctc/IMG-20260516-WA0009.jpg",
+      "https://i.ibb.co/mVTsYKc9/IMG-20260516-WA0008.jpg",
+      "https://i.ibb.co/gLqTmxFR/IMG-20260516-WA0007.jpg",
+      "https://i.ibb.co/rKYM9dwV/IMG-20260516-WA0006.jpg",
+      "https://i.ibb.co/1Gp8b4HZ/IMG-20260521-WA0039-1.jpg",
+      "https://i.ibb.co/YB8Rd7L9/IMG-20260521-WA0038-1.jpg",
+      "https://i.ibb.co/F4RVNqgY/IMG-20260521-WA0037-1.jpg",
+      "https://i.ibb.co/nMTkxmK7/IMG-20260521-WA0036-1.jpg",
+      "https://i.ibb.co/NnnkLztF/IMG-20260521-WA0035-1.jpg",
+      "https://i.ibb.co/3mXJgLv9/IMG-20260521-WA0034-1.jpg",
+      "https://i.ibb.co/S4XcMkxj/IMG-20260521-WA0033-1.jpg",
+      "https://i.ibb.co/JR9d5VLt/IMG-20260521-WA0032-1.jpg",
+      "https://i.ibb.co/r269HxSY/IMG-20260521-WA0031-1.jpg",
+      "https://i.ibb.co/b5rDv4Gd/IMG-20260521-WA0030-1.jpg",
+      "https://i.ibb.co/zHSk0Pz2/IMG-20260501-WA0191.jpg",
+      "https://i.ibb.co/ymqyJGb3/IMG-20260501-WA0190.jpg",
+      "https://i.ibb.co/dw4ps0xk/IMG-20260501-WA0189.jpg",
+      "https://i.ibb.co/CpXXpCMJ/IMG-20260501-WA0187.jpg",
+      "https://i.ibb.co/JW2VBFTW/IMG-20260501-WA0188.jpg",
+      "https://i.ibb.co/3YVnJ6Gt/IMG-20260501-WA0173.jpg",
+      "https://i.ibb.co/0yY74Jb5/IMG-20260501-WA0172.jpg",
+      "https://i.ibb.co/zVGfkhqG/IMG-20260501-WA0171.jpg",
+      "https://i.ibb.co/yFsswpGr/IMG-20260501-WA0170.jpg",
+      "https://i.ibb.co/Tq4g2WCL/IMG-20260429-WA0006-1.jpg",
+      "https://i.ibb.co/Xf9s6Fr7/IMG-20260429-WA0004-2.jpg",
+      "https://i.ibb.co/CKprZJqR/IMG-20260101-WA0021-1.jpg",
+      "https://i.ibb.co/ymK2PSw6/IMG-20260101-WA0020-1.jpg",
+      "https://i.ibb.co/mFX519cx/IMG-20260101-WA0019-1.jpg",
+      "https://i.ibb.co/hNYFQb4/Picsart-24-07-29-02-30-21-335.png",
+      "https://i.ibb.co/twcm7Ycf/Picsart-24-07-29-02-29-22-307.png",
+      "https://i.ibb.co/pB14Spbq/Picsart-24-07-29-02-27-33-907.png",
+      "https://i.ibb.co/QvJ5PnSg/Picsart-24-07-29-02-26-19-968.png",
+      "https://i.ibb.co/4Z0ndDMK/Picsart-24-07-29-02-25-07-808.png",
+      "https://i.ibb.co/5WZTvryP/Picsart-24-07-29-02-23-54-793.png",
+      "https://i.ibb.co/ZpFnYJt8/Picsart-26-02-12-23-51-25-122.png",
+      "https://i.ibb.co/tTb133vZ/Picsart-26-02-12-23-50-18-094.png",
+      "https://i.ibb.co/tMwSf22T/Picsart-26-02-12-23-49-06-635.png",
+      "https://i.ibb.co/tTRxg4tP/Picsart-26-02-12-23-47-47-701.png",
+      "https://i.ibb.co/bMpG5Xcc/Picsart-26-02-12-23-46-23-484.png",
+      "https://i.ibb.co/9XL9MTq/Picsart-26-02-12-23-44-48-367.jpg",
+      "https://i.ibb.co/chJw9s7Z/Picsart-26-02-12-23-40-56-236.jpg",
+      "https://i.ibb.co/vW3QzWK/IMG-20240506-WA0058.jpg",
+      "https://i.ibb.co/mVXR77Tf/IMG-20240506-WA0057.jpg",
+      "https://i.ibb.co/JjwSqdF5/IMG-20240506-WA0055.jpg"
+    ];
+
+    function initCoolGallery() {
+      coolSlides = COOL_GALLERY_IMAGES.slice();
+      if (!coolSlides.length && typeof galleryImages !== 'undefined') {
+        coolSlides = galleryImages.slice(0, 48);
+      }
+      coolActive = 0;
+      renderCoolGallery();
+      if (window._coolAuto) clearInterval(window._coolAuto);
+      window._coolAuto = setInterval(() => coolStep(1), 3200);
+    }
+
+    function renderCoolGallery() {
+      const stage = document.getElementById('cool-stage');
+      const dots = document.getElementById('cool-dots');
+      const counter = document.getElementById('cool-counter');
+      if (!stage || !coolSlides.length) return;
+      const n = coolSlides.length;
+      const maxVisible = 2;
+      const tilt = 14;
+      const sideTilt = 5;
+      const gap = 8;
+      const depth = 200;
+      const scaleStep = 0.14;
+      const dim = 0.45;
+
+      stage.innerHTML = coolSlides.map((src, i) => {
+        let rel = i - coolActive;
+        if (rel > n / 2) rel -= n;
+        if (rel < -n / 2) rel += n;
+        const ax = Math.abs(rel);
+        const visible = ax <= maxVisible;
+        const isActive = rel === 0;
+        const sc = Math.max(0.35, 1 - ax * scaleStep);
+        const tx = rel * (gap * 28);
+        const tz = -ax * depth;
+        const ry = -rel * tilt;
+        const rz = rel * sideTilt;
+        const opacity = visible ? 1 : 0;
+        const dimOp = isActive ? 0 : dim;
+        const zIndex = 100 - ax;
+        return `
+          <div class="cool-card" data-i="${i}"
+            style="
+              transform: translate(-50%, -50%) translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc});
+              opacity: ${opacity};
+              z-index: ${zIndex};
+              pointer-events: ${visible ? 'auto' : 'none'};
+            "
+            onclick="if(!coolDragging){ if(${i}!==coolActive) coolGoTo(${i}); else openLightbox(galleryImages.indexOf(coolSlides[${i}])>=0?galleryImages.indexOf(coolSlides[${i}]):${i}); }">
+            <img src="${src}" alt="Gallery ${i+1}" loading="lazy" draggable="false">
+            ${isActive ? '<span class="cool-badge">BSP</span>' : ''}
+            <div class="cool-dim" style="opacity:${dimOp}"></div>
+          </div>`;
+      }).join('');
+
+      // dots - show subset around active
+      const dotStart = Math.max(0, Math.min(coolActive - 4, n - 9));
+      const dotEnd = Math.min(n, dotStart + 9);
+      dots.innerHTML = '';
+      for (let i = 0; i < n; i++) {
+        if (i < dotStart || i >= dotEnd) continue;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'cool-dot' + (i === coolActive ? ' active' : '');
+        b.setAttribute('aria-label', 'Slide ' + (i + 1));
+        b.onclick = (e) => { e.stopPropagation(); coolGoTo(i); };
+        dots.appendChild(b);
+      }
+      if (counter) counter.textContent = (coolActive + 1) + ' / ' + n;
+    }
+
+    function coolStep(dir) {
+      if (coolLock || !coolSlides.length) return;
+      coolLock = true;
+      const n = coolSlides.length;
+      coolActive = (((coolActive + dir) % n) + n) % n;
+      renderCoolGallery();
+      setTimeout(() => { coolLock = false; }, 500);
+    }
+    function coolGoTo(i) {
+      if (coolLock || i === coolActive) return;
+      coolLock = true;
+      coolActive = i;
+      renderCoolGallery();
+      setTimeout(() => { coolLock = false; }, 500);
+    }
+    function coolPointerDown(e) {
+      coolDragging = false;
+      coolDragX = e.clientX;
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (_) {}
+    }
+    function coolPointerUp(e) {
+      const delta = e.clientX - coolDragX;
+      if (Math.abs(delta) > 40) {
+        coolDragging = true;
+        coolStep(delta > 0 ? -1 : 1);
+        setTimeout(() => { coolDragging = false; }, 100);
+      }
+    }
+
     function openLightbox(index) {
       lightboxIndex = index;
       document.getElementById('lightbox-img').src = galleryImages[index];
