@@ -4326,6 +4326,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       setLanguage(currentLang);
+      initCoolGallery();
       renderProducts('all');
       updateCartUI();
       startHeroSlider();
@@ -5325,6 +5326,19 @@
       "https://i.ibb.co/JjwSqdF5/IMG-20240506-WA0055.jpg"
     ];
 
+    
+    function openCoolLightbox(i) {
+      const src = coolSlides[i];
+      if (!src) return;
+      // Prefer galleryImages index for next/prev in lightbox
+      let gi = (typeof galleryImages !== 'undefined') ? galleryImages.indexOf(src) : -1;
+      if (gi >= 0 && typeof openLightbox === 'function') {
+        openLightbox(gi);
+      } else {
+        openProductImageFull(src);
+      }
+    }
+
     function initCoolGallery() {
       coolSlides = COOL_GALLERY_IMAGES.slice();
       if (!coolSlides.length && typeof galleryImages !== 'undefined') {
@@ -5373,7 +5387,7 @@
               z-index: ${zIndex};
               pointer-events: ${visible ? 'auto' : 'none'};
             "
-            onclick="if(!coolDragging){ if(${i}!==coolActive) coolGoTo(${i}); else openLightbox(galleryImages.indexOf(coolSlides[${i}])>=0?galleryImages.indexOf(coolSlides[${i}]):${i}); }">
+            onclick="if(!coolDragging){ if(${i}!==coolActive) coolGoTo(${i}); else openCoolLightbox(${i}); }">
             <img src="${src}" alt="Gallery ${i+1}" loading="lazy" draggable="false">
             ${isActive ? '<span class="cool-badge">BSP</span>' : ''}
             <div class="cool-dim" style="opacity:${dimOp}"></div>
