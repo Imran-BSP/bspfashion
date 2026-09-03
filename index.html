@@ -4908,32 +4908,30 @@
       if (!p) return null;
       const sizes = (p.sizes || []).filter(s => s && s.size != null && !isNaN(Number(s.price)));
       const minPrice = sizes.length ? Math.min(...sizes.map(s => Number(s.price))) : 0;
-      const sizeLines = sizes.slice(0, 6).map(s => `• ${s.size} — ₹${s.price}`).join('\n');
-      // Always PRODUCTION domain (avoid Vercel Protected Deployment preview links)
+      const sizeLines = sizes.slice(0, 5).map(s => `• ${s.size} — ₹${s.price}`).join('\n');
       const origin = 'https://bspfashion.vercel.app';
-      const img = (p.images && p.images[0]) || '';
-      const desc = `MOQ ${p.moq || 12} pcs • From ₹${minPrice} • ${p.category || 'Fashion'}`;
-      const ogUrl = origin + '/api/p?id=' + encodeURIComponent(p.id)
-        + '&t=' + encodeURIComponent((p.name || 'BSP Fashion').slice(0, 80))
+      // Clean image URL (drop long query strings so share link stays short)
+      let img = (p.images && p.images[0]) || '';
+      try {
+        const u = new URL(img);
+        img = u.origin + u.pathname; // remove ?updatedAt=...
+      } catch (e) {}
+      const desc = `MOQ ${p.moq || 12} • From ₹${minPrice}`;
+      // Short OG link — WhatsApp will show THIS link's preview (product image)
+      const ogUrl = origin + '/api/p?id=' + encodeURIComponent(String(p.id))
+        + '&t=' + encodeURIComponent(String(p.name || 'BSP').slice(0, 60))
         + '&img=' + encodeURIComponent(img)
-        + '&d=' + encodeURIComponent(desc.slice(0, 120));
-      const siteUrl = origin + '/?product=' + encodeURIComponent(p.id);
+        + '&d=' + encodeURIComponent(desc);
+      const siteUrl = origin + '/?product=' + encodeURIComponent(String(p.id));
+      // ONLY one http link in message → WhatsApp shows product OG card
       const text =
 `*${p.name}*
 BSP Fashion • Wholesale
 
 ${desc}
+${sizeLines || ''}
 
-Sizes & Rates:
-${sizeLines || 'Contact for rates'}
-
-${img}
-
-🛒 Order:
-${ogUrl}
-
-Site: ${siteUrl}
-WhatsApp: +91 8981839702`;
+${ogUrl}`;
       return { title: (p.name || 'Product') + ' | BSP Fashion', text, url: ogUrl, siteUrl, img, desc, p };
     }
 
