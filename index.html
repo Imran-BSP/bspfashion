@@ -1864,7 +1864,7 @@
       <div class="share-copy-row mb-1">
         <svg class="w-4 h-4 text-gold-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
         <input id="share-link-input" type="text" readonly value="" onclick="this.select()">
-        <button type="button" onclick="shareTo('copy')" class="px-3 py-1.5 rounded-lg bg-gold-500/20 text-gold-400 text-xs font-semibold hover:bg-gold-500/30 transition-colors flex-shrink-0">Copy link</button>
+        <button type="button" onclick="shareTo('copy')" class="px-3 py-1.5 rounded-lg bg-gold-500/20 text-gold-400 text-xs font-semibold hover:bg-gold-500/30 transition-colors flex-shrink-0">Copy details</button>
       </div>
       <p class="text-[10px] text-gray-500 text-center mt-3">Product name, sizes, rates & catalog link share hoga</p>
     </div>
@@ -4895,9 +4895,9 @@
           showToast('Is device pe More share available nahi');
         }
       } else if (channel === 'copy') {
-        const full = data.url || data.siteUrl;
+        const full = data.text;
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(full).then(() => showToast('Link copy: ' + full)).catch(() => fallbackCopy(full));
+          navigator.clipboard.writeText(full).then(() => showToast('Product details copy ho gaye!')).catch(() => fallbackCopy(full));
         } else {
           fallbackCopy(full);
         }
@@ -4967,10 +4967,10 @@ ${ogUrl}`;
       p = p || currentProduct;
       const data = getProductShareData(p);
       if (!data) { showToast('Product open karke share karein'); return; }
-      // Copy SHORT link only
-      const full = data.url || data.siteUrl;
+      // Full product details: name, sizes, prices + link
+      const full = data.text;
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(full).then(() => showToast('Short link copy: ' + full)).catch(() => fallbackCopy(full));
+        navigator.clipboard.writeText(full).then(() => showToast('Product details copy ho gaye!')).catch(() => fallbackCopy(full));
       } else {
         fallbackCopy(full);
       }
