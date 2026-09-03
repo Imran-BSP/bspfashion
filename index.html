@@ -11,11 +11,11 @@
   <link rel="canonical" href="https://bspfashion.vercel.app/" />
   
   <!-- Open Graph / Facebook / WhatsApp Preview -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://bspfashion.vercel.app/" />
-  <meta property="og:title" content="BSP Fashion - Premium Clothing Manufacturer & Wholesaler" />
-  <meta property="og:description" content="Manufacturer • Wholesaler • Trader of Kids, Men's & Ladies Wear. Est. 2017 | Kolkata | MOQ ₹5000 | Pan India Shipping" />
-  <meta property="og:image" content="https://bspfashion.vercel.app/og-image.jpg" />
+  <meta property="og:type" content="website" id="og-type" />
+  <meta property="og:url" content="https://bspfashion.vercel.app/" id="og-url" />
+  <meta property="og:title" content="BSP Fashion - Premium Clothing Manufacturer & Wholesaler" id="og-title" />
+  <meta property="og:description" content="Manufacturer • Wholesaler • Trader of Kids, Men's & Ladies Wear. Est. 2017 | Kolkata | MOQ ₹5000 | Pan India Shipping" id="og-description" />
+  <meta property="og:image" content="https://i.ibb.co/0RqxsYmT/1777788000451.jpg" id="og-image" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:site_name" content="BSP Fashion" />
@@ -23,9 +23,9 @@
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="BSP Fashion - Premium Clothing Manufacturer & Wholesaler" />
-  <meta name="twitter:description" content="Manufacturer • Wholesaler • Trader of Kids, Men's & Ladies Wear. Est. 2017 | Kolkata | MOQ ₹5000" />
-  <meta name="twitter:image" content="https://bspfashion.vercel.app/og-image.jpg" />
+  <meta name="twitter:title" content="BSP Fashion - Premium Clothing Manufacturer & Wholesaler" id="tw-title" />
+  <meta name="twitter:description" content="Manufacturer • Wholesaler • Trader of Kids, Men's & Ladies Wear. Est. 2017 | Kolkata | MOQ ₹5000" id="tw-description" />
+  <meta name="twitter:image" content="https://i.ibb.co/0RqxsYmT/1777788000451.jpg" id="tw-image" />
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
@@ -4909,24 +4909,46 @@
       const sizes = (p.sizes || []).filter(s => s && s.size != null && !isNaN(Number(s.price)));
       const minPrice = sizes.length ? Math.min(...sizes.map(s => Number(s.price))) : 0;
       const sizeLines = sizes.slice(0, 6).map(s => `• ${s.size} — ₹${s.price}`).join('\n');
-      const url = (typeof location !== 'undefined' ? location.origin + location.pathname : 'https://bspfashion.vercel.app/') + '#product-' + p.id;
+      // Always PRODUCTION domain (avoid Vercel Protected Deployment preview links)
+      const origin = 'https://bspfashion.vercel.app';
       const img = (p.images && p.images[0]) || '';
+      const desc = `MOQ ${p.moq || 12} pcs • From ₹${minPrice} • ${p.category || 'Fashion'}`;
+      const ogUrl = origin + '/api/p?id=' + encodeURIComponent(p.id)
+        + '&t=' + encodeURIComponent((p.name || 'BSP Fashion').slice(0, 80))
+        + '&img=' + encodeURIComponent(img)
+        + '&d=' + encodeURIComponent(desc.slice(0, 120));
+      const siteUrl = origin + '/?product=' + encodeURIComponent(p.id);
       const text =
-`*BSP Fashion — ${p.name}*
+`*${p.name}*
+BSP Fashion • Wholesale
 
-Category: ${p.category || ''}
-MOQ: ${p.moq || 12} pcs
-From: ₹${minPrice}
+${desc}
 
 Sizes & Rates:
 ${sizeLines || 'Contact for rates'}
 
-Order / Catalog:
-${url}
+${img}
 
-WhatsApp: +91 8981839702
-`;
-      return { title: p.name + ' | BSP Fashion', text, url, img, p };
+🛒 Order:
+${ogUrl}
+
+Site: ${siteUrl}
+WhatsApp: +91 8981839702`;
+      return { title: (p.name || 'Product') + ' | BSP Fashion', text, url: ogUrl, siteUrl, img, desc, p };
+    }
+
+    function applyProductOgTags(p) {
+      if (!p) return;
+      const data = getProductShareData(p);
+      if (!data) return;
+      const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.setAttribute('content', val); };
+      set('og-title', data.title);
+      set('og-description', data.desc || data.title);
+      set('og-image', data.img);
+      set('og-url', data.url);
+      set('tw-title', data.title);
+      set('tw-description', data.desc || data.title);
+      set('tw-image', data.img);
     }
 
     function shareProductById(id) {
@@ -4975,18 +4997,29 @@ WhatsApp: +91 8981839702
       document.body.removeChild(ta);
     }
 
-    // Deep link: #product-123 open modal on load
+    // Deep link: ?product=123 or #product-123 open modal on load
     function openProductFromHash() {
-      const hash = (location.hash || '').replace(/^#/, '');
-      if (!hash.startsWith('product-')) return;
-      const id = hash.slice('product-'.length);
+      let id = null;
+      try {
+        const q = new URLSearchParams(location.search || '');
+        id = q.get('product') || q.get('p');
+      } catch (e) {}
+      if (!id) {
+        const hash = (location.hash || '').replace(/^#/, '');
+        if (hash.startsWith('product-')) id = hash.slice('product-'.length);
+      }
+      if (!id) return;
       const tryOpen = () => {
         const p = products.find(x => String(x.id) === String(id));
-        if (p) openProductModal(p.id);
+        if (p) {
+          openProductModal(p.id);
+          applyProductOgTags(p);
+        }
       };
       tryOpen();
-      setTimeout(tryOpen, 800);
-      setTimeout(tryOpen, 2000);
+      setTimeout(tryOpen, 600);
+      setTimeout(tryOpen, 1500);
+      setTimeout(tryOpen, 3500);
     }
 
     function openProductModal(id) {
@@ -5009,6 +5042,7 @@ WhatsApp: +91 8981839702
       
       document.getElementById('modal-main-img').src = currentProduct.images[0];
       document.getElementById('modal-name').textContent = currentProduct.name;
+      applyProductOgTags(currentProduct);
       document.getElementById('modal-category').textContent = currentProduct.category === 'men' ? "Men's Wear" : currentProduct.category === 'women' ? "Ladies Wear" : "Kids Wear";
       document.getElementById('modal-desc').textContent = currentProduct.desc || `Premium quality • MOQ: ${currentProduct.moq} pcs`;
       
