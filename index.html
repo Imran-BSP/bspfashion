@@ -4911,13 +4911,15 @@
       const sizeLines = sizes.slice(0, 5).map(s => `• ${s.size} — ₹${s.price}`).join('\n');
       const origin = 'https://bspfashion.vercel.app';
       let img = (p.images && p.images[0]) || '';
-      try { const u = new URL(img); img = u.origin + u.pathname; } catch (e) {}
+      try { const u = new URL(img); img = u.origin + u.pathname; } catch (e) { img = String(img).split('?')[0]; }
       const desc = `MOQ ${p.moq || 12} • From ₹${minPrice}`;
-      // Unique OG per product: id + short title (NO imagekit in link text)
-      // Image comes from API/Firestore so WhatsApp preview is correct per id
+      // MUST include t + img so each product OG is unique (WhatsApp reads these from URL)
       const ogUrl = origin + '/api/p?id=' + encodeURIComponent(String(p.id))
-        + '&t=' + encodeURIComponent(String(p.name || 'BSP').slice(0, 50));
+        + '&t=' + encodeURIComponent(String(p.name || 'BSP Fashion').slice(0, 60))
+        + '&img=' + encodeURIComponent(img)
+        + '&d=' + encodeURIComponent(desc);
       const siteUrl = origin + '/?product=' + encodeURIComponent(String(p.id));
+      // Message: product text + ONE link (link has img for OG, but message has no separate imagekit line)
       const text =
 `*${p.name}*
 BSP Fashion • Wholesale
