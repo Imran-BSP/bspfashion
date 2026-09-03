@@ -4910,14 +4910,13 @@
       const minPrice = sizes.length ? Math.min(...sizes.map(s => Number(s.price))) : 0;
       const sizeLines = sizes.slice(0, 5).map(s => `• ${s.size} — ₹${s.price}`).join('\n');
       const origin = 'https://bspfashion.vercel.app';
-      // Internal only — never put ImageKit URL in WhatsApp text or share URL
       let img = (p.images && p.images[0]) || '';
-      try {
-        const u = new URL(img);
-        img = u.origin + u.pathname;
-      } catch (e) {}
+      try { const u = new URL(img); img = u.origin + u.pathname; } catch (e) {}
       const desc = `MOQ ${p.moq || 12} • From ₹${minPrice}`;
-      const ogUrl = origin + '/api/p?id=' + encodeURIComponent(String(p.id));
+      // Unique OG per product: id + short title (NO imagekit in link text)
+      // Image comes from API/Firestore so WhatsApp preview is correct per id
+      const ogUrl = origin + '/api/p?id=' + encodeURIComponent(String(p.id))
+        + '&t=' + encodeURIComponent(String(p.name || 'BSP').slice(0, 50));
       const siteUrl = origin + '/?product=' + encodeURIComponent(String(p.id));
       const text =
 `*${p.name}*
