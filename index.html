@@ -4852,7 +4852,7 @@
       const nameEl = document.getElementById('share-sheet-name');
       const input = document.getElementById('share-link-input');
       if (nameEl) nameEl.textContent = p.name || 'BSP Fashion';
-      if (input && data) input.value = data.url;
+      if (input && data) input.value = data.siteUrl || data.url;
       document.getElementById('share-sheet').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
@@ -4895,9 +4895,9 @@
           showToast('Is device pe More share available nahi');
         }
       } else if (channel === 'copy') {
-        const full = data.text;
+        const full = data.siteUrl || data.url;
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(full).then(() => showToast('Link + details copy ho gaye!')).catch(() => fallbackCopy(full));
+          navigator.clipboard.writeText(full).then(() => showToast('Link copy: ' + full)).catch(() => fallbackCopy(full));
         } else {
           fallbackCopy(full);
         }
@@ -4910,20 +4910,15 @@
       const minPrice = sizes.length ? Math.min(...sizes.map(s => Number(s.price))) : 0;
       const sizeLines = sizes.slice(0, 5).map(s => `• ${s.size} — ₹${s.price}`).join('\n');
       const origin = 'https://bspfashion.vercel.app';
-      // Clean image URL (drop long query strings so share link stays short)
+      // Internal only — never put ImageKit URL in WhatsApp text or share URL
       let img = (p.images && p.images[0]) || '';
       try {
         const u = new URL(img);
-        img = u.origin + u.pathname; // remove ?updatedAt=...
+        img = u.origin + u.pathname;
       } catch (e) {}
       const desc = `MOQ ${p.moq || 12} • From ₹${minPrice}`;
-      // Short OG link — WhatsApp will show THIS link's preview (product image)
-      const ogUrl = origin + '/api/p?id=' + encodeURIComponent(String(p.id))
-        + '&t=' + encodeURIComponent(String(p.name || 'BSP').slice(0, 60))
-        + '&img=' + encodeURIComponent(img)
-        + '&d=' + encodeURIComponent(desc);
+      const ogUrl = origin + '/api/p?id=' + encodeURIComponent(String(p.id));
       const siteUrl = origin + '/?product=' + encodeURIComponent(String(p.id));
-      // ONLY one http link in message → WhatsApp shows product OG card
       const text =
 `*${p.name}*
 BSP Fashion • Wholesale
@@ -4972,9 +4967,10 @@ ${ogUrl}`;
       p = p || currentProduct;
       const data = getProductShareData(p);
       if (!data) { showToast('Product open karke share karein'); return; }
-      const full = data.text;
+      // Copy SHORT link only
+      const full = data.siteUrl || data.url;
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(full).then(() => showToast('Product details copy ho gaye!')).catch(() => fallbackCopy(full));
+        navigator.clipboard.writeText(full).then(() => showToast('Short link copy: ' + full)).catch(() => fallbackCopy(full));
       } else {
         fallbackCopy(full);
       }
