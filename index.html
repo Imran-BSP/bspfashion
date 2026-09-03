@@ -4913,11 +4913,8 @@
       let img = (p.images && p.images[0]) || '';
       try { const u = new URL(img); img = u.origin + u.pathname; } catch (e) { img = String(img).split('?')[0]; }
       const desc = `MOQ ${p.moq || 12} • From ₹${minPrice}`;
-      // THIS link is what WhatsApp must scrape for product image/title
-      const ogUrl = origin + '/api/p?id=' + encodeURIComponent(String(p.id))
-        + '&t=' + encodeURIComponent(String(p.name || 'BSP Fashion').slice(0, 60))
-        + '&img=' + encodeURIComponent(img)
-        + '&d=' + encodeURIComponent(desc);
+      // SHORT professional link — API loads name+image from Firestore by id
+      const ogUrl = origin + '/p/' + encodeURIComponent(String(p.id));
       const siteUrl = origin + '/?product=' + encodeURIComponent(String(p.id));
       const text =
 `*${p.name}*
