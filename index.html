@@ -1122,13 +1122,13 @@
     <div class="max-w-7xl mx-auto px-4">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
-          <span class="inline-block px-4 py-1.5 rounded-full glass text-gold-400 text-xs font-medium tracking-widest uppercase mb-4">Since 2017</span>
+          <span class="inline-block px-4 py-1.5 rounded-full glass text-gold-400 text-xs font-medium tracking-widest uppercase mb-4" data-i18n="about_badge">Since 2017</span>
           <h2 class="font-serif text-3xl md:text-5xl font-bold mb-6">About <span class="text-gold-gradient">BSP Fashion</span></h2>
-          <p class="text-gray-300 leading-relaxed mb-6">
-            BSP Fashion is the unit of <strong class="text-white">Bengal Solution Point</strong> — a trusted Manufacturer, Wholesaler & Trader of premium Kids, Men's, Ladies & Winter Wear — Kolkata based, West Bengal.
+          <p class="text-gray-300 leading-relaxed mb-6" data-i18n="about_p1">
+            BSP Fashion is the unit of Bengal Solution Point — a trusted Manufacturer, Wholesaler & Trader of premium Kids, Men's, Ladies & Winter Wear — based in Kolkata, West Bengal.
           </p>
-          <p class="text-gray-300 leading-relaxed mb-8">
-            Since 2017, we have been delivering quality garments to retailers and wholesalers across India with competitive pricing, reliable shipping and excellent customer service.
+          <p class="text-gray-300 leading-relaxed mb-8" data-i18n="about_p2">
+            Since 2017, we deliver quality garments to retailers and wholesalers across India with competitive pricing, reliable shipping and excellent service.
           </p>
           
           <div class="grid grid-cols-2 gap-4 mb-8">
@@ -1641,6 +1641,12 @@
 
       <!-- ORDERS TAB -->
       <div id="seller-panel-orders" class="seller-panel">
+        <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+          <p class="text-sm text-gray-400">Customer orders with product images</p>
+          <button type="button" onclick="downloadAllOrdersPdf()" class="text-xs px-4 py-2 rounded-xl bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 font-semibold hover:from-gold-400 hover:to-gold-500">
+            All Orders PDF
+          </button>
+        </div>
         <div id="seller-orders-list" class="space-y-4"></div>
       </div>
 
@@ -4499,49 +4505,22 @@
     
     // ==================== LANGUAGE (i18n) ====================
     const I18N = {
-      en: {
-        lang_label: "English", top_moq: "MOQ ₹5000 • Advance + COD • Est. 2017", nav_home: "Home", nav_products: "Products", nav_gallery: "Gallery", nav_reviews: "Reviews", nav_about: "About", nav_contact: "Contact", sec_category: "Shop by", sec_category_hl: "Category", sec_collection: "Our", sec_collection_hl: "Collection", sec_contact: "Get in", sec_contact_hl: "Touch", cart_title: "Your Cart", btn_place_order: "Place Order (Login required)", btn_add_cart: "Add to Cart", btn_whatsapp: "WhatsApp Order", btn_invoice: "View Invoice", filter_all: "All", filter_winter: "Winter Items", cat_men: "Men's Wear", cat_women: "Ladies Wear", cat_kids: "Kids Wear", cat_winter: "Winter Items", login_first: "Please login / register first", order_saved: "Order placed! Seller dashboard + WhatsApp", cart_empty: "Cart is empty!", min_order: "Minimum order is ₹5,000!"
-      },
-      hi: {
-        lang_label: "हिन्दी", top_moq: "MOQ ₹5000 • एडवांस + COD • स्थापना 2017", nav_home: "होम", nav_products: "प्रोडक्ट्स", nav_gallery: "गैलरी", nav_reviews: "रिव्यूज़", nav_about: "हमारे बारे में", nav_contact: "संपर्क", sec_category: "कैटेगरी के हिसाब से", sec_category_hl: "देखो", sec_collection: "हमारी", sec_collection_hl: "कलेक्शन", sec_contact: "संपर्क", sec_contact_hl: "करें", cart_title: "आपका कार्ट", btn_place_order: "ऑर्डर प्लेस करें (लॉगिन ज़रूरी)", btn_add_cart: "कार्ट में डालो", btn_whatsapp: "WhatsApp ऑर्डर", btn_invoice: "इनवॉइस देखो", filter_all: "सभी", filter_winter: "विंटर आइटम्स", cat_men: "मेंस वियर", cat_women: "लेडीज़ वियर", cat_kids: "किड्स वियर", cat_winter: "विंटर आइटम्स", login_first: "पहले लॉगिन / रजिस्टर करें", order_saved: "ऑर्डर प्लेस हो गया!", cart_empty: "कार्ट खाली है!", min_order: "मिनिमम ऑर्डर ₹5,000 है!"
-      },
-      bn: {
-        lang_label: "বাংলা", top_moq: "MOQ ₹5000 • অ্যাডভান্স + COD • প্রতিষ্ঠা 2017", nav_home: "হোম", nav_products: "প্রোডাক্টস", nav_gallery: "গ্যালারি", nav_reviews: "রিভিউ", nav_about: "আমাদের সম্পর্কে", nav_contact: "যোগাযোগ", sec_category: "ক্যাটাগরি অনুযায়ী", sec_category_hl: "দেখুন", sec_collection: "আমাদের", sec_collection_hl: "কালেকশন", sec_contact: "যোগাযোগ", sec_contact_hl: "করুন", cart_title: "আপনার কার্ট", btn_place_order: "অর্ডার প্লেস করুন (লগইন প্রয়োজন)", btn_add_cart: "কার্টে যোগ করুন", btn_whatsapp: "WhatsApp অর্ডার", btn_invoice: "ইনভয়েস দেখুন", filter_all: "সব", filter_winter: "উইন্টার আইটেম", cat_men: "মেন্স ওয়্যার", cat_women: "লেডিজ ওয়্যার", cat_kids: "কিডস ওয়্যার", cat_winter: "উইন্টার আইটেম", login_first: "আগে লগইন / রেজিস্টার করুন", order_saved: "অর্ডার প্লেস হয়েছে!", cart_empty: "কার্ট খালি!", min_order: "মিনিমাম অর্ডার ₹5,000!"
-      },
-      as: {
-        lang_label: "অসমীয়া", top_moq: "MOQ ₹5000 • এডভান্স + COD • প্ৰতিষ্ঠা 2017", nav_home: "হোম", nav_products: "প্ৰডাক্ট", nav_gallery: "গেলাৰী", nav_reviews: "ৰিভিউ", nav_about: "আমাৰ বিষয়ে", nav_contact: "যোগাযোগ", sec_category: "শ্ৰেণী অনুসৰি", sec_category_hl: "চাওক", sec_collection: "আমাৰ", sec_collection_hl: "সংগ্ৰহ", sec_contact: "যোগাযোগ", sec_contact_hl: "কৰক", cart_title: "আপোনাৰ কাৰ্ট", btn_place_order: "অৰ্ডাৰ দিয়ক (লগইন প্ৰয়োজন)", btn_add_cart: "কাৰ্টত যোগ কৰক", btn_whatsapp: "WhatsApp অৰ্ডাৰ", btn_invoice: "ইনভইচ চাওক", filter_all: "সকলো", filter_winter: "শীতকালীন সামগ্ৰী", cat_men: "পুৰুষৰ পোছাক", cat_women: "মহিলাৰ পোছাক", cat_kids: "শিশুৰ পোছাক", cat_winter: "শীতকালীন সামগ্ৰী", login_first: "প্ৰথমে লগইন / ৰেজিষ্টাৰ কৰক", order_saved: "অৰ্ডাৰ সম্পন্ন!", cart_empty: "কাৰ্ট খালী!", min_order: "নূন্যতম অৰ্ডাৰ ₹5,000!"
-      },
-      gu: {
-        lang_label: "ગુજરાતી", top_moq: "MOQ ₹5000 • એડવાન્સ + COD • સ્થાપના 2017", nav_home: "હોમ", nav_products: "પ્રોડક્ટ્સ", nav_gallery: "ગેલેરી", nav_reviews: "રિવ્યૂ", nav_about: "અમારા વિશે", nav_contact: "સંપર્ક", sec_category: "કેટેગરી મુજબ", sec_category_hl: "જુઓ", sec_collection: "અમારું", sec_collection_hl: "કલેક્શન", sec_contact: "સંપર્ક", sec_contact_hl: "કરો", cart_title: "તમારું કાર્ટ", btn_place_order: "ઓર્ડર પ્લેસ કરો (લોગિન જરૂરી)", btn_add_cart: "કાર્ટમાં ઉમેરો", btn_whatsapp: "WhatsApp ઓર્ડર", btn_invoice: "ઇન્વૉઇસ જુઓ", filter_all: "બધા", filter_winter: "વિન્ટર આઇટમ્સ", cat_men: "મેન્સ વેર", cat_women: "લેડીઝ વેર", cat_kids: "કિડ્સ વેર", cat_winter: "વિન્ટર આઇટમ્સ", login_first: "પહેલા લોગિન / રજિસ્ટર કરો", order_saved: "ઓર્ડર થઈ ગયો!", cart_empty: "કાર્ટ ખાલી છે!", min_order: "મિનિમમ ઓર્ડર ₹5,000!"
-      },
-      kn: {
-        lang_label: "ಕನ್ನಡ", top_moq: "MOQ ₹5000 • ಅಡ್ವಾನ್ಸ್ + COD • ಸ್ಥಾಪನೆ 2017", nav_home: "ಹೋಮ್", nav_products: "ಉತ್ಪನ್ನಗಳು", nav_gallery: "ಗ್ಯಾಲರಿ", nav_reviews: "ವಿಮರ್ಶೆಗಳು", nav_about: "ನಮ್ಮ ಬಗ್ಗೆ", nav_contact: "ಸಂಪರ್ಕ", sec_category: "ವರ್ಗದಂತೆ", sec_category_hl: "ನೋಡಿ", sec_collection: "ನಮ್ಮ", sec_collection_hl: "ಸಂಗ್ರಹ", sec_contact: "ಸಂಪರ್ಕ", sec_contact_hl: "ಮಾಡಿ", cart_title: "ನಿಮ್ಮ ಕಾರ್ಟ್", btn_place_order: "ಆರ್ಡರ್ ಮಾಡಿ (ಲಾಗಿನ್ ಅಗತ್ಯ)", btn_add_cart: "ಕಾರ್ಟ್‌ಗೆ ಸೇರಿಸಿ", btn_whatsapp: "WhatsApp ಆರ್ಡರ್", btn_invoice: "ಇನ್‌ವಾಯ್ಸ್ ನೋಡಿ", filter_all: "ಎಲ್ಲಾ", filter_winter: "ಚಳಿಗಾಲದ ವಸ್ತುಗಳು", cat_men: "ಪುರುಷರ ಉಡುಪು", cat_women: "ಮಹಿಳೆಯರ ಉಡುಪು", cat_kids: "ಮಕ್ಕಳ ಉಡುಪು", cat_winter: "ಚಳಿಗಾಲದ ವಸ್ತುಗಳು", login_first: "ಮೊದಲು ಲಾಗಿನ್ / ನೋಂದಣಿ ಮಾಡಿ", order_saved: "ಆರ್ಡರ್ ಆಯಿತು!", cart_empty: "ಕಾರ್ಟ್ ಖಾಲಿ!", min_order: "ಕನಿಷ್ಠ ಆರ್ಡರ್ ₹5,000!"
-      },
-      ml: {
-        lang_label: "മലയാളം", top_moq: "MOQ ₹5000 • അഡ്വാൻസ് + COD • സ്ഥാപനം 2017", nav_home: "ഹോം", nav_products: "ഉൽപ്പന്നങ്ങൾ", nav_gallery: "ഗാലറി", nav_reviews: "റിവ്യൂ", nav_about: "ഞങ്ങളെക്കുറിച്ച്", nav_contact: "ബന്ധപ്പെടുക", sec_category: "വിഭാഗം അനുസരിച്ച്", sec_category_hl: "കാണുക", sec_collection: "ഞങ്ങളുടെ", sec_collection_hl: "ശേഖരം", sec_contact: "ബന്ധപ്പെടുക", sec_contact_hl: "ചെയ്യുക", cart_title: "നിങ്ങളുടെ കാർട്ട്", btn_place_order: "ഓർഡർ ചെയ്യുക (ലോഗിൻ ആവശ്യം)", btn_add_cart: "കാർട്ടിൽ ചേർക്കുക", btn_whatsapp: "WhatsApp ഓർഡർ", btn_invoice: "ഇൻവോയ്സ് കാണുക", filter_all: "എല്ലാം", filter_winter: "വിന്റർ ഇനങ്ങൾ", cat_men: "പുരുഷ വസ്ത്രങ്ങൾ", cat_women: "സ്ത്രീ വസ്ത്രങ്ങൾ", cat_kids: "കുട്ടികളുടെ വസ്ത്രങ്ങൾ", cat_winter: "വിന്റർ ഇനങ്ങൾ", login_first: "ആദ്യം ലോഗിൻ / രജിസ്റ്റർ ചെയ്യുക", order_saved: "ഓർഡർ പ്ലേസ് ചെയ്തു!", cart_empty: "കാർട്ട് ശൂന്യം!", min_order: "മിനിമം ഓർഡർ ₹5,000!"
-      },
-      mr: {
-        lang_label: "मराठी", top_moq: "MOQ ₹5000 • अॅडव्हान्स + COD • स्थापना 2017", nav_home: "होम", nav_products: "प्रॉडक्ट्स", nav_gallery: "गॅलरी", nav_reviews: "रिव्ह्यू", nav_about: "आमच्याबद्दल", nav_contact: "संपर्क", sec_category: "श्रेणीनुसार", sec_category_hl: "पहा", sec_collection: "आमचे", sec_collection_hl: "कलेक्शन", sec_contact: "संपर्क", sec_contact_hl: "करा", cart_title: "तुमची कार्ट", btn_place_order: "ऑर्डर प्लेस करा (लॉगिन आवश्यक)", btn_add_cart: "कार्टमध्ये टाका", btn_whatsapp: "WhatsApp ऑर्डर", btn_invoice: "इनव्हॉइस पहा", filter_all: "सर्व", filter_winter: "विंटर आयटम्स", cat_men: "मेन्स वेअर", cat_women: "लेडीज वेअर", cat_kids: "किड्स वेअर", cat_winter: "विंटर आयटम्स", login_first: "आधी लॉगिन / रजिस्टर करा", order_saved: "ऑर्डर झाला!", cart_empty: "कार्ट रिकामा आहे!", min_order: "किमान ऑर्डर ₹5,000!"
-      },
-      or: {
-        lang_label: "ଓଡ଼ିଆ", top_moq: "MOQ ₹5000 • ଆଡଭାନ୍ସ + COD • ସ୍ଥାପନା 2017", nav_home: "ହୋମ୍", nav_products: "ପ୍ରଡକ୍ଟ", nav_gallery: "ଗ୍ୟାଲେରୀ", nav_reviews: "ରିଭ୍ୟୁ", nav_about: "ଆମ ବିଷୟରେ", nav_contact: "ଯୋଗାଯୋଗ", sec_category: "ଶ୍ରେଣୀ ଅନୁସାରେ", sec_category_hl: "ଦେଖନ୍ତୁ", sec_collection: "ଆମର", sec_collection_hl: "ସଂଗ୍ରହ", sec_contact: "ଯୋଗାଯୋଗ", sec_contact_hl: "କରନ୍ତୁ", cart_title: "ଆପଣଙ୍କ କାର୍ଟ", btn_place_order: "ଅର୍ଡର ଦିଅନ୍ତୁ (ଲଗଇନ୍ ଦରକାର)", btn_add_cart: "କାର୍ଟରେ ଯୋଡ଼ନ୍ତୁ", btn_whatsapp: "WhatsApp ଅର୍ଡର", btn_invoice: "ଇନଭଏସ୍ ଦେଖନ୍ତୁ", filter_all: "ସବୁ", filter_winter: "ଶୀତକାଳୀନ ସାମଗ୍ରୀ", cat_men: "ପୁରୁଷ ପୋଷାକ", cat_women: "ମହିଳା ପୋଷାକ", cat_kids: "ଶିଶୁ ପୋଷାକ", cat_winter: "ଶୀତକାଳୀନ ସାମଗ୍ରୀ", login_first: "ପ୍ରଥମେ ଲଗଇନ୍ / ରେଜିଷ୍ଟର କରନ୍ତୁ", order_saved: "ଅର୍ଡର ହୋଇଗଲା!", cart_empty: "କାର୍ଟ ଖାଲି!", min_order: "ସର୍ବନିମ୍ନ ଅର୍ଡର ₹5,000!"
-      },
-      pa: {
-        lang_label: "ਪੰਜਾਬੀ", top_moq: "MOQ ₹5000 • ਐਡਵਾਂਸ + COD • ਸਥਾਪਨਾ 2017", nav_home: "ਹੋਮ", nav_products: "ਪ੍ਰੋਡਕਟਸ", nav_gallery: "ਗੈਲਰੀ", nav_reviews: "ਰਿਵਿਊ", nav_about: "ਸਾਡੇ ਬਾਰੇ", nav_contact: "ਸੰਪਰਕ", sec_category: "ਸ਼੍ਰੇਣੀ ਅਨੁਸਾਰ", sec_category_hl: "ਵੇਖੋ", sec_collection: "ਸਾਡਾ", sec_collection_hl: "ਕਲੈਕਸ਼ਨ", sec_contact: "ਸੰਪਰਕ", sec_contact_hl: "ਕਰੋ", cart_title: "ਤੁਹਾਡੀ ਕਾਰਟ", btn_place_order: "ਆਰਡਰ ਪਲੇਸ ਕਰੋ (ਲੌਗਇਨ ਜ਼ਰੂਰੀ)", btn_add_cart: "ਕਾਰਟ ਵਿੱਚ ਪਾਓ", btn_whatsapp: "WhatsApp ਆਰਡਰ", btn_invoice: "ਇਨਵੌਇਸ ਵੇਖੋ", filter_all: "ਸਾਰੇ", filter_winter: "ਵਿੰਟਰ ਆਈਟਮ", cat_men: "ਮੈਨਜ਼ ਵੀਅਰ", cat_women: "ਲੇਡੀਜ਼ ਵੀਅਰ", cat_kids: "ਕਿਡਜ਼ ਵੀਅਰ", cat_winter: "ਵਿੰਟਰ ਆਈਟਮ", login_first: "ਪਹਿਲਾਂ ਲੌਗਇਨ / ਰਜਿਸਟਰ ਕਰੋ", order_saved: "ਆਰਡਰ ਹੋ ਗਿਆ!", cart_empty: "ਕਾਰਟ ਖਾਲੀ ਹੈ!", min_order: "ਘੱਟੋ-ਘੱਟ ਆਰਡਰ ₹5,000!"
-      },
-      ta: {
-        lang_label: "தமிழ்", top_moq: "MOQ ₹5000 • முன்பணம் + COD • நிறுவிய ஆண்டு 2017", nav_home: "முகப்பு", nav_products: "பொருட்கள்", nav_gallery: "கேலரி", nav_reviews: "விமர்சனங்கள்", nav_about: "எங்களைப் பற்றி", nav_contact: "தொடர்பு", sec_category: "வகை வாரியாக", sec_category_hl: "பாருங்கள்", sec_collection: "எங்கள்", sec_collection_hl: "சேகரிப்பு", sec_contact: "தொடர்பு", sec_contact_hl: "கொள்ளுங்கள்", cart_title: "உங்கள் கார்ட்", btn_place_order: "ஆர்டர் செய்யுங்கள் (உள்நுழைவு தேவை)", btn_add_cart: "கார்ட்டில் சேர்", btn_whatsapp: "WhatsApp ஆர்டர்", btn_invoice: "இன்வாய்ஸ் பார்", filter_all: "அனைத்தும்", filter_winter: "குளிர்கால பொருட்கள்", cat_men: "ஆண்கள் உடை", cat_women: "பெண்கள் உடை", cat_kids: "குழந்தைகள் உடை", cat_winter: "குளிர்கால பொருட்கள்", login_first: "முதலில் உள்நுழையுங்கள் / பதிவு செய்யுங்கள்", order_saved: "ஆர்டர் வைக்கப்பட்டது!", cart_empty: "கார்ட் காலியாக உள்ளது!", min_order: "குறைந்தபட்ச ஆர்டர் ₹5,000!"
-      },
-      te: {
-        lang_label: "తెలుగు", top_moq: "MOQ ₹5000 • అడ్వాన్స్ + COD • స్థాపన 2017", nav_home: "హోమ్", nav_products: "ప్రొడక్ట్స్", nav_gallery: "గ్యాలరీ", nav_reviews: "రివ్యూలు", nav_about: "మా గురించి", nav_contact: "సంప్రదించండి", sec_category: "వర్గం వారీగా", sec_category_hl: "చూడండి", sec_collection: "మా", sec_collection_hl: "కలెక్షన్", sec_contact: "సంప్రదించండి", sec_contact_hl: "చేయండి", cart_title: "మీ కార్ట్", btn_place_order: "ఆర్డర్ చేయండి (లాగిన్ అవసరం)", btn_add_cart: "కార్ట్‌కి జోడించండి", btn_whatsapp: "WhatsApp ఆర్డర్", btn_invoice: "ఇన్‌వాయిస్ చూడండి", filter_all: "అన్నీ", filter_winter: "వింటర్ ఐటమ్స్", cat_men: "పురుషుల దుస్తులు", cat_women: "మహిళల దుస్తులు", cat_kids: "పిల్లల దుస్తులు", cat_winter: "వింటర్ ఐటమ్స్", login_first: "ముందుగా లాగిన్ / రిజిస్టర్ చేయండి", order_saved: "ఆర్డర్ పూర్తయింది!", cart_empty: "కార్ట్ ఖాళీ!", min_order: "కనీస ఆర్డర్ ₹5,000!"
-      },
-      ur: {
-        lang_label: "اردو", top_moq: "MOQ ₹5000 • ایڈوانس + COD • قیام 2017", nav_home: "ہوم", nav_products: "پروڈکٹس", nav_gallery: "گیلری", nav_reviews: "ریویوز", nav_about: "ہمارے بارے میں", nav_contact: "رابطہ", sec_category: "کیٹگری کے مطابق", sec_category_hl: "دیکھیں", sec_collection: "ہماری", sec_collection_hl: "کلیکشن", sec_contact: "رابطہ", sec_contact_hl: "کریں", cart_title: "آپ کی کارٹ", btn_place_order: "آرڈر پلیس کریں (لاگ اِن ضروری)", btn_add_cart: "کارٹ میں ڈالیں", btn_whatsapp: "WhatsApp آرڈر", btn_invoice: "انوائس دیکھیں", filter_all: "سب", filter_winter: "ونٹر آئٹمز", cat_men: "مینز ویئر", cat_women: "لیڈیز ویئر", cat_kids: "کڈز ویئر", cat_winter: "ونٹر آئٹمز", login_first: "پہلے لاگ اِن / رجسٹر کریں", order_saved: "آرڈر ہو گیا!", cart_empty: "کارٹ خالی ہے!", min_order: "کم از کم آرڈر ₹5,000!"
-      },
+      en: { lang_label: "English", top_moq: "MOQ ₹5000 • Advance + COD • Est. 2017", nav_home: "Home", nav_products: "Products", nav_gallery: "Gallery", nav_reviews: "Reviews", nav_about: "About", nav_contact: "Contact", sec_category: "Shop by", sec_category_hl: "Category", sec_collection: "Our", sec_collection_hl: "Collection", sec_gallery: "Photo", sec_gallery_hl: "Gallery", sec_reviews: "Customer", sec_reviews_hl: "Reviews", sec_about: "About", sec_about_hl: "BSP Fashion", sec_contact: "Get in", sec_contact_hl: "Touch", cart_title: "Your Cart", btn_place_order: "Place Order (Login required)", btn_add_cart: "Add to Cart", btn_details: "Details", btn_whatsapp: "WhatsApp Order", btn_invoice: "View Invoice", btn_share: "Share Product", btn_login: "Login", btn_register: "Register", btn_buy_now: "Order Now (Login → WhatsApp)", filter_all: "All", filter_winter: "Winter Items", cat_men: "Men's Wear", cat_women: "Ladies Wear", cat_kids: "Kids Wear", cat_winter: "Winter Items", label_size: "Size", label_price: "Price", label_moq: "MOQ", label_from: "From", label_qty: "Qty", label_total: "Total", out_of_stock: "Out of Stock", login_first: "Please login / register first", order_saved: "Order placed! Seller dashboard + WhatsApp", cart_empty: "Cart is empty!", min_order: "Minimum order is ₹5,000!", about_badge: "Since 2017", about_title: "About", about_p1: "BSP Fashion is the unit of Bengal Solution Point — a trusted Manufacturer, Wholesaler & Trader of premium Kids, Men's, Ladies & Winter Wear — based in Kolkata, West Bengal.", about_p2: "Since 2017, we deliver quality garments to retailers and wholesalers across India with competitive pricing, reliable shipping and excellent service.", about_est: "Established", about_min: "Minimum Order", about_cats: "Categories", about_ship: "India Shipping", contact_phone: "Phone / WhatsApp", contact_email: "Email", contact_address: "Address", contact_gst: "GSTIN", footer_made: "Made with ❤️ by Bengal Solution Point", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "View Collection", shipping: "Shipping", payment: "Payment", business: "Business Type", manufacturer: "Manufacturer | Wholesaler | Trader" },
+      hi: { lang_label: "हिन्दी", top_moq: "MOQ ₹5000 • एडवांस + COD • स्थापना 2017", nav_home: "होम", nav_products: "प्रोडक्ट्स", nav_gallery: "गैलरी", nav_reviews: "रिव्यूज़", nav_about: "हमारे बारे में", nav_contact: "संपर्क", sec_category: "शॉप बाय", sec_category_hl: "कैटेगरी", sec_collection: "हमारी", sec_collection_hl: "कलेक्शन", sec_gallery: "फोटो", sec_gallery_hl: "गैलरी", sec_reviews: "कस्टमर", sec_reviews_hl: "रिव्यूज़", sec_about: "हमारे", sec_about_hl: "बारे में", sec_contact: "संपर्क", sec_contact_hl: "करें", cart_title: "आपका कार्ट", btn_place_order: "ऑर्डर करें (लॉगिन ज़रूरी)", btn_add_cart: "कार्ट में डालें", btn_details: "विवरण", btn_whatsapp: "WhatsApp ऑर्डर", btn_invoice: "इनवॉइस देखें", btn_share: "प्रोडक्ट शेयर करें", btn_login: "लॉगिन", btn_register: "रजिस्टर", btn_buy_now: "अभी ऑर्डर (लॉगिन → WhatsApp)", filter_all: "सभी", filter_winter: "विंटर आइटम्स", cat_men: "मेंस वियर", cat_women: "लेडीज़ वियर", cat_kids: "किड्स वियर", cat_winter: "विंटर आइटम्स", label_size: "साइज़", label_price: "कीमत", label_moq: "MOQ", label_from: "शुरू", label_qty: "मात्रा", label_total: "कुल", out_of_stock: "स्टॉक खत्म", login_first: "पहले लॉगिन / रजिस्टर करें", order_saved: "ऑर्डर प्लेस हो गया!", cart_empty: "कार्ट खाली है!", min_order: "मिनिमम ऑर्डर ₹5,000 है!", about_badge: "2017 से", about_title: "हमारे बारे में", about_p1: "BSP Fashion, Bengal Solution Point की यूनिट है — किड्स, मेंस, लेडीज़ और विंटर वियर के भरोसेमंद Manufacturer, Wholesaler और Trader — कोलकाता, पश्चिम बंगाल।", about_p2: "2017 से हम पूरे भारत में रिटेलर और होलसेलर को अच्छी कीमत, भरोसेमंद शिपिंग और सेवा के साथ क्वालिटी कपड़े सप्लाई करते हैं।", about_est: "स्थापना", about_min: "मिनिमम ऑर्डर", about_cats: "कैटेगरी", about_ship: "पैन इंडिया शिपिंग", contact_phone: "फ़ोन / WhatsApp", contact_email: "ईमेल", contact_address: "पता", contact_gst: "GSTIN", footer_made: "❤️ के साथ Bengal Solution Point द्वारा", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "कलेक्शन देखें", shipping: "शिपिंग", payment: "पेमेंट", business: "बिजनेस टाइप", manufacturer: "Manufacturer | Wholesaler | Trader" },
+      bn: { lang_label: "বাংলা", top_moq: "MOQ ₹5000 • অ্যাডভান্স + COD • প্রতিষ্ঠা 2017", nav_home: "হোম", nav_products: "প্রোডাক্টস", nav_gallery: "গ্যালারি", nav_reviews: "রিভিউ", nav_about: "আমাদের সম্পর্কে", nav_contact: "যোগাযোগ", sec_category: "ক্যাটাগরি", sec_category_hl: "অনুযায়ী", sec_collection: "আমাদের", sec_collection_hl: "কালেকশন", sec_gallery: "ফটো", sec_gallery_hl: "গ্যালারি", sec_reviews: "কাস্টমার", sec_reviews_hl: "রিভিউ", sec_about: "আমাদের", sec_about_hl: "সম্পর্কে", sec_contact: "যোগাযোগ", sec_contact_hl: "করুন", cart_title: "আপনার কার্ট", btn_place_order: "অর্ডার করুন (লগইন দরকার)", btn_add_cart: "কার্টে যোগ করুন", btn_details: "বিস্তারিত", btn_whatsapp: "WhatsApp অর্ডার", btn_invoice: "ইনভয়েস দেখুন", btn_share: "প্রোডাক্ট শেয়ার", btn_login: "লগইন", btn_register: "রেজিস্টার", btn_buy_now: "এখনই অর্ডার (লগইন → WhatsApp)", filter_all: "সব", filter_winter: "উইন্টার আইটেম", cat_men: "মেন্স ওয়্যার", cat_women: "লেডিজ ওয়্যার", cat_kids: "কিডস ওয়্যার", cat_winter: "উইন্টার আইটেম", label_size: "সাইজ", label_price: "দাম", label_moq: "MOQ", label_from: "থেকে", label_qty: "পরিমাণ", label_total: "মোট", out_of_stock: "স্টক নেই", login_first: "আগে লগইন / রেজিস্টার করুন", order_saved: "অর্ডার হয়ে গেছে!", cart_empty: "কার্ট খালি!", min_order: "মিনিমাম অর্ডার ₹5,000!", about_badge: "২০১৭ থেকে", about_title: "আমাদের সম্পর্কে", about_p1: "BSP Fashion হলো Bengal Solution Point-এর ইউনিট — কিডস, মেন্স, লেডিজ ও উইন্টার ওয়্যারের বিশ্বস্ত Manufacturer, Wholesaler ও Trader — কলকাতা, পশ্চিমবঙ্গ।", about_p2: "২০১৭ থেকে সারা ভারতে রিটেইলার ও হোলসেলারদের মানসম্মত পোশাক, প্রতিযোগিতামূলক দাম ও নির্ভরযোগ্য শিপিং দিয়ে সাপ্লাই করি।", about_est: "প্রতিষ্ঠা", about_min: "মিনিমাম অর্ডার", about_cats: "ক্যাটাগরি", about_ship: "প্যান ইন্ডিয়া শিপিং", contact_phone: "ফোন / WhatsApp", contact_email: "ইমেইল", contact_address: "ঠিকানা", contact_gst: "GSTIN", footer_made: "❤️ দিয়ে Bengal Solution Point", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "কালেকশন দেখুন", shipping: "শিপিং", payment: "পেমেন্ট", business: "বিজনেস টাইপ", manufacturer: "Manufacturer | Wholesaler | Trader" },
+      as: { lang_label: "অসমীয়া", top_moq: "MOQ ₹5000 • Advance + COD • Est. 2017", nav_home: "হোম", nav_products: "প্ৰডাক্ট", nav_gallery: "গেলাৰী", nav_reviews: "ৰিভিউ", nav_about: "আমাৰ বিষয়ে", nav_contact: "যোগাযোগ", sec_category: "Shop by", sec_category_hl: "Category", sec_collection: "আমাৰ", sec_collection_hl: "সংগ্ৰহ", sec_gallery: "Photo", sec_gallery_hl: "Gallery", sec_reviews: "Customer", sec_reviews_hl: "Reviews", sec_about: "About", sec_about_hl: "BSP Fashion", sec_contact: "Get in", sec_contact_hl: "Touch", cart_title: "আপোনাৰ কাৰ্ট", btn_place_order: "অৰ্ডাৰ দিয়ক (লগইন লাগে)", btn_add_cart: "কাৰ্টত যোগ কৰক", btn_details: "বিৱৰণ", btn_whatsapp: "WhatsApp Order", btn_invoice: "View Invoice", btn_share: "Share Product", btn_login: "Login", btn_register: "Register", btn_buy_now: "Order Now (Login → WhatsApp)", filter_all: "সকলো", filter_winter: "শীতকালীন", cat_men: "পুৰুষৰ পোছাক", cat_women: "মহিলাৰ পোছাক", cat_kids: "শিশুৰ পোছাক", cat_winter: "শীতকালীন", label_size: "সাইজ", label_price: "দাম", label_moq: "MOQ", label_from: "পৰা", label_qty: "Qty", label_total: "Total", out_of_stock: "ষ্টক নাই", login_first: "প্ৰথমে লগইন কৰক", order_saved: "Order placed! Seller dashboard + WhatsApp", cart_empty: "কাৰ্ট খালী!", min_order: "নূন্যতম অৰ্ডাৰ ₹5,000!", about_badge: "Since 2017", about_title: "About", about_p1: "BSP Fashion হৈছে Bengal Solution Pointৰ ইউনিট — কলকাতাৰ নিৰ্ভৰযোগ্য Manufacturer, Wholesaler আৰু Trader।", about_p2: "২০১৭ চনৰ পৰা সমগ্ৰ ভাৰতত মানসম্পন্ন কাপোৰ যোগান ধৰি আহিছোঁ।", about_est: "Established", about_min: "Minimum Order", about_cats: "Categories", about_ship: "India Shipping", contact_phone: "Phone / WhatsApp", contact_email: "Email", contact_address: "Address", contact_gst: "GSTIN", footer_made: "Made with ❤️ by Bengal Solution Point", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "সংগ্ৰহ চাওক", shipping: "Shipping", payment: "Payment", business: "Business Type", manufacturer: "Manufacturer | Wholesaler | Trader" },
+      gu: { lang_label: "ગુજરાતી", top_moq: "MOQ ₹5000 • Advance + COD • Est. 2017", nav_home: "હોમ", nav_products: "પ્રોડક્ટ્સ", nav_gallery: "ગેલેરી", nav_reviews: "રિવ્યૂ", nav_about: "અમારા વિશે", nav_contact: "સંપર્ક", sec_category: "Shop by", sec_category_hl: "Category", sec_collection: "અમારું", sec_collection_hl: "કલેક્શન", sec_gallery: "Photo", sec_gallery_hl: "Gallery", sec_reviews: "Customer", sec_reviews_hl: "Reviews", sec_about: "About", sec_about_hl: "BSP Fashion", sec_contact: "Get in", sec_contact_hl: "Touch", cart_title: "તમારું કાર્ટ", btn_place_order: "ઓર્ડર કરો (લૉગિન જરૂરી)", btn_add_cart: "કાર્ટમાં મૂકો", btn_details: "વિગત", btn_whatsapp: "WhatsApp Order", btn_invoice: "View Invoice", btn_share: "Share Product", btn_login: "Login", btn_register: "Register", btn_buy_now: "Order Now (Login → WhatsApp)", filter_all: "બધા", filter_winter: "વિન્ટર આઇટમ", cat_men: "મેન્સ વેર", cat_women: "લેડીઝ વેર", cat_kids: "કિડ્સ વેર", cat_winter: "વિન્ટર", label_size: "સાઇઝ", label_price: "કિંમત", label_moq: "MOQ", label_from: "થી", label_qty: "Qty", label_total: "Total", out_of_stock: "સ્ટોક નથી", login_first: "પહેલા લૉગિન કરો", order_saved: "Order placed! Seller dashboard + WhatsApp", cart_empty: "કાર્ટ ખાલી!", min_order: "મિનિમમ ઓર્ડર ₹5,000!", about_badge: "Since 2017", about_title: "About", about_p1: "BSP Fashion એ Bengal Solution Pointની યુનિટ છે — કોલકાતા આધારિત Manufacturer, Wholesaler અને Trader.", about_p2: "2017થી અમે આખા ભારતમાં ગુણવત્તાયુક્ત કપડાં પૂરા પાડીએ છીએ.", about_est: "Established", about_min: "Minimum Order", about_cats: "Categories", about_ship: "India Shipping", contact_phone: "Phone / WhatsApp", contact_email: "Email", contact_address: "Address", contact_gst: "GSTIN", footer_made: "Made with ❤️ by Bengal Solution Point", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "કલેક્શન જુઓ", shipping: "Shipping", payment: "Payment", business: "Business Type", manufacturer: "Manufacturer | Wholesaler | Trader" },
+      kn: { lang_label: "ಕನ್ನಡ", top_moq: "MOQ ₹5000 • Advance + COD • Est. 2017", nav_home: "ಹೋಮ್", nav_products: "ಉತ್ಪನ್ನಗಳು", nav_gallery: "ಗ್ಯಾಲರಿ", nav_reviews: "ವಿಮರ್ಶೆಗಳು", nav_about: "ನಮ್ಮ ಬಗ್ಗೆ", nav_contact: "ಸಂಪರ್ಕ", sec_category: "Shop by", sec_category_hl: "Category", sec_collection: "ನಮ್ಮ", sec_collection_hl: "ಸಂಗ್ರಹ", sec_gallery: "Photo", sec_gallery_hl: "Gallery", sec_reviews: "Customer", sec_reviews_hl: "Reviews", sec_about: "About", sec_about_hl: "BSP Fashion", sec_contact: "Get in", sec_contact_hl: "Touch", cart_title: "ನಿಮ್ಮ ಕಾರ್ಟ್", btn_place_order: "ಆರ್ಡರ್ ಮಾಡಿ (ಲಾಗಿನ್ ಅಗತ್ಯ)", btn_add_cart: "ಕಾರ್ಟ್‌ಗೆ ಸೇರಿಸಿ", btn_details: "ವಿವರ", btn_whatsapp: "WhatsApp Order", btn_invoice: "View Invoice", btn_share: "Share Product", btn_login: "Login", btn_register: "Register", btn_buy_now: "Order Now (Login → WhatsApp)", filter_all: "ಎಲ್ಲಾ", filter_winter: "ಚಳಿಗಾಲದ ವಸ್ತುಗಳು", cat_men: "ಪುರುಷರ ಉಡುಪು", cat_women: "ಮಹಿಳೆಯರ ಉಡುಪು", cat_kids: "ಮಕ್ಕಳ ಉಡುಪು", cat_winter: "ಚಳಿಗಾಲ", label_size: "ಗಾತ್ರ", label_price: "ಬೆಲೆ", label_moq: "MOQ", label_from: "ಇಂದ", label_qty: "Qty", label_total: "Total", out_of_stock: "ಸ್ಟಾಕ್ ಇಲ್ಲ", login_first: "ಮೊದಲು ಲಾಗಿನ್ ಮಾಡಿ", order_saved: "Order placed! Seller dashboard + WhatsApp", cart_empty: "ಕಾರ್ಟ್ ಖಾಲಿ!", min_order: "ಕನಿಷ್ಠ ಆರ್ಡರ್ ₹5,000!", about_badge: "Since 2017", about_title: "About", about_p1: "BSP Fashion Bengal Solution Pointನ ಘಟಕ — ಕೋಲ್ಕತ್ತಾ ಮೂಲದ Manufacturer, Wholesaler ಮತ್ತು Trader.", about_p2: "2017ರಿಂದ ಭಾರತಾದ್ಯಂತ ಗುಣಮಟ್ಟದ ಬಟ್ಟೆಗಳನ್ನು ಪೂರೈಸುತ್ತಿದ್ದೇವೆ.", about_est: "Established", about_min: "Minimum Order", about_cats: "Categories", about_ship: "India Shipping", contact_phone: "Phone / WhatsApp", contact_email: "Email", contact_address: "Address", contact_gst: "GSTIN", footer_made: "Made with ❤️ by Bengal Solution Point", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "ಸಂಗ್ರಹ ನೋಡಿ", shipping: "Shipping", payment: "Payment", business: "Business Type", manufacturer: "Manufacturer | Wholesaler | Trader" },
+      ml: { lang_label: "മലയാളം", top_moq: "MOQ ₹5000 • Advance + COD • Est. 2017", nav_home: "ഹോം", nav_products: "ഉൽപ്പന്നങ്ങൾ", nav_gallery: "ഗാലറി", nav_reviews: "റിവ്യൂകൾ", nav_about: "ഞങ്ങളെക്കുറിച്ച്", nav_contact: "ബന്ധപ്പെടുക", sec_category: "Shop by", sec_category_hl: "Category", sec_collection: "ഞങ്ങളുടെ", sec_collection_hl: "ശേഖരം", sec_gallery: "Photo", sec_gallery_hl: "Gallery", sec_reviews: "Customer", sec_reviews_hl: "Reviews", sec_about: "About", sec_about_hl: "BSP Fashion", sec_contact: "Get in", sec_contact_hl: "Touch", cart_title: "നിങ്ങളുടെ കാർട്ട്", btn_place_order: "ഓർഡർ ചെയ്യുക (ലോഗിൻ വേണം)", btn_add_cart: "കാർട്ടിലേക്ക്", btn_details: "വിശദാംശം", btn_whatsapp: "WhatsApp Order", btn_invoice: "View Invoice", btn_share: "Share Product", btn_login: "Login", btn_register: "Register", btn_buy_now: "Order Now (Login → WhatsApp)", filter_all: "എല്ലാം", filter_winter: "ശീതകാല ഇനങ്ങൾ", cat_men: "പുരുഷ വസ്ത്രം", cat_women: "സ്ത്രീ വസ്ത്രം", cat_kids: "കുട്ടികളുടെ വസ്ത്രം", cat_winter: "ശീതകാലം", label_size: "സൈസ്", label_price: "വില", label_moq: "MOQ", label_from: "മുതൽ", label_qty: "Qty", label_total: "Total", out_of_stock: "സ്റ്റോക്ക് ഇല്ല", login_first: "ആദ്യം ലോഗിൻ ചെയ്യുക", order_saved: "Order placed! Seller dashboard + WhatsApp", cart_empty: "കാർട്ട് ശൂന്യം!", min_order: "കുറഞ്ഞ ഓർഡർ ₹5,000!", about_badge: "Since 2017", about_title: "About", about_p1: "BSP Fashion Bengal Solution Point-ന്റെ യൂണിറ്റാണ് — കൊൽക്കത്ത ആസ്ഥാനമായ Manufacturer, Wholesaler, Trader.", about_p2: "2017 മുതൽ ഇന്ത്യയിലുടനീളം ഗുണമേന്മയുള്ള വസ്ത്രങ്ങൾ വിതരണം ചെയ്യുന്നു.", about_est: "Established", about_min: "Minimum Order", about_cats: "Categories", about_ship: "India Shipping", contact_phone: "Phone / WhatsApp", contact_email: "Email", contact_address: "Address", contact_gst: "GSTIN", footer_made: "Made with ❤️ by Bengal Solution Point", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "ശേഖരം കാണുക", shipping: "Shipping", payment: "Payment", business: "Business Type", manufacturer: "Manufacturer | Wholesaler | Trader" },
+      mr: { lang_label: "मराठी", top_moq: "MOQ ₹5000 • Advance + COD • Est. 2017", nav_home: "होम", nav_products: "प्रॉडक्ट्स", nav_gallery: "गॅलरी", nav_reviews: "रिव्ह्यू", nav_about: "आमच्याबद्दल", nav_contact: "संपर्क", sec_category: "Shop by", sec_category_hl: "Category", sec_collection: "आमचे", sec_collection_hl: "कलेक्शन", sec_gallery: "Photo", sec_gallery_hl: "Gallery", sec_reviews: "Customer", sec_reviews_hl: "Reviews", sec_about: "About", sec_about_hl: "BSP Fashion", sec_contact: "Get in", sec_contact_hl: "Touch", cart_title: "तुमची कार्ट", btn_place_order: "ऑर्डर करा (लॉगिन आवश्यक)", btn_add_cart: "कार्टमध्ये टाका", btn_details: "तपशील", btn_whatsapp: "WhatsApp Order", btn_invoice: "View Invoice", btn_share: "Share Product", btn_login: "Login", btn_register: "Register", btn_buy_now: "Order Now (Login → WhatsApp)", filter_all: "सर्व", filter_winter: "हिवाळी आयटम", cat_men: "मेन्स वेअर", cat_women: "लेडीज वेअर", cat_kids: "किड्स वेअर", cat_winter: "हिवाळी", label_size: "साइज", label_price: "किंमत", label_moq: "MOQ", label_from: "पासून", label_qty: "Qty", label_total: "Total", out_of_stock: "स्टॉक नाही", login_first: "आधी लॉगिन करा", order_saved: "Order placed! Seller dashboard + WhatsApp", cart_empty: "कार्ट रिकामा!", min_order: "किमान ऑर्डर ₹5,000!", about_badge: "Since 2017", about_title: "About", about_p1: "BSP Fashion ही Bengal Solution Point ची युनिट आहे — कोलकाता येथील Manufacturer, Wholesaler आणि Trader.", about_p2: "२०१७ पासून आम्ही संपूर्ण भारतात दर्जेदार कपडे पुरवतो.", about_est: "Established", about_min: "Minimum Order", about_cats: "Categories", about_ship: "India Shipping", contact_phone: "Phone / WhatsApp", contact_email: "Email", contact_address: "Address", contact_gst: "GSTIN", footer_made: "Made with ❤️ by Bengal Solution Point", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "कलेक्शन पहा", shipping: "Shipping", payment: "Payment", business: "Business Type", manufacturer: "Manufacturer | Wholesaler | Trader" },
+      or: { lang_label: "ଓଡ଼ିଆ", top_moq: "MOQ ₹5000 • Advance + COD • Est. 2017", nav_home: "ହୋମ୍", nav_products: "ପ୍ରଡକ୍ଟ", nav_gallery: "ଗ୍ୟାଲେରୀ", nav_reviews: "ରିଭ୍ୟୁ", nav_about: "ଆମ ବିଷୟରେ", nav_contact: "ଯୋଗାଯୋଗ", sec_category: "Shop by", sec_category_hl: "Category", sec_collection: "ଆମର", sec_collection_hl: "ସଂଗ୍ରହ", sec_gallery: "Photo", sec_gallery_hl: "Gallery", sec_reviews: "Customer", sec_reviews_hl: "Reviews", sec_about: "About", sec_about_hl: "BSP Fashion", sec_contact: "Get in", sec_contact_hl: "Touch", cart_title: "ଆପଣଙ୍କ କାର୍ଟ", btn_place_order: "ଅର୍ଡର କରନ୍ତୁ (ଲଗଇନ୍ ଦରକାର)", btn_add_cart: "କାର୍ଟରେ ଯୋଗ", btn_details: "ବିବରଣୀ", btn_whatsapp: "WhatsApp Order", btn_invoice: "View Invoice", btn_share: "Share Product", btn_login: "Login", btn_register: "Register", btn_buy_now: "Order Now (Login → WhatsApp)", filter_all: "ସବୁ", filter_winter: "ଶୀତକାଳୀନ", cat_men: "ପୁରୁଷ ପୋଷାକ", cat_women: "ମହିଳା ପୋଷାକ", cat_kids: "ଶିଶୁ ପୋଷାକ", cat_winter: "ଶୀତ", label_size: "ସାଇଜ୍", label_price: "ମୂଲ୍ୟ", label_moq: "MOQ", label_from: "ଠାରୁ", label_qty: "Qty", label_total: "Total", out_of_stock: "ଷ୍ଟକ୍ ନାହିଁ", login_first: "ପ୍ରଥମେ ଲଗଇନ୍ କରନ୍ତୁ", order_saved: "Order placed! Seller dashboard + WhatsApp", cart_empty: "କାର୍ଟ ଖାଲି!", min_order: "ସର୍ବନିମ୍ନ ଅର୍ଡର ₹5,000!", about_badge: "Since 2017", about_title: "About", about_p1: "BSP Fashion ହେଉଛି Bengal Solution Point ର ୟୁନିଟ୍ — କଲିକତା ଆଧାରିତ Manufacturer, Wholesaler ଓ Trader।", about_p2: "୨୦୧୭ ରୁ ଆମେ ସାରା ଭାରତରେ ଗୁଣାତ୍ମକ ପୋଷାକ ଯୋଗାଇ ଆସୁଛୁ।", about_est: "Established", about_min: "Minimum Order", about_cats: "Categories", about_ship: "India Shipping", contact_phone: "Phone / WhatsApp", contact_email: "Email", contact_address: "Address", contact_gst: "GSTIN", footer_made: "Made with ❤️ by Bengal Solution Point", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "ସଂଗ୍ରହ ଦେଖନ୍ତୁ", shipping: "Shipping", payment: "Payment", business: "Business Type", manufacturer: "Manufacturer | Wholesaler | Trader" },
+      pa: { lang_label: "ਪੰਜਾਬੀ", top_moq: "MOQ ₹5000 • Advance + COD • Est. 2017", nav_home: "ਹੋਮ", nav_products: "ਪ੍ਰੋਡਕਟਸ", nav_gallery: "ਗੈਲਰੀ", nav_reviews: "ਰਿਵਿਊ", nav_about: "ਸਾਡੇ ਬਾਰੇ", nav_contact: "ਸੰਪਰਕ", sec_category: "Shop by", sec_category_hl: "Category", sec_collection: "ਸਾਡਾ", sec_collection_hl: "ਕਲੈਕਸ਼ਨ", sec_gallery: "Photo", sec_gallery_hl: "Gallery", sec_reviews: "Customer", sec_reviews_hl: "Reviews", sec_about: "About", sec_about_hl: "BSP Fashion", sec_contact: "Get in", sec_contact_hl: "Touch", cart_title: "ਤੁਹਾਡੀ ਕਾਰਟ", btn_place_order: "ਆਰਡਰ ਕਰੋ (ਲਾਗਇਨ ਲੋੜੀਂਦਾ)", btn_add_cart: "ਕਾਰਟ ਵਿੱਚ ਪਾਓ", btn_details: "ਵੇਰਵਾ", btn_whatsapp: "WhatsApp Order", btn_invoice: "View Invoice", btn_share: "Share Product", btn_login: "Login", btn_register: "Register", btn_buy_now: "Order Now (Login → WhatsApp)", filter_all: "ਸਭ", filter_winter: "ਸਰਦੀਆਂ ਦੀਆਂ ਚੀਜ਼ਾਂ", cat_men: "ਮੈਨਜ਼ ਵੇਅਰ", cat_women: "ਲੇਡੀਜ਼ ਵੇਅਰ", cat_kids: "ਕਿਡਜ਼ ਵੇਅਰ", cat_winter: "ਸਰਦੀ", label_size: "ਸਾਈਜ਼", label_price: "ਕੀਮਤ", label_moq: "MOQ", label_from: "ਤੋਂ", label_qty: "Qty", label_total: "Total", out_of_stock: "ਸਟਾਕ ਖਤਮ", login_first: "ਪਹਿਲਾਂ ਲਾਗਇਨ ਕਰੋ", order_saved: "Order placed! Seller dashboard + WhatsApp", cart_empty: "ਕਾਰਟ ਖਾਲੀ!", min_order: "ਘੱਟੋ-ਘੱਟ ਆਰਡਰ ₹5,000!", about_badge: "Since 2017", about_title: "About", about_p1: "BSP Fashion Bengal Solution Point ਦੀ ਯੂਨਿਟ ਹੈ — ਕੋਲਕਾਤਾ ਅਧਾਰਤ Manufacturer, Wholesaler ਅਤੇ Trader।", about_p2: "2017 ਤੋਂ ਅਸੀਂ ਪੂਰੇ ਭਾਰਤ ਵਿੱਚ ਵਧੀਆ ਕੱਪੜੇ ਸਪਲਾਈ ਕਰਦੇ ਹਾਂ।", about_est: "Established", about_min: "Minimum Order", about_cats: "Categories", about_ship: "India Shipping", contact_phone: "Phone / WhatsApp", contact_email: "Email", contact_address: "Address", contact_gst: "GSTIN", footer_made: "Made with ❤️ by Bengal Solution Point", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "ਕਲੈਕਸ਼ਨ ਵੇਖੋ", shipping: "Shipping", payment: "Payment", business: "Business Type", manufacturer: "Manufacturer | Wholesaler | Trader" },
+      ta: { lang_label: "தமிழ்", top_moq: "MOQ ₹5000 • Advance + COD • Est. 2017", nav_home: "முகப்பு", nav_products: "பொருட்கள்", nav_gallery: "கேலரி", nav_reviews: "விமர்சனங்கள்", nav_about: "எங்களைப் பற்றி", nav_contact: "தொடர்பு", sec_category: "Shop by", sec_category_hl: "Category", sec_collection: "எங்கள்", sec_collection_hl: "சேகரிப்பு", sec_gallery: "Photo", sec_gallery_hl: "Gallery", sec_reviews: "Customer", sec_reviews_hl: "Reviews", sec_about: "About", sec_about_hl: "BSP Fashion", sec_contact: "Get in", sec_contact_hl: "Touch", cart_title: "உங்கள் கார்ட்", btn_place_order: "ஆர்டர் செய் (உள்நுழைவு தேவை)", btn_add_cart: "கார்ட்டில் சேர்", btn_details: "விவரம்", btn_whatsapp: "WhatsApp Order", btn_invoice: "View Invoice", btn_share: "Share Product", btn_login: "Login", btn_register: "Register", btn_buy_now: "Order Now (Login → WhatsApp)", filter_all: "அனைத்தும்", filter_winter: "குளிர்கால பொருட்கள்", cat_men: "ஆண்கள் உடை", cat_women: "பெண்கள் உடை", cat_kids: "குழந்தைகள் உடை", cat_winter: "குளிர்காலம்", label_size: "அளவு", label_price: "விலை", label_moq: "MOQ", label_from: "முதல்", label_qty: "Qty", label_total: "Total", out_of_stock: "ஸ்டாக் இல்லை", login_first: "முதலில் உள்நுழையவும்", order_saved: "Order placed! Seller dashboard + WhatsApp", cart_empty: "கார்ட் காலி!", min_order: "குறைந்தபட்ச ஆர்டர் ₹5,000!", about_badge: "Since 2017", about_title: "About", about_p1: "BSP Fashion என்பது Bengal Solution Point-இன் அலகு — கொல்கத்தா சார்ந்த Manufacturer, Wholesaler மற்றும் Trader.", about_p2: "2017 முதல் இந்தியா முழுவதும் தரமான ஆடைகளை வழங்குகிறோம்.", about_est: "Established", about_min: "Minimum Order", about_cats: "Categories", about_ship: "India Shipping", contact_phone: "Phone / WhatsApp", contact_email: "Email", contact_address: "Address", contact_gst: "GSTIN", footer_made: "Made with ❤️ by Bengal Solution Point", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "சேகரிப்பு பார்க்க", shipping: "Shipping", payment: "Payment", business: "Business Type", manufacturer: "Manufacturer | Wholesaler | Trader" },
+      te: { lang_label: "తెలుగు", top_moq: "MOQ ₹5000 • Advance + COD • Est. 2017", nav_home: "హోమ్", nav_products: "ఉత్పత్తులు", nav_gallery: "గ్యాలరీ", nav_reviews: "రివ్యూలు", nav_about: "మా గురించి", nav_contact: "సంప్రదించండి", sec_category: "Shop by", sec_category_hl: "Category", sec_collection: "మా", sec_collection_hl: "కలెక్షన్", sec_gallery: "Photo", sec_gallery_hl: "Gallery", sec_reviews: "Customer", sec_reviews_hl: "Reviews", sec_about: "About", sec_about_hl: "BSP Fashion", sec_contact: "Get in", sec_contact_hl: "Touch", cart_title: "మీ కార్ట్", btn_place_order: "ఆర్డర్ చేయండి (లాగిన్ అవసరం)", btn_add_cart: "కార్ట్‌కు జోడించు", btn_details: "వివరాలు", btn_whatsapp: "WhatsApp Order", btn_invoice: "View Invoice", btn_share: "Share Product", btn_login: "Login", btn_register: "Register", btn_buy_now: "Order Now (Login → WhatsApp)", filter_all: "అన్నీ", filter_winter: "శీతాకాల వస్తువులు", cat_men: "పురుషుల దుస్తులు", cat_women: "మహిళల దుస్తులు", cat_kids: "పిల్లల దుస్తులు", cat_winter: "శీతాకాలం", label_size: "సైజు", label_price: "ధర", label_moq: "MOQ", label_from: "నుండి", label_qty: "Qty", label_total: "Total", out_of_stock: "స్టాక్ లేదు", login_first: "ముందుగా లాగిన్ చేయండి", order_saved: "Order placed! Seller dashboard + WhatsApp", cart_empty: "కార్ట్ ఖాళీ!", min_order: "కనీస ఆర్డర్ ₹5,000!", about_badge: "Since 2017", about_title: "About", about_p1: "BSP Fashion అనేది Bengal Solution Point యూనిట్ — కోల్‌కతా ఆధారిత Manufacturer, Wholesaler మరియు Trader.", about_p2: "2017 నుండి భారతదేశం అంతటా నాణ్యమైన దుస్తులు సరఫరా చేస్తున్నాము.", about_est: "Established", about_min: "Minimum Order", about_cats: "Categories", about_ship: "India Shipping", contact_phone: "Phone / WhatsApp", contact_email: "Email", contact_address: "Address", contact_gst: "GSTIN", footer_made: "Made with ❤️ by Bengal Solution Point", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "కలెక్షన్ చూడండి", shipping: "Shipping", payment: "Payment", business: "Business Type", manufacturer: "Manufacturer | Wholesaler | Trader" },
+      ur: { lang_label: "اردو", top_moq: "MOQ ₹5000 • Advance + COD • Est. 2017", nav_home: "ہوم", nav_products: "پروڈکٹس", nav_gallery: "گیلری", nav_reviews: "ریویوز", nav_about: "ہمارے بارے میں", nav_contact: "رابطہ", sec_category: "Shop by", sec_category_hl: "Category", sec_collection: "ہماری", sec_collection_hl: "کلیکشن", sec_gallery: "Photo", sec_gallery_hl: "Gallery", sec_reviews: "Customer", sec_reviews_hl: "Reviews", sec_about: "About", sec_about_hl: "BSP Fashion", sec_contact: "Get in", sec_contact_hl: "Touch", cart_title: "آپ کی کارٹ", btn_place_order: "آرڈر کریں (لاگ اِن ضروری)", btn_add_cart: "کارٹ میں ڈالیں", btn_details: "تفصیل", btn_whatsapp: "WhatsApp Order", btn_invoice: "View Invoice", btn_share: "Share Product", btn_login: "Login", btn_register: "Register", btn_buy_now: "Order Now (Login → WhatsApp)", filter_all: "سب", filter_winter: "سردی کے آئٹمز", cat_men: "مینز وئیر", cat_women: "لیڈیز وئیر", cat_kids: "کڈز وئیر", cat_winter: "سردی", label_size: "سائز", label_price: "قیمت", label_moq: "MOQ", label_from: "سے", label_qty: "Qty", label_total: "Total", out_of_stock: "اسٹاک ختم", login_first: "پہلے لاگ اِن کریں", order_saved: "Order placed! Seller dashboard + WhatsApp", cart_empty: "کارٹ خالی!", min_order: "کم از کم آرڈر ₹5,000!", about_badge: "Since 2017", about_title: "About", about_p1: "BSP Fashion بنگال سلوشن پوائنٹ کی یونٹ ہے — کولکاتا میں مینوفیکچرر، ہول سیلر اور ٹریڈر۔", about_p2: "2017 سے ہم پورے بھارت میں معیاری کپڑے فراہم کر رہے ہیں۔", about_est: "Established", about_min: "Minimum Order", about_cats: "Categories", about_ship: "India Shipping", contact_phone: "Phone / WhatsApp", contact_email: "Email", contact_address: "Address", contact_gst: "GSTIN", footer_made: "Made with ❤️ by Bengal Solution Point", hero_tag: "The Unit Of Bengal Solution Point", hero_cta: "کلیکشن دیکھیں", shipping: "Shipping", payment: "Payment", business: "Business Type", manufacturer: "Manufacturer | Wholesaler | Trader" },
     };
 
-
-    let currentLang = localStorage.getItem('bsp_lang') || 'en';
+        let currentLang = localStorage.getItem('bsp_lang') || 'en';
 
     function toggleLangMenu() {
       const m = document.getElementById('lang-menu');
@@ -4553,6 +4532,14 @@
       if (sw && m && !sw.contains(e.target)) m.classList.add('hidden');
     });
 
+    function catLabel(cat) {
+      const c = String(cat || '').toLowerCase();
+      if (c.includes('kid')) return t('cat_kids');
+      if (c.includes('men') || c === 'male') return t('cat_men');
+      if (c.includes('women') || c.includes('lad')) return t('cat_women');
+      if (c.includes('winter')) return t('cat_winter');
+      return cat || '';
+    }
     function t(key) {
       return (I18N[currentLang] && I18N[currentLang][key]) || (I18N.en[key]) || key;
     }
@@ -4566,14 +4553,31 @@
       if (label) label.textContent = I18N[lang].lang_label;
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (key && I18N[lang][key] != null) el.textContent = I18N[lang][key];
+        if (key && I18N[lang][key] != null) {
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = I18N[lang][key];
+          else el.textContent = I18N[lang][key];
+        }
       });
-      // filter buttons without data-i18n
       document.querySelectorAll('.filter-btn').forEach(btn => {
         const oc = btn.getAttribute('onclick') || '';
         if (oc.includes("'all'")) btn.textContent = t('filter_all');
-        if (oc.includes("'winter'")) btn.textContent = t('filter_winter');
+        else if (oc.includes("'winter'")) btn.textContent = t('filter_winter');
+        else if (oc.includes("'kids'")) btn.textContent = t('cat_kids');
+        else if (oc.includes("'men'")) btn.textContent = t('cat_men');
+        else if (oc.includes("'women'")) btn.textContent = t('cat_women');
       });
+      // Re-render products so card buttons/labels update
+      try {
+        const active = document.querySelector('.filter-btn.active');
+        let cat = 'all';
+        if (active) {
+          const oc = active.getAttribute('onclick') || '';
+          const m = oc.match(/'([^']+)'/);
+          if (m) cat = m[1];
+        }
+        if (typeof renderProducts === 'function') renderProducts(cat);
+        if (typeof updateCartUI === 'function') updateCartUI();
+      } catch (e) {}
       const menu = document.getElementById('lang-menu');
       if (menu) menu.classList.add('hidden');
     }
@@ -4683,7 +4687,7 @@
               </button>
               <div class="absolute top-3 left-3 flex flex-col gap-1">
                 <span class="px-2.5 py-1 rounded-full text-[10px] font-medium uppercase tracking-wider bg-dark-900/70 backdrop-blur text-gold-400">
-                  ${p.category === 'men' ? "Men's" : p.category === 'women' ? "Ladies" : p.category === 'winter' ? "Winter" : "Kids"}
+                  ${typeof catLabel==='function'?catLabel(p.category):(p.category||'')}
                 </span>
                 <span class="px-2.5 py-1 rounded-full text-[10px] font-medium bg-gold-500/90 text-dark-900">
                   MOQ ${p.moq || 1}
@@ -4705,8 +4709,8 @@
                 <button type="button" disabled class="w-full py-2 rounded-xl text-xs font-medium bg-dark-700 text-gray-500 cursor-not-allowed">Out of Stock</button>
               ` : `
                 <div class="flex gap-2">
-                  <button type="button" onclick="event.stopPropagation(); quickAddToCart(${p.id})" class="flex-1 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 hover:from-gold-400 hover:to-gold-500 transition-all">Add to Cart</button>
-                  <button type="button" onclick="event.stopPropagation(); openProductModal(${p.id})" class="px-3 py-2 rounded-xl text-xs border border-gold-500/40 text-gold-400 hover:bg-gold-500/10 transition-all">Details</button>
+                  <button type="button" onclick="event.stopPropagation(); quickAddToCart(${p.id})" class="flex-1 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 hover:from-gold-400 hover:to-gold-500 transition-all">${typeof t==='function'?t('btn_add_cart'):'Add to Cart'}</button>
+                  <button type="button" onclick="event.stopPropagation(); openProductModal(${p.id})" class="px-3 py-2 rounded-xl text-xs border border-gold-500/40 text-gold-400 hover:bg-gold-500/10 transition-all">${typeof t==='function'?t('btn_details'):'Details'}</button>
                   <button type="button" onclick="event.stopPropagation(); openShareSheetById(${p.id})" class="btn-share-icon" title="Share product" style="background:linear-gradient(135deg,#38b6ff,#1e90ff)">
                     <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
                   </button>
@@ -5358,7 +5362,11 @@ ${ogUrl}`;
         customerPhone: currentCustomer.phone || '',
         customerAddress: currentCustomer.address || '',
         customerEmail: currentCustomer.email || '',
-        items: cart.map(i => ({ name: i.name, size: i.size, qty: i.qty, price: i.price, image: i.image })),
+        items: cart.map(i => {
+          const p = products.find(x => x.id === i.id || String(x.id) === String(i.id));
+          const img = i.image || (p && p.images && p.images[0]) || '';
+          return { id: i.id, name: i.name, size: i.size, qty: i.qty, price: i.price, image: img };
+        }),
         total: total,
         status: 'New',
         source: 'WhatsApp'
@@ -6299,11 +6307,23 @@ ${ogUrl}`;
             ${o.customerEmail ? `<div><span class="text-gray-500">Email:</span> <span class="text-gray-300">${o.customerEmail}</span></div>` : ''}
             <div><span class="text-gray-500">Address:</span> <span class="text-gray-300">${o.customerAddress || '—'}</span></div>
           </div>
-          <div class="border-t border-white/5 pt-3 space-y-1 text-sm">
-            ${(o.items || []).map(i => `<div class="flex justify-between text-gray-400"><span>${i.name} (${i.size}) × ${i.qty}</span><span>₹${(i.price*i.qty).toLocaleString('en-IN')}</span></div>`).join('')}
+          <div class="border-t border-white/5 pt-3 space-y-2 text-sm">
+            <div class="text-xs text-gold-400 font-medium uppercase tracking-wide mb-1">Order Items</div>
+            ${(o.items || []).map(i => `
+              <div class="flex gap-3 items-center">
+                <img src="${i.image || ''}" alt="" class="w-14 h-14 rounded-lg object-cover bg-dark-600 flex-shrink-0"
+                  onerror="this.src='https://via.placeholder.com/56?text=BSP'">
+                <div class="min-w-0 flex-1">
+                  <div class="text-white text-sm font-medium truncate">${i.name}</div>
+                  <div class="text-xs text-gray-400">Size: ${i.size} · Qty: ${i.qty} · ₹${i.price}</div>
+                </div>
+                <div class="text-gold-400 font-medium text-sm">₹${((i.price||0)*(i.qty||0)).toLocaleString('en-IN')}</div>
+              </div>
+            `).join('')}
             <div class="flex justify-between font-semibold text-gold-400 pt-2 border-t border-white/5"><span>Total</span><span>₹${(o.total||0).toLocaleString('en-IN')}</span></div>
           </div>
-          <div class="mt-3 flex gap-2">
+          <div class="mt-3 flex flex-wrap gap-2">
+            <button type="button" onclick="downloadOrderPdf('${o.id}')" class="text-xs px-3 py-1.5 rounded-lg bg-gold-500/20 text-gold-400 hover:bg-gold-500/30 transition-colors">PDF Download</button>
             <a href="https://wa.me/91${String(o.customerPhone||'').replace(/\D/g,'').slice(-10)}" target="_blank" class="text-xs px-3 py-1.5 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30">WhatsApp Customer</a>
           </div>
         </div>
@@ -6554,6 +6574,90 @@ ${ogUrl}`;
       refreshSellerStats();
     }
 
+
+    function resolveItemImage(item) {
+      if (item && item.image) return item.image;
+      if (!item) return '';
+      const p = (typeof products !== 'undefined' ? products : []).find(x => x.id === item.id || String(x.id) === String(item.id) || x.name === item.name);
+      return (p && p.images && p.images[0]) || '';
+    }
+
+    function buildOrderPdfHtml(orders, title) {
+      const rows = (orders || []).map(o => {
+        const itemsHtml = (o.items || []).map(i => {
+          const img = resolveItemImage(i);
+          return `<tr>
+            <td style="padding:8px;border-bottom:1px solid #eee;width:64px">
+              ${img ? `<img src="${img}" width="56" height="56" style="object-fit:cover;border-radius:8px" />` : ''}
+            </td>
+            <td style="padding:8px;border-bottom:1px solid #eee;font-size:13px">
+              <b>${i.name || ''}</b><br/>
+              Size: ${i.size || ''} · Qty: ${i.qty || 0} · ₹${i.price || 0}
+            </td>
+            <td style="padding:8px;border-bottom:1px solid #eee;text-align:right;font-size:13px">
+              ₹${((i.price||0)*(i.qty||0)).toLocaleString('en-IN')}
+            </td>
+          </tr>`;
+        }).join('');
+        return `
+          <div style="page-break-inside:avoid;margin-bottom:28px;border:1px solid #e5e5e5;border-radius:12px;padding:16px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+              <div>
+                <div style="font-size:16px;font-weight:700;color:#b8860b">${o.id || ''}</div>
+                <div style="font-size:12px;color:#666">${o.date ? new Date(o.date).toLocaleString('en-IN') : ''} · ${o.status || 'New'}</div>
+              </div>
+              <div style="font-size:16px;font-weight:700">₹${(o.total||0).toLocaleString('en-IN')}</div>
+            </div>
+            <div style="font-size:13px;margin-bottom:10px;background:#faf7f0;padding:10px;border-radius:8px">
+              <b>Customer:</b> ${o.customerName || '—'}<br/>
+              <b>Phone:</b> ${o.customerPhone || '—'}<br/>
+              <b>Address:</b> ${o.customerAddress || '—'}
+              ${o.customerEmail ? '<br/><b>Email:</b> ' + o.customerEmail : ''}
+            </div>
+            <table style="width:100%;border-collapse:collapse">${itemsHtml}</table>
+          </div>`;
+      }).join('');
+      return `<!DOCTYPE html><html><head><meta charset="utf-8"/><title>${title || 'BSP Orders'}</title>
+        <style>
+          body{font-family:system-ui,Segoe UI,sans-serif;padding:24px;color:#111;max-width:800px;margin:0 auto}
+          h1{font-size:22px;margin:0 0 4px}
+          .sub{color:#666;font-size:13px;margin-bottom:20px}
+          @media print { body{padding:0} .no-print{display:none} }
+        </style></head><body>
+        <div class="no-print" style="margin-bottom:16px">
+          <button onclick="window.print()" style="padding:10px 18px;background:#c9a227;border:none;border-radius:8px;font-weight:600;cursor:pointer">Print / Save as PDF</button>
+          <button onclick="window.close()" style="padding:10px 18px;margin-left:8px;border:1px solid #ccc;border-radius:8px;cursor:pointer">Close</button>
+        </div>
+        <h1>BSP Fashion — ${title || 'Orders'}</h1>
+        <div class="sub">Generated ${new Date().toLocaleString('en-IN')} · WhatsApp +91 8981839702</div>
+        ${rows || '<p>No orders</p>'}
+        <script>setTimeout(function(){ window.print(); }, 600);<\/script>
+      </body></html>`;
+    }
+
+    async function downloadOrderPdf(orderId) {
+      let orders = [];
+      try { orders = await loadOrdersFromFirebase(); } catch (e) { orders = getOrders(); }
+      let o = orders.find(x => x.id === orderId || String(x.id) === String(orderId));
+      if (!o) o = getOrders().find(x => x.id === orderId);
+      if (!o) { showToast('Order not found'); return; }
+      const w = window.open('', '_blank', 'width=900,height=700');
+      if (!w) { showToast('Popup blocked — allow popups'); return; }
+      w.document.write(buildOrderPdfHtml([o], 'Order ' + (o.id || '')));
+      w.document.close();
+    }
+
+    async function downloadAllOrdersPdf() {
+      let orders = [];
+      try { orders = await loadOrdersFromFirebase(); } catch (e) { orders = getOrders(); }
+      if (!orders.length) orders = getOrders();
+      if (!orders.length) { showToast('No orders yet'); return; }
+      const w = window.open('', '_blank', 'width=900,height=700');
+      if (!w) { showToast('Popup blocked — allow popups'); return; }
+      w.document.write(buildOrderPdfHtml(orders, 'All Orders (' + orders.length + ')'));
+      w.document.close();
+    }
+
     function openMyOrders() {
       if (!currentCustomer) {
         openCustomerAuth('login');
@@ -6565,13 +6669,25 @@ ${ogUrl}`;
         list.innerHTML = `<div class="text-center py-10 text-gray-500">No orders yet</div>`;
       } else {
         list.innerHTML = orders.map(o => `
-          <div class="bg-dark-700/50 rounded-xl p-4 text-sm">
-            <div class="flex justify-between mb-2">
+          <div class="bg-dark-700/50 rounded-xl p-4 text-sm border border-white/5">
+            <div class="flex justify-between mb-3">
               <span class="text-gold-400 font-medium">${o.id}</span>
-              <span class="text-xs text-gray-500">${new Date(o.date).toLocaleDateString('en-IN')}</span>
+              <span class="text-xs text-gray-500">${new Date(o.date).toLocaleDateString('en-IN')} · ${o.status || 'New'}</span>
             </div>
-            ${o.items.map(i => `<div class="text-gray-400">${i.name} (${i.size}) × ${i.qty}</div>`).join('')}
-            <div class="mt-2 font-semibold text-white">Total: ₹${o.total.toLocaleString('en-IN')}</div>
+            <div class="space-y-2 mb-3">
+              ${(o.items || []).map(i => `
+                <div class="flex gap-3 items-center">
+                  <img src="${i.image || ''}" alt="" class="w-14 h-14 rounded-lg object-cover bg-dark-600 flex-shrink-0"
+                    onerror="this.src='https://via.placeholder.com/56?text=BSP'">
+                  <div class="min-w-0 flex-1">
+                    <div class="text-white text-sm font-medium truncate">${i.name}</div>
+                    <div class="text-xs text-gray-400">Size: ${i.size} · Qty: ${i.qty} · ₹${i.price}</div>
+                    <div class="text-xs text-gold-400">₹${((i.price||0)*(i.qty||0)).toLocaleString('en-IN')}</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="font-semibold text-white border-t border-white/10 pt-2">Total: ₹${(o.total||0).toLocaleString('en-IN')}</div>
           </div>
         `).join('');
       }
