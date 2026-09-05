@@ -4680,7 +4680,7 @@
         const img0 = (p.images && p.images[0]) ? p.images[0].replace(/'/g, "\\'") : '';
         return `
           <div class="product-card glass rounded-2xl overflow-hidden group ${oos ? 'opacity-70' : ''}">
-            <div class="aspect-[3/4] overflow-hidden bg-dark-700 relative cursor-pointer" onclick="openProductModal(${p.id})">
+            <div class="aspect-[3/4] overflow-hidden bg-dark-700 relative cursor-pointer" onclick="openProductModal(${JSON.stringify(String(p.id))})">
               <img src="${(p.images && p.images[0]) || ''}" alt="${p.name}" class="product-img w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x500?text=BSP+Fashion'">
               <button type="button" onclick="event.stopPropagation(); openProductImageFull('${img0}')" class="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-dark-900/80 backdrop-blur flex items-center justify-center text-white hover:bg-gold-500 hover:text-dark-900 transition-all" title="Full image">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
@@ -4696,7 +4696,7 @@
               </div>
             </div>
             <div class="p-4">
-              <h3 class="font-medium text-sm mb-2 group-hover:text-gold-400 transition-colors line-clamp-2 cursor-pointer" onclick="openProductModal(${p.id})">${p.name}</h3>
+              <h3 class="font-medium text-sm mb-2 group-hover:text-gold-400 transition-colors line-clamp-2 cursor-pointer" onclick="openProductModal(${JSON.stringify(String(p.id))})">${p.name}</h3>
               <div class="space-y-0.5 mb-3 min-h-[3rem]">
                 ${sizeLines || '<div class="text-xs text-gray-500">No sizes</div>'}
                 ${moreSizes}
@@ -4709,9 +4709,9 @@
                 <button type="button" disabled class="w-full py-2 rounded-xl text-xs font-medium bg-dark-700 text-gray-500 cursor-not-allowed">Out of Stock</button>
               ` : `
                 <div class="flex gap-2">
-                  <button type="button" onclick="event.stopPropagation(); quickAddToCart(${p.id})" class="flex-1 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 hover:from-gold-400 hover:to-gold-500 transition-all">${typeof t==='function'?t('btn_add_cart'):'Add to Cart'}</button>
-                  <button type="button" onclick="event.stopPropagation(); openProductModal(${p.id})" class="px-3 py-2 rounded-xl text-xs border border-gold-500/40 text-gold-400 hover:bg-gold-500/10 transition-all">${typeof t==='function'?t('btn_details'):'Details'}</button>
-                  <button type="button" onclick="event.stopPropagation(); openShareSheetById(${p.id})" class="btn-share-icon" title="Share product" style="background:linear-gradient(135deg,#38b6ff,#1e90ff)">
+                  <button type="button" onclick="event.stopPropagation(); quickAddToCart(${JSON.stringify(String(p.id))})" class="flex-1 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 hover:from-gold-400 hover:to-gold-500 transition-all">${typeof t==='function'?t('btn_add_cart'):'Add to Cart'}</button>
+                  <button type="button" onclick="event.stopPropagation(); openProductModal(${JSON.stringify(String(p.id))})" class="px-3 py-2 rounded-xl text-xs border border-gold-500/40 text-gold-400 hover:bg-gold-500/10 transition-all">${typeof t==='function'?t('btn_details'):'Details'}</button>
+                  <button type="button" onclick="event.stopPropagation(); openShareSheetById(${JSON.stringify(String(p.id))})" class="btn-share-icon" title="Share product" style="background:linear-gradient(135deg,#38b6ff,#1e90ff)">
                     <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
                   </button>
                 </div>
@@ -4851,18 +4851,21 @@
     function openShareSheet(p) {
       p = p || currentProduct;
       if (!p) { showToast('Pehle product open karein'); return; }
-      shareTargetProduct = p;
-      const data = getProductShareData(p);
+      // Lock exact product from catalog (prevents wrong mix)
+      const locked = findProductById(p.id) || findProductById(p.firestoreId) || p;
+      shareTargetProduct = locked;
+      window.__shareLockedId = String(locked.firestoreId || locked.id);
+      const data = getProductShareData(locked);
       const nameEl = document.getElementById('share-sheet-name');
       const input = document.getElementById('share-link-input');
-      if (nameEl) nameEl.textContent = p.name || 'BSP Fashion';
-      if (input && data) input.value = data.url || data.siteUrl;
+      if (nameEl) nameEl.textContent = locked.name || 'BSP Fashion';
+      if (input && data) input.value = data.url;
       document.getElementById('share-sheet').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
     function openShareSheetById(id) {
-      const p = products.find(x => x.id === id || String(x.id) === String(id));
-      if (!p) { showToast('Product not found'); return; }
+      const p = findProductById(id);
+      if (!p) { showToast('Product not found: ' + id); return; }
       openShareSheet(p);
     }
     function closeShareSheet() {
@@ -4871,7 +4874,12 @@
     }
 
     function shareTo(channel) {
-      const p = shareTargetProduct || currentProduct;
+      // Always re-lock from id so WhatsApp/Copy cannot use another product
+      let p = shareTargetProduct;
+      if (window.__shareLockedId) {
+        p = findProductById(window.__shareLockedId) || p;
+      }
+      if (!p) p = currentProduct;
       const data = getProductShareData(p);
       if (!data) { showToast('Product data nahi mila'); return; }
       const text = data.text;
@@ -4908,27 +4916,61 @@
       }
     }
 
+    function findProductById(id) {
+      if (id == null || id === '') return null;
+      const sid = String(id);
+      // Exact match preferred (string)
+      let p = products.find(x => String(x.id) === sid);
+      if (p) return p;
+      // firestoreId match
+      p = products.find(x => x.firestoreId && String(x.firestoreId) === sid);
+      if (p) return p;
+      // numeric equality
+      if (/^\d+$/.test(sid)) {
+        p = products.find(x => Number(x.id) === Number(sid));
+        if (p) return p;
+      }
+      return null;
+    }
+
     function getProductShareData(p) {
       if (!p) return null;
-      const sizes = (p.sizes || []).filter(s => s && s.size != null && !isNaN(Number(s.price)));
+      // Re-resolve from catalog by id so we never use a stale/wrong object
+      const resolved = findProductById(p.id) || (p.firestoreId ? findProductById(p.firestoreId) : null) || p;
+      const sizes = (resolved.sizes || []).filter(s => s && s.size != null && !isNaN(Number(s.price)));
       const minPrice = sizes.length ? Math.min(...sizes.map(s => Number(s.price))) : 0;
-      const sizeLines = sizes.slice(0, 5).map(s => `• ${s.size} — ₹${s.price}`).join('\n');
+      const sizeLines = sizes.slice(0, 6).map(s => `• ${s.size} — ₹${s.price}`).join('\n');
       const origin = 'https://bspfashion.vercel.app';
-      let img = (p.images && p.images[0]) || '';
+      let img = (resolved.images && resolved.images[0]) || '';
       try { const u = new URL(img); img = u.origin + u.pathname; } catch (e) { img = String(img).split('?')[0]; }
-      const desc = `MOQ ${p.moq || 12} • From ₹${minPrice}`;
-      // SHORT professional link — API loads name+image from Firestore by id
-      const ogUrl = origin + '/p/' + encodeURIComponent(String(p.id));
-      const siteUrl = origin + '/?product=' + encodeURIComponent(String(p.id));
+      const desc = `MOQ ${resolved.moq || 12} • From ₹${minPrice}`;
+      // Unique share id: prefer firestoreId (unique) else local id
+      const shareKey = resolved.firestoreId || resolved.id;
+      // Short link + query t/img backup so OG cannot mix products
+      const ogUrl = origin + '/p/' + encodeURIComponent(String(shareKey))
+        + '?t=' + encodeURIComponent(String(resolved.name || '').slice(0, 50))
+        + '&img=' + encodeURIComponent(img);
+      const siteUrl = origin + '/?product=' + encodeURIComponent(String(resolved.id));
       const text =
-`*${p.name}*
+`*${resolved.name}*
 BSP Fashion • Wholesale
 
 ${desc}
 ${sizeLines || ''}
 
 ${ogUrl}`;
-      return { title: (p.name || 'Product') + ' | BSP Fashion', text, url: ogUrl, siteUrl, img, desc, p };
+      return {
+        title: (resolved.name || 'Product') + ' | BSP Fashion',
+        text,
+        url: ogUrl,
+        siteUrl,
+        img,
+        desc,
+        p: resolved,
+        id: resolved.id,
+        firestoreId: resolved.firestoreId || null,
+        name: resolved.name
+      };
     }
 
     function applyProductOgTags(p) {
@@ -4946,7 +4988,7 @@ ${ogUrl}`;
     }
 
     function shareProductById(id) {
-      const p = products.find(x => x.id === id || String(x.id) === String(id));
+      const p = findProductById(id);
       if (!p) { showToast('Product not found'); return; }
       shareProduct(p);
     }
@@ -4965,10 +5007,11 @@ ${ogUrl}`;
     }
 
     function copyProductLink(p) {
-      p = p || currentProduct;
+      if (!p && window.__shareLockedId) p = findProductById(window.__shareLockedId);
+      p = p || shareTargetProduct || currentProduct;
+      if (p) p = findProductById(p.id) || p;
       const data = getProductShareData(p);
       if (!data) { showToast('Product open karke share karein'); return; }
-      // Full product details: name, sizes, prices + link
       const full = data.text;
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(full).then(() => showToast('Product details copy ho gaye!')).catch(() => fallbackCopy(full));
