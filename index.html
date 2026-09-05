@@ -2283,6 +2283,10 @@
               <label class="text-xs text-gray-400 mb-1 block">Product Name *</label>
               <input id="sp-name" type="text" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="e.g. Kids Cotton Set">
             </div>
+            <div class="sm:col-span-2">
+              <label class="text-xs text-gray-400 mb-1 block">Product Description</label>
+              <textarea id="sp-description" rows="3" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none resize-y" placeholder="Fabric, work, occasion, pack details..."></textarea>
+            </div>
             <div>
               <label class="text-xs text-gray-400 mb-1 block">Category *</label>
               <select id="sp-category" class="w-full bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none">
@@ -4593,6 +4597,7 @@
             id: d.localId || doc.id,
             firestoreId: doc.id,
             name: d.name || '',
+            description: d.description || '',
             category: d.category || 'kids',
             moq: Number(d.moq) || 12,
             images: Array.isArray(d.images) ? d.images : (d.image ? [d.image] : []),
@@ -4637,6 +4642,7 @@
         const data = {
           localId: product.id,
           name: product.name,
+          description: product.description || '',
           category: product.category,
           moq: product.moq || 12,
           images: product.images || [],
@@ -5450,7 +5456,7 @@
           <div class="product-card glass rounded-2xl overflow-hidden group ${oos ? 'opacity-70' : ''}">
             <div class="aspect-[3/4] overflow-hidden bg-dark-700 relative cursor-pointer" onclick="openProductModal(${JSON.stringify(String(p.id))})">
               <img src="${(p.images && p.images[0]) || ''}" alt="${p.name}" class="product-img w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x500?text=BSP+Fashion'">
-              <button type="button" onclick="event.stopPropagation(); openProductImageFull('${img0}')" class="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-dark-900/80 backdrop-blur flex items-center justify-center text-white hover:bg-gold-500 hover:text-dark-900 transition-all" title="Full image">
+              <button type="button" onclick="event.stopPropagation(); openProductImageFull(${JSON.stringify((p.images && p.images[0]) || '')})" class="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-dark-900/80 backdrop-blur flex items-center justify-center text-white hover:bg-gold-500 hover:text-dark-900 transition-all" title="Full image">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
               </button>
               <div class="absolute top-3 left-3 flex flex-col gap-1">
@@ -5494,6 +5500,7 @@
     let spickSizeIndex = 0;
 
     function quickAddToCart(productId) {
+      try {
       const p = products.find(x => x.id === productId || String(x.id) === String(productId));
       if (!p || p.outOfStock) {
         showToast('Product unavailable');
@@ -5525,6 +5532,10 @@
       updateSpickSummary();
       document.getElementById('size-picker-modal').classList.add('open');
       document.body.style.overflow = 'hidden';
+      } catch (err) {
+        console.error('quickAddToCart', err);
+        showToast('Add to cart error');
+      }
     }
 
     function selectSpickSize(index) {
@@ -5849,67 +5860,116 @@ ${ogUrl}`;
     }
 
     function openProductModal(id) {
-      currentProduct = products.find(p => p.id === id);
-      if (!currentProduct) return;
-      if (currentProduct.outOfStock) {
-        showToast('This product is currently Out of Stock');
-        return;
+      try {
+        currentProduct = (typeof findProductById === 'function')
+          ? findProductById(id)
+          : (products || []).find(p => String(p.id) === String(id) || Number(p.id) === Number(id));
+        if (!currentProduct) {
+          showToast('Product open nahi ho paya');
+          console.warn('openProductModal: not found', id, 'products', (products || []).length);
+          return;
+        }
+        if (currentProduct.outOfStock) {
+          showToast('This product is currently Out of Stock');
+          return;
+        }
+        if (!Array.isArray(currentProduct.images)) {
+          currentProduct.images = currentProduct.images ? [currentProduct.images] : [];
+        }
+        if (!currentProduct.images.length) {
+          currentProduct.images = ['https://via.placeholder.com/400x500?text=BSP+Fashion'];
+        }
+        if (!Array.isArray(currentProduct.sizes) || !currentProduct.sizes.length) {
+          currentProduct.sizes = (typeof normalizeSizes === 'function')
+            ? normalizeSizes(currentProduct)
+            : [];
+        }
+        currentProduct.sizes = (currentProduct.sizes || []).filter(s =>
+          s && s.size != null && String(s.size).trim() !== '' && s.price != null && !isNaN(Number(s.price))
+        );
+        if (!currentProduct.sizes.length) {
+          showToast('Is product mein size/price set nahi hai — seller se contact karein');
+          return;
+        }
+        selectedSize = currentProduct.sizes[0];
+
+        const mainImg = document.getElementById('modal-main-img');
+        const modalEl = document.getElementById('product-modal');
+        if (!mainImg || !modalEl) {
+          showToast('Product modal missing — page reload karein');
+          return;
+        }
+        mainImg.src = currentProduct.images[0];
+        document.getElementById('modal-name').textContent = currentProduct.name || '';
+        try { if (typeof applyProductOgTags === 'function') applyProductOgTags(currentProduct); } catch (e) {}
+        const catEl = document.getElementById('modal-category');
+        if (catEl) {
+          catEl.textContent = (typeof catLabel === 'function')
+            ? catLabel(currentProduct.category)
+            : (currentProduct.category || '');
+        }
+        const descEl = document.getElementById('modal-desc');
+        if (descEl) {
+          descEl.textContent = currentProduct.description || currentProduct.desc ||
+            ('Premium quality • MOQ: ' + (currentProduct.moq || 1) + ' pcs');
+        }
+        const minQty = currentProduct.moq || 1;
+        const qtyEl = document.getElementById('modal-qty');
+        if (qtyEl) { qtyEl.value = minQty; qtyEl.min = minQty; }
+
+        const thumbs = document.getElementById('modal-thumbs');
+        if (thumbs) {
+          thumbs.innerHTML = currentProduct.images.map((img, idx) => {
+            const src = JSON.stringify(String(img || ''));
+            return '<button type="button" onclick="changeModalImage(' + src + ', this)" class="w-16 h-16 rounded-lg overflow-hidden border-2 ' +
+              (idx === 0 ? 'border-gold-500' : 'border-transparent') + ' flex-shrink-0">' +
+              '<img src=' + src + ' class="w-full h-full object-cover" onerror="this.src=\'https://via.placeholder.com/150\'">' +
+              '</button>';
+          }).join('');
+        }
+
+        const sizesEl = document.getElementById('modal-sizes');
+        if (sizesEl) {
+          sizesEl.innerHTML = currentProduct.sizes.map((s, idx) =>
+            '<button type="button" onclick="selectSize(' + idx + ')" class="size-btn px-4 py-2 rounded-lg border text-sm font-medium transition-all ' +
+            (idx === 0 ? 'active' : 'border-white/10 hover:border-gold-500/50') + '">' +
+            String(s.size).replace(/</g,'') + ' — ₹' + Number(s.price) +
+            '</button>'
+          ).join('');
+        }
+
+        if (typeof updateModalPrice === 'function') updateModalPrice();
+        modalEl.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      } catch (err) {
+        console.error('openProductModal error', err);
+        showToast('Product open error: ' + (err.message || err));
       }
-      // ensure sizes valid
-      if (!Array.isArray(currentProduct.sizes) || !currentProduct.sizes.length) {
-        currentProduct.sizes = normalizeSizes(currentProduct);
-      }
-      currentProduct.sizes = (currentProduct.sizes || []).filter(s => s && s.size && !isNaN(Number(s.price)));
-      if (!currentProduct.sizes.length) {
-        showToast('Is product mein size/price set nahi hai — seller se contact karein');
-        return;
-      }
-      selectedSize = currentProduct.sizes[0];
-      
-      document.getElementById('modal-main-img').src = currentProduct.images[0];
-      document.getElementById('modal-name').textContent = currentProduct.name;
-      applyProductOgTags(currentProduct);
-      document.getElementById('modal-category').textContent = currentProduct.category === 'men' ? "Men's Wear" : currentProduct.category === 'women' ? "Ladies Wear" : "Kids Wear";
-      document.getElementById('modal-desc').textContent = currentProduct.desc || `Premium quality • MOQ: ${currentProduct.moq} pcs`;
-      
-      // Set default qty to product MOQ
-      const minQty = currentProduct.moq || 1;
-      document.getElementById('modal-qty').value = minQty;
-      document.getElementById('modal-qty').min = minQty;
-      
-      // Thumbs
-      document.getElementById('modal-thumbs').innerHTML = currentProduct.images.map((img, i) => `
-        <button onclick="changeModalImage('${img}')" class="w-16 h-16 rounded-lg overflow-hidden border-2 ${i===0 ? 'border-gold-500' : 'border-transparent'} flex-shrink-0">
-          <img src="${img}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/150'">
-        </button>
-      `).join('');
-      
-      // Sizes
-      document.getElementById('modal-sizes').innerHTML = currentProduct.sizes.map((s, i) => `
-        <button onclick="selectSize(${i})" class="size-btn px-4 py-2 rounded-lg border text-sm font-medium transition-all ${i===0 ? 'active' : 'border-white/10 hover:border-gold-500/50'}">
-          ${s.size} — ₹${s.price}
-        </button>
-      `).join('');
-      
-      updateModalPrice();
-      document.getElementById('product-modal').classList.add('open');
-      document.body.style.overflow = 'hidden';
     }
-    
+
+    function changeModalImage(src, btn) {
+      const mainImg = document.getElementById('modal-main-img');
+      if (mainImg) mainImg.src = src;
+      document.querySelectorAll('#modal-thumbs button').forEach(b => {
+        b.classList.remove('border-gold-500');
+        b.classList.add('border-transparent');
+      });
+      if (btn) {
+        btn.classList.add('border-gold-500');
+        btn.classList.remove('border-transparent');
+      }
+    }
+
+    window.openProductModal = openProductModal;
+    window.quickAddToCart = quickAddToCart;
+    window.openShareSheetById = openShareSheetById;
+    window.changeModalImage = changeModalImage;
+
     function closeProductModal() {
       document.getElementById('product-modal').classList.remove('open');
       document.body.style.overflow = '';
     }
     
-    function changeModalImage(src) {
-      document.getElementById('modal-main-img').src = src;
-      document.querySelectorAll('#modal-thumbs button').forEach(btn => {
-        btn.classList.remove('border-gold-500');
-        btn.classList.add('border-transparent');
-      });
-      event.currentTarget.classList.add('border-gold-500');
-      event.currentTarget.classList.remove('border-transparent');
-    }
     
     function selectSize(index) {
       selectedSize = currentProduct.sizes[index];
@@ -5977,7 +6037,7 @@ ${ogUrl}`;
 
     // ==================== CART ====================
     function addToCart(productId, size, price, qty, moq) {
-      const product = products.find(p => p.id === productId);
+      const product = (typeof findProductById === 'function' ? findProductById(productId) : null) || products.find(p => String(p.id) === String(productId));
       const minQty = moq || product.moq || 1;
       if (qty < minQty) qty = minQty;
       
@@ -7308,7 +7368,7 @@ ${ogUrl}`;
     }
 
     function sellerToggleStock(id) {
-      const p = products.find(x => x.id === id);
+      const p = products.find(x => String(x.id) === String(id) || Number(x.id) === Number(id));
       if (!p) return;
       p.outOfStock = !p.outOfStock;
       persistProductsCatalog();
@@ -7320,7 +7380,7 @@ ${ogUrl}`;
 
     async function sellerDeleteProduct(id) {
       if (!confirm('Delete this product permanently?')) return;
-      const p = products.find(x => x.id === id);
+      const p = products.find(x => String(x.id) === String(id) || Number(x.id) === Number(id));
       products = products.filter(x => x.id !== id);
       persistProductsCatalog();
       if (p && p.isCustom) await deleteProductFromFirebase(p);
@@ -7354,6 +7414,7 @@ ${ogUrl}`;
 
     async function sellerAddProduct() {
       const name = document.getElementById('sp-name').value.trim();
+      const description = (document.getElementById('sp-description') && document.getElementById('sp-description').value || '').trim();
       const category = document.getElementById('sp-category').value;
       const moq = parseInt(document.getElementById('sp-moq').value) || 12;
       const extraUrl = (document.getElementById('sp-extra-url') || {}).value || '';
@@ -7399,6 +7460,7 @@ ${ogUrl}`;
       const newProduct = {
         id: maxId + 1,
         name,
+        description: description || '',
         category,
         moq,
         images,
@@ -7419,6 +7481,7 @@ ${ogUrl}`;
       });
 
       document.getElementById('sp-name').value = '';
+      if (document.getElementById('sp-description')) document.getElementById('sp-description').value = '';
       if (document.getElementById('sp-extra-url')) document.getElementById('sp-extra-url').value = '';
       spUploadFiles = [];
       renderSpUploadPreviews();
