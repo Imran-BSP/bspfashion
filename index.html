@@ -2324,7 +2324,7 @@
             <div class="sm:col-span-2">
               <label class="text-xs text-gray-400 mb-2 block">Product Photos * (direct upload · max 20 · each up to 20MB)</label>
               <div class="border border-dashed border-gold-500/30 rounded-xl p-4 bg-dark-700/40">
-                <input id="sp-file-input" type="file" accept="image/*" multiple class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gold-500 file:text-dark-900 file:font-semibold file:cursor-pointer"
+                <input id="sp-file-input" type="file" accept="image/*,.heic,.heif,image/jpeg,image/png,image/webp" multiple class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gold-500 file:text-dark-900 file:font-semibold file:cursor-pointer"
                   onchange="onSpFilesSelected(this)">
                 <p class="text-[10px] text-gray-500 mt-2">JPG / PNG / WEBP · Auto compress on upload · Max 20 images</p>
                 <div id="sp-upload-previews" class="flex flex-wrap gap-2 mt-3"></div>
@@ -4550,8 +4550,8 @@
 
     function persistProductsCatalog() {
       try {
-        const baseIds = new Set(baseProducts.map(p => p.id));
-        const custom = products.filter(p => p.isCustom || !baseIds.has(p.id));
+        const baseIds = new Set(baseProducts.map(p => String(p.id)));
+        const custom = products.filter(p => p.isCustom || !baseIds.has(String(p.id)));
         const currentIds = new Set(products.map(p => p.id));
         const deleted = baseProducts.filter(p => !currentIds.has(p.id)).map(p => p.id);
         const stock = {};
@@ -7449,6 +7449,11 @@ ${ogUrl}`;
     }
 
     async function sellerAddProduct() {
+      const btn = document.querySelector('button[onclick*="sellerAddProduct"]');
+      if (window.__addingProduct) {
+        showToast('Pehle wala upload chal raha hai… wait');
+        return;
+      }
       const name = document.getElementById('sp-name').value.trim();
       const description = (document.getElementById('sp-description') && document.getElementById('sp-description').value || '').trim();
       const category = document.getElementById('sp-category').value;
@@ -7458,7 +7463,7 @@ ${ogUrl}`;
       const sizes = [];
       document.querySelectorAll('.sp-size-row').forEach(row => {
         const sizeVal = (row.querySelector('.sp-size-input') || {}).value;
-        const priceVal = parseInt((row.querySelector('.sp-price-input') || {}).value);
+        const priceVal = parseInt((row.querySelector('.sp-price-input') || {}).value, 10);
         if (sizeVal && String(sizeVal).trim() && priceVal > 0) {
           sizes.push({ size: String(sizeVal).trim(), price: priceVal });
         }
@@ -7468,69 +7473,110 @@ ${ogUrl}`;
         showToast('Name + kam se kam 1 size/price zaroori');
         return;
       }
+      if (window.spUploadFiles && window.spUploadFiles.length) spUploadFiles = window.spUploadFiles;
       if ((!spUploadFiles || !spUploadFiles.length) && !extraUrl.trim()) {
         showToast('Kam se kam 1 photo upload karein (ya URL)');
         return;
       }
 
-      showToast('Photos upload ho rahi hain…');
-      const images = [];
+      window.__addingProduct = true;
+      if (btn) { btn.disabled = true; btn.textContent = 'Uploading…'; }
+
       try {
-        for (let fi = 0; fi < (spUploadFiles || []).length; fi++) {
-          showToast('Upload ' + (fi + 1) + '/' + spUploadFiles.length + '…');
-          const url = await uploadProductImage(spUploadFiles[fi]);
-          if (url) images.push(url);
+        showToast('Photos upload ho rahi hain…');
+        const images = [];
+        const files = (spUploadFiles || []).slice();
+        for (let fi = 0; fi < files.length; fi++) {
+          showToast('Upload ' + (fi + 1) + '/' + files.length + '…');
+          try {
+            const url = await uploadProductImage(files[fi]);
+            if (url) images.push(url);
+            else showToast('Photo ' + (fi + 1) + ' skip — empty url');
+          } catch (oneErr) {
+            console.error('single upload', oneErr);
+            showToast('Photo ' + (fi + 1) + ' fail: ' + (oneErr.message || oneErr));
+            // continue other photos
+          }
         }
-      } catch (e) {
-        console.error(e);
-        showToast('Photo upload fail: ' + (e.message || e));
-        return;
+        if (extraUrl.trim()) images.push(extraUrl.trim());
+        if (!images.length) {
+          showToast('Koi image upload nahi hui — Storage rules / net check karein');
+          return;
+        }
+
+        showToast('Product save ho raha hai…');
+        const maxId = products.reduce((m, p) => Math.max(m, Number(p.id) || 0), 1000);
+        const newProduct = {
+          id: maxId + 1,
+          name,
+          description: description || '',
+          category,
+          moq,
+          images,
+          sizes,
+          outOfStock: false,
+          isCustom: true
+        };
+        products.unshift(newProduct);
+
+        let ok = true;
+        try {
+          ok = persistProductsCatalog();
+        } catch (pe) {
+          console.warn('local persist', pe);
+          ok = true; // still try cloud
+        }
+        if (!ok) {
+          // localStorage full (data URL too big) — still try Firebase only
+          showToast('Local storage full — cloud save try…');
+        }
+
+        let fid = null;
+        try {
+          fid = await saveProductToFirebase(newProduct);
+        } catch (fe) {
+          console.error(fe);
+          showToast('Cloud save error: ' + (fe.message || fe));
+        }
+
+        if (fid) {
+          newProduct.firestoreId = fid;
+          showToast('✓ Product add ho gaya · ' + images.length + ' photo · Cloud OK');
+        } else if (ok) {
+          showToast('Product local save · Cloud sync fail (Firebase rules?)');
+        } else {
+          products.shift();
+          showToast('Product save fail — Storage + Firestore check karein');
+          return;
+        }
+
+        document.getElementById('sp-name').value = '';
+        if (document.getElementById('sp-description')) document.getElementById('sp-description').value = '';
+        if (document.getElementById('sp-extra-url')) document.getElementById('sp-extra-url').value = '';
+        spUploadFiles = [];
+        window.spUploadFiles = [];
+        renderSpUploadPreviews();
+        const sizesList = document.getElementById('sp-sizes-list');
+        if (sizesList) {
+          sizesList.innerHTML = '<div class="sp-size-row flex gap-2">' +
+            '<input type="text" class="sp-size-input flex-1 bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="Size e.g. M / 2-3 Yr">' +
+            '<input type="number" min="1" class="sp-price-input w-28 bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="₹ Price">' +
+            '</div>';
+        }
+
+        try { renderSellerProducts(); } catch (e) {}
+        try { renderProducts('all'); } catch (e) {}
+        try { if (typeof renderFeaturedLuxury === 'function') renderFeaturedLuxury(); } catch (e) {}
+        try { if (typeof refreshSellerStats === 'function') refreshSellerStats(); } catch (e) {}
+        try { if (typeof bindProductsGridClicks === 'function') bindProductsGridClicks(); } catch (e) {}
+
+      } catch (err) {
+        console.error('sellerAddProduct', err);
+        showToast('Add product error: ' + (err.message || err));
+      } finally {
+        window.__addingProduct = false;
+        if (btn) { btn.disabled = false; btn.textContent = 'Add Product'; }
       }
-      if (extraUrl.trim()) images.push(extraUrl.trim());
-      if (!images.length) {
-        showToast('Koi image upload nahi hui');
-        return;
-      }
-
-      const maxId = products.reduce((m, p) => Math.max(m, Number(p.id) || 0), 1000);
-      const newProduct = {
-        id: maxId + 1,
-        name,
-        description: description || '',
-        category,
-        moq,
-        images,
-        sizes,
-        outOfStock: false,
-        isCustom: true
-      };
-      products.unshift(newProduct);
-      const ok = persistProductsCatalog();
-      if (!ok) {
-        products.shift();
-        return;
-      }
-
-      saveProductToFirebase(newProduct).then(fid => {
-        if (fid) showToast('Product added · ' + images.length + ' photos · Cloud synced');
-        else showToast('Product added locally (cloud sync failed)');
-      });
-
-      document.getElementById('sp-name').value = '';
-      if (document.getElementById('sp-description')) document.getElementById('sp-description').value = '';
-      if (document.getElementById('sp-extra-url')) document.getElementById('sp-extra-url').value = '';
-      spUploadFiles = [];
-      renderSpUploadPreviews();
-      document.getElementById('sp-sizes-list').innerHTML = `
-        <div class="sp-size-row flex gap-2">
-          <input type="text" class="sp-size-input flex-1 bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="Size e.g. M / 2-3 Yr">
-          <input type="number" min="1" class="sp-price-input w-28 bg-dark-700 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:border-gold-500 outline-none" placeholder="₹ Price">
-        </div>`;
-
-      renderSellerProducts();
-      renderProducts('all'); try { bindProductsGridClicks(); } catch(e) {}
-      try { renderFeaturedLuxury(); } catch (e) {}
-      refreshSellerStats();
     }
 
 
@@ -7821,92 +7867,202 @@ ${ogUrl}`;
     // ---- Direct photo upload (max 20 images, compress large files) ----
     let spUploadFiles = [];
 
+    
+    function isLikelyImageFile(file) {
+      if (!file) return false;
+      const t = (file.type || '').toLowerCase();
+      if (t.startsWith('image/')) return true;
+      // Mobile often sends empty type
+      const n = (file.name || '').toLowerCase();
+      return /\.(jpe?g|png|webp|gif|heic|heif|bmp)$/i.test(n) || t === '';
+    }
+
     function compressImageFile(file, maxDim, quality) {
       return new Promise((resolve, reject) => {
-        if (!file || !file.type || !file.type.startsWith('image/')) {
-          reject(new Error('Not an image'));
+        if (!file) { reject(new Error('No file')); return; }
+        const t = (file.type || '').toLowerCase();
+        // HEIC on iPhone — browser often cannot decode; upload original
+        if (t.includes('heic') || t.includes('heif') || /\.heic$/i.test(file.name || '')) {
+          resolve(file);
+          return;
+        }
+        if (!isLikelyImageFile(file)) {
+          reject(new Error('Not an image file'));
           return;
         }
         const url = URL.createObjectURL(file);
         const img = new Image();
         img.onload = () => {
-          let w = img.width, h = img.height;
-          const scale = Math.min(1, maxDim / Math.max(w, h));
-          w = Math.round(w * scale); h = Math.round(h * scale);
-          const canvas = document.createElement('canvas');
-          canvas.width = w; canvas.height = h;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, w, h);
-          URL.revokeObjectURL(url);
-          canvas.toBlob((blob) => {
-            if (!blob) { reject(new Error('Compress fail')); return; }
-            resolve(new File([blob], (file.name || 'photo').replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' }));
-          }, 'image/jpeg', quality);
+          try {
+            let w = img.width, h = img.height;
+            if (!w || !h) {
+              URL.revokeObjectURL(url);
+              resolve(file);
+              return;
+            }
+            const scale = Math.min(1, (maxDim || 1600) / Math.max(w, h));
+            w = Math.round(w * scale);
+            h = Math.round(h * scale);
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            URL.revokeObjectURL(url);
+            const finish = (blob) => {
+              if (!blob) {
+                try {
+                  const dataUrl = canvas.toDataURL('image/jpeg', quality || 0.82);
+                  const arr = dataUrl.split(',');
+                  const bstr = atob(arr[1]);
+                  const u8 = new Uint8Array(bstr.length);
+                  for (let i = 0; i < bstr.length; i++) u8[i] = bstr.charCodeAt(i);
+                  resolve(new File([u8], 'photo.jpg', { type: 'image/jpeg' }));
+                } catch (e2) {
+                  resolve(file);
+                }
+                return;
+              }
+              resolve(new File([blob], 'photo.jpg', { type: 'image/jpeg' }));
+            };
+            if (canvas.toBlob) {
+              canvas.toBlob(finish, 'image/jpeg', quality || 0.82);
+            } else {
+              finish(null);
+            }
+          } catch (e) {
+            URL.revokeObjectURL(url);
+            resolve(file);
+          }
         };
-        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Image load fail')); };
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          // decode fail (common mobile) — use original file
+          resolve(file);
+        };
         img.src = url;
       });
     }
 
     async function uploadProductImage(file) {
-      // Prefer Firebase Storage; fallback data URL (small only)
-      const compressed = await compressImageFile(file, 1600, 0.82);
-      if (typeof firebase !== 'undefined' && firebase.storage) {
-        const storage = firebase.storage();
-        const name = 'products/' + Date.now() + '_' + Math.random().toString(36).slice(2, 8) + '.jpg';
-        const ref = storage.ref().child(name);
-        await ref.put(compressed);
-        return await ref.getDownloadURL();
+      if (!file) throw new Error('No file selected');
+      let toUpload = file;
+      try {
+        toUpload = await compressImageFile(file, 1400, 0.78);
+      } catch (e) {
+        console.warn('compress skip', e);
+        toUpload = file;
       }
-      // Fallback: data URL (not ideal for many large images)
-      return await new Promise((resolve, reject) => {
+
+      const withTimeout = (promise, ms, label) => Promise.race([
+        promise,
+        new Promise((_, rej) => setTimeout(() => rej(new Error(label || 'Upload timeout — net slow / Storage rules')), ms))
+      ]);
+
+      if (typeof firebase !== 'undefined' && firebase.storage) {
+        try {
+          const storage = firebase.storage();
+          const safeName = 'products/' + Date.now() + '_' + Math.random().toString(36).slice(2, 8) + '.jpg';
+          const ref = storage.ref().child(safeName);
+          const meta = { contentType: (toUpload.type && toUpload.type.startsWith('image/')) ? toUpload.type : 'image/jpeg' };
+          const snap = await withTimeout(ref.put(toUpload, meta), 60000, 'Storage timeout (60s). Rules / network check karein');
+          const url = await withTimeout(snap.ref.getDownloadURL(), 20000, 'Download URL timeout');
+          return url;
+        } catch (e) {
+          console.error('Storage upload failed', e);
+          const msg = (e && (e.code || e.message)) || String(e);
+          // Fallback: compress further to data URL for Firestore (max ~700kb practical)
+          if (toUpload.size < 700000) {
+            console.warn('Falling back to data URL', msg);
+            return await fileToDataUrl(toUpload);
+          }
+          // try harder compress then data url
+          try {
+            const smaller = await compressImageFile(file, 900, 0.65);
+            if (smaller.size < 700000) return await fileToDataUrl(smaller);
+          } catch (e2) {}
+          throw new Error('Photo cloud upload fail: ' + msg + ' — Firebase Storage → Rules publish karein');
+        }
+      }
+      if (toUpload.size > 700000) {
+        const smaller = await compressImageFile(file, 800, 0.6);
+        if (smaller.size > 700000) throw new Error('Image too large without Storage');
+        return await fileToDataUrl(smaller);
+      }
+      return await fileToDataUrl(toUpload);
+    }
+
+
+    function fileToDataUrl(file) {
+      return new Promise((resolve, reject) => {
         const r = new FileReader();
         r.onload = () => resolve(r.result);
-        r.onerror = reject;
-        r.readAsDataURL(compressed);
+        r.onerror = () => reject(new Error('File read fail'));
+        r.readAsDataURL(file);
       });
     }
 
     function onSpFilesSelected(input) {
-      const files = Array.from(input.files || []);
-      input.value = '';
-      const maxCount = 20;
-      const maxBytes = 20 * 1024 * 1024;
-      for (const f of files) {
-        if (spUploadFiles.length >= maxCount) {
-          showToast('Max 20 images per product');
-          break;
+      try {
+        const files = Array.from(input.files || []);
+        if (!files.length) {
+          showToast('Koi file select nahi hui');
+          return;
         }
-        if (f.size > maxBytes) {
-          showToast(f.name + ' 20MB se badi hai — skip');
-          continue;
+        const maxCount = 20;
+        const maxBytes = 20 * 1024 * 1024;
+        if (!window.spUploadFiles) window.spUploadFiles = [];
+        // keep global in sync
+        spUploadFiles = window.spUploadFiles;
+        for (const f of files) {
+          if (spUploadFiles.length >= maxCount) {
+            showToast('Max 20 images per product');
+            break;
+          }
+          if (f.size > maxBytes) {
+            showToast((f.name || 'File') + ' 20MB se badi — skip');
+            continue;
+          }
+          if (!isLikelyImageFile(f)) {
+            showToast((f.name || 'File') + ' image nahi hai — skip');
+            continue;
+          }
+          spUploadFiles.push(f);
         }
-        if (!f.type.startsWith('image/')) continue;
-        spUploadFiles.push(f);
+        window.spUploadFiles = spUploadFiles;
+        renderSpUploadPreviews();
+        showToast(spUploadFiles.length + ' photo ready');
+      } catch (e) {
+        console.error(e);
+        showToast('File select error');
       }
-      renderSpUploadPreviews();
+      try { input.value = ''; } catch (e) {}
     }
 
     function removeSpUpload(i) {
+      if (!spUploadFiles) spUploadFiles = [];
       spUploadFiles.splice(i, 1);
+      window.spUploadFiles = spUploadFiles;
       renderSpUploadPreviews();
     }
 
     function renderSpUploadPreviews() {
       const box = document.getElementById('sp-upload-previews');
       if (!box) return;
-      if (!spUploadFiles.length) {
+      if (!spUploadFiles || !spUploadFiles.length) {
         box.innerHTML = '<p class="text-xs text-gray-500">Koi photo select nahi</p>';
         return;
       }
       box.innerHTML = spUploadFiles.map((f, i) => {
-        const url = URL.createObjectURL(f);
-        return `<div class="relative w-16 h-16 rounded-lg overflow-hidden border border-gold-500/30">
-          <img src="${url}" class="w-full h-full object-cover"/>
-          <button type="button" onclick="removeSpUpload(${i})" class="absolute top-0 right-0 bg-red-500 text-white w-5 h-5 text-xs rounded-bl">×</button>
-        </div>`;
+        let url = '';
+        try { url = URL.createObjectURL(f); } catch (e) { url = ''; }
+        return '<div class="relative w-16 h-16 rounded-lg overflow-hidden border border-gold-500/30">' +
+          (url ? '<img src="' + url + '" class="w-full h-full object-cover"/>' : '<div class="w-full h-full bg-dark-600 text-[9px] flex items-center justify-center text-gray-400">IMG</div>') +
+          '<button type="button" onclick="removeSpUpload(' + i + ')" class="absolute top-0 right-0 bg-red-500 text-white w-5 h-5 text-xs rounded-bl">×</button></div>';
       }).join('');
     }
+
+
 
   </script>
 
