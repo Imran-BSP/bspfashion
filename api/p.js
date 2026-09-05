@@ -1,4 +1,6 @@
-// Short professional link: /p/1015  or  /api/p?id=1015
+// /p/1015 or /api/p?id=1015&t=Name&img=URL
+// If t+img provided → use them (exact product from share). Else Firestore by id.
+
 const PROJECT_ID = 'bsp-fashion-kol';
 
 function esc(s) {
@@ -56,6 +58,18 @@ async function findByLocalId(id) {
   const sid = String(id || '').trim();
   if (!sid) return null;
 
+  // 1) Document ID (unique)
+  try {
+    const r = await fetch(
+      `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/products/${encodeURIComponent(sid)}`
+    );
+    if (r.ok) {
+      const doc = await r.json();
+      if (doc.fields) return parseDoc(doc);
+    }
+  } catch (e) {}
+
+  // 2) localId equality
   const values = /^\d+$/.test(sid)
     ? [{ integerValue: sid }, { stringValue: sid }]
     : [{ stringValue: sid }];
@@ -85,17 +99,6 @@ async function findByLocalId(id) {
       if (hit) return parseDoc(hit.document);
     } catch (e) {}
   }
-
-  try {
-    const r = await fetch(
-      `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/products/${encodeURIComponent(sid)}`
-    );
-    if (r.ok) {
-      const doc = await r.json();
-      if (doc.fields) return parseDoc(doc);
-    }
-  } catch (e) {}
-
   return null;
 }
 
@@ -103,24 +106,25 @@ module.exports = async (req, res) => {
   try {
     const q = req.query || {};
     const id = String(q.id || '').trim();
-    let title = q.t ? String(q.t) : '';
+    // Client-provided t/img are source of truth for THIS share (no mix-up)
+    let title = q.t ? String(q.t).slice(0, 100) : '';
     let image = q.img ? cleanImg(String(q.img)) : '';
-    let desc = q.d ? String(q.d) : '';
+    let desc = q.d ? String(q.d).slice(0, 160) : '';
 
-    if (id) {
+    const hasClientMeta = !!(title && image);
+
+    if (id && !hasClientMeta) {
       const prod = await findByLocalId(id);
       if (prod) {
-        // Firestore is source of truth for short links
-        title = prod.name;
-        image = prod.img || image;
-        desc = prod.desc || desc;
+        if (!title) title = prod.name;
+        if (!image) image = prod.img;
+        if (!desc) desc = prod.desc;
       }
+    } else if (id && hasClientMeta && !desc) {
+      // optional fill desc only
+      const prod = await findByLocalId(id);
+      if (prod && prod.desc) desc = prod.desc;
     }
-
-    // Optional overrides from query (if someone passes them)
-    if (q.t) title = String(q.t).slice(0, 100);
-    if (q.img) image = cleanImg(String(q.img));
-    if (q.d) desc = String(q.d).slice(0, 160);
 
     title = (title || 'BSP Fashion Product').slice(0, 100);
     image = image || 'https://ik.imagekit.io/bsp/1788066275504-clean.png';
@@ -128,8 +132,7 @@ module.exports = async (req, res) => {
     const dest = 'https://bspfashion.vercel.app/?product=' + encodeURIComponent(id);
 
     const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
   <meta charset="utf-8" />
   <title>${esc(title)} | BSP Fashion</title>
   <meta name="robots" content="noindex" />
@@ -154,11 +157,11 @@ module.exports = async (req, res) => {
   <p>Opening <strong>${esc(title)}</strong>…</p>
   <p><a href="${esc(dest)}" style="color:#d4af37">Open product</a></p>
   <script>location.replace(${JSON.stringify(dest)});</script>
-</body>
-</html>`;
+</body></html>`;
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cache-Control', 'public, s-maxage=120, stale-while-revalidate=600');
+    // Short cache — avoid serving Product A meta for Product B
+    res.setHeader('Cache-Control', 'public, s-maxage=30, stale-while-revalidate=60');
     res.statusCode = 200;
     res.end(html);
   } catch (e) {
