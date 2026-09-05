@@ -15,7 +15,7 @@
   <meta property="og:url" content="https://bspfashion.vercel.app/" id="og-url" />
   <meta property="og:title" content="BSP Fashion - Premium Clothing Manufacturer & Wholesaler" id="og-title" />
   <meta property="og:description" content="Manufacturer • Wholesaler • Trader of Kids, Men's & Ladies Wear. Est. 2017 | Kolkata | MOQ ₹5000 | Pan India Shipping" id="og-description" />
-  <meta property="og:image" content="https://ik.imagekit.io/bsp/og-image?updatedAt=1788611909880" id="og-image" />
+  <meta property="og:image" content="https://i.ibb.co/0RqxsYmT/1777788000451.jpg" id="og-image" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:site_name" content="BSP Fashion" />
@@ -25,7 +25,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="BSP Fashion - Premium Clothing Manufacturer & Wholesaler" id="tw-title" />
   <meta name="twitter:description" content="Manufacturer • Wholesaler • Trader of Kids, Men's & Ladies Wear. Est. 2017 | Kolkata | MOQ ₹5000" id="tw-description" />
-  <meta name="twitter:image" content="https://ik.imagekit.io/bsp/og-image?updatedAt=1788611909880" id="tw-image" />
+  <meta name="twitter:image" content="https://i.ibb.co/0RqxsYmT/1777788000451.jpg" id="tw-image" />
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
@@ -194,9 +194,11 @@
     .cart-sidebar {
       transform: translateX(100%);
       transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
     }
     .cart-sidebar.open {
       transform: translateX(0);
+      pointer-events: auto;
     }
     
     /* Modal */
@@ -223,11 +225,13 @@
     .lightbox {
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
       transition: all 0.3s ease;
     }
     .lightbox.open {
       opacity: 1;
       visibility: visible;
+      pointer-events: auto;
     }
     
     /* Custom checkbox/radio */
@@ -1156,6 +1160,23 @@
       }
     }
 
+  
+    /* FORCE: closed overlays never steal clicks */
+    .modal-overlay:not(.open),
+    .lightbox:not(.open) {
+      pointer-events: none !important;
+      z-index: -1 !important;
+    }
+    .modal-overlay.open,
+    .lightbox.open {
+      pointer-events: auto !important;
+      z-index: 200 !important;
+    }
+    #products-grid button, #products-grid .product-card {
+      pointer-events: auto !important;
+      position: relative;
+      z-index: 1;
+    }
   </style>
 
   <!-- Firebase SDK -->
@@ -4627,7 +4648,7 @@
             products = products.filter(p => !del.has(String(p.id)) || p.isCustom);
           }
         } catch (e) {}
-        renderProducts('all');
+        renderProducts('all'); try { bindProductsGridClicks(); } catch(e) {}
       try { renderFeaturedLuxury(); updateHeroStageFromProducts(); } catch(e) {}
         if (typeof refreshSellerStats === 'function') refreshSellerStats();
         console.log('Firebase products loaded:', cloud.length);
@@ -5216,7 +5237,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       setLanguage(currentLang);
       initCoolGallery();
-      renderProducts('all');
+      renderProducts('all'); try { bindProductsGridClicks(); } catch(e) {}
       openProductFromHash();
       updateCartUI();
       startHeroSlider();
@@ -5426,75 +5447,90 @@
       if (!grid) return;
       if (!Array.isArray(products)) products = [];
       filter = filter || 'all';
-      const filtered = filter === 'all' ? products : products.filter(p => p && p.category === filter);
+      const filtered = filter === 'all' ? products.slice() : products.filter(p => p && p.category === filter);
       if (!filtered.length) {
         grid.innerHTML = '<div class="col-span-full text-center py-16 text-gray-500">No products in this category</div>';
         return;
       }
-      
-      // Update filter buttons
+
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.remove('active', 'bg-gold-500/20', 'text-gold-400', 'border-gold-500/40');
         btn.classList.add('border-white/10', 'text-gray-300');
       });
-      if (typeof event !== 'undefined' && event?.target?.classList?.contains('filter-btn')) {
-        event.target.classList.add('active', 'bg-gold-500/20', 'text-gold-400', 'border-gold-500/40');
-        event.target.classList.remove('border-white/10', 'text-gray-300');
-      }
-      
+
       grid.innerHTML = filtered.map(p => {
-        const sizes = p.sizes || [];
         const oos = !!p.outOfStock;
-        const safeSizes = (sizes || []).filter(s => s && s.size != null && String(s.size) !== 'undefined' && s.price != null && !isNaN(Number(s.price)));
+        const safeSizes = (p.sizes || []).filter(s => s && s.size != null && String(s.size) !== 'undefined' && s.price != null && !isNaN(Number(s.price)));
         const minPrice = safeSizes.length ? Math.min(...safeSizes.map(s => Number(s.price))) : 0;
         const sizeLines = safeSizes.slice(0, 4).map(s =>
-          `<div class="flex justify-between text-[11px] text-gray-400"><span>${s.size}</span><span class="text-gold-400/90">₹${Number(s.price)}</span></div>`
+          '<div class="flex justify-between text-[11px] text-gray-400"><span>' + String(s.size).replace(/</g,'') + '</span><span class="text-gold-400/90">₹' + Number(s.price) + '</span></div>'
         ).join('');
-        const moreSizes = safeSizes.length > 4 ? `<div class="text-[10px] text-gray-500">+${safeSizes.length - 4} more sizes</div>` : '';
-        const img0 = (p.images && p.images[0]) ? p.images[0].replace(/'/g, "\\'") : '';
-        return `
-          <div class="product-card glass rounded-2xl overflow-hidden group ${oos ? 'opacity-70' : ''}">
-            <div class="aspect-[3/4] overflow-hidden bg-dark-700 relative cursor-pointer" onclick="openProductModal(${JSON.stringify(String(p.id))})">
-              <img src="${(p.images && p.images[0]) || ''}" alt="${p.name}" class="product-img w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x500?text=BSP+Fashion'">
-              <button type="button" onclick="event.stopPropagation(); openProductImageFull(${JSON.stringify((p.images && p.images[0]) || '')})" class="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-dark-900/80 backdrop-blur flex items-center justify-center text-white hover:bg-gold-500 hover:text-dark-900 transition-all" title="Full image">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-              </button>
-              <div class="absolute top-3 left-3 flex flex-col gap-1">
-                <span class="px-2.5 py-1 rounded-full text-[10px] font-medium uppercase tracking-wider bg-dark-900/70 backdrop-blur text-gold-400">
-                  ${typeof catLabel==='function'?catLabel(p.category):(p.category||'')}
-                </span>
-                <span class="px-2.5 py-1 rounded-full text-[10px] font-medium bg-gold-500/90 text-dark-900">
-                  MOQ ${p.moq || 1}
-                </span>
-                ${oos ? '<span class="px-2.5 py-1 rounded-full text-[10px] font-medium bg-red-500/90 text-white">Out of Stock</span>' : ''}
-              </div>
-            </div>
-            <div class="p-4">
-              <h3 class="font-medium text-sm mb-2 group-hover:text-gold-400 transition-colors line-clamp-2 cursor-pointer" onclick="openProductModal(${JSON.stringify(String(p.id))})">${p.name}</h3>
-              <div class="space-y-0.5 mb-3 min-h-[3rem]">
-                ${sizeLines || '<div class="text-xs text-gray-500">No sizes</div>'}
-                ${moreSizes}
-              </div>
-              <div class="flex items-center justify-between gap-2 mb-3">
-                <span class="text-gold-400 font-semibold text-sm">From ₹${minPrice}</span>
-                <span class="text-[10px] text-gray-500">${safeSizes.length} size(s)</span>
-              </div>
-              ${oos ? `
-                <button type="button" disabled class="w-full py-2 rounded-xl text-xs font-medium bg-dark-700 text-gray-500 cursor-not-allowed">Out of Stock</button>
-              ` : `
-                <div class="flex gap-2">
-                  <button type="button" onclick="event.stopPropagation(); quickAddToCart(${JSON.stringify(String(p.id))})" class="flex-1 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 hover:from-gold-400 hover:to-gold-500 transition-all">${typeof t==='function'?t('btn_add_cart'):'Add to Cart'}</button>
-                  <button type="button" onclick="event.stopPropagation(); openProductModal(${JSON.stringify(String(p.id))})" class="px-3 py-2 rounded-xl text-xs border border-gold-500/40 text-gold-400 hover:bg-gold-500/10 transition-all">${typeof t==='function'?t('btn_details'):'Details'}</button>
-                  <button type="button" onclick="event.stopPropagation(); openShareSheetById(${JSON.stringify(String(p.id))})" class="btn-share-icon" title="Share product" aria-label="Share" style="background:linear-gradient(135deg,#38b6ff,#1e90ff)">
-                    <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                  </button>
-                </div>
-              `}
-            </div>
-          </div>
-        `;
+        const moreSizes = safeSizes.length > 4 ? '<div class="text-[10px] text-gray-500">+' + (safeSizes.length - 4) + ' more sizes</div>' : '';
+        const img0 = (p.images && p.images[0]) ? String(p.images[0]) : '';
+        const pid = String(p.id);
+        const pname = String(p.name || '').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+        const cat = (typeof catLabel === 'function') ? catLabel(p.category) : (p.category || '');
+
+        const actions = oos
+          ? '<button type="button" disabled class="w-full py-2 rounded-xl text-xs font-medium bg-dark-700 text-gray-500 cursor-not-allowed">Out of Stock</button>'
+          : ('<div class="flex gap-2">' +
+              '<button type="button" data-action="add" data-id="' + pid.replace(/"/g,'') + '" class="flex-1 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 hover:from-gold-400 hover:to-gold-500 transition-all">' + (typeof t==='function'?t('btn_add_cart'):'Add to Cart') + '</button>' +
+              '<button type="button" data-action="details" data-id="' + pid.replace(/"/g,'') + '" class="px-3 py-2 rounded-xl text-xs border border-gold-500/40 text-gold-400 hover:bg-gold-500/10 transition-all">' + (typeof t==='function'?t('btn_details'):'Details') + '</button>' +
+              '<button type="button" data-action="share" data-id="' + pid.replace(/"/g,'') + '" class="btn-share-icon" title="Share" aria-label="Share" style="background:linear-gradient(135deg,#38b6ff,#1e90ff)">' +
+                '<svg class="w-3.5 h-3.5 text-white pointer-events-none" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>' +
+              '</button></div>');
+
+        return (
+          '<div class="product-card glass rounded-2xl overflow-hidden group ' + (oos ? 'opacity-70' : '') + '" data-id="' + pid.replace(/"/g,'') + '">' +
+            '<div class="aspect-[3/4] overflow-hidden bg-dark-700 relative cursor-pointer" data-action="details" data-id="' + pid.replace(/"/g,'') + '">' +
+              '<img src="' + img0.replace(/"/g, '&quot;') + '" alt="' + pname + '" class="product-img w-full h-full object-cover" onerror="this.src=\'https://via.placeholder.com/400x500?text=BSP+Fashion\'">' +
+              '<div class="absolute top-3 left-3 flex flex-col gap-1.5">' +
+                '<span class="px-2.5 py-1 rounded-full text-[10px] font-medium uppercase tracking-wider bg-dark-900/70 backdrop-blur text-gold-400">' + String(cat).replace(/</g,'') + '</span>' +
+                '<span class="px-2.5 py-1 rounded-full text-[10px] font-medium bg-gold-500/90 text-dark-900">MOQ ' + (p.moq || 1) + '</span>' +
+                (oos ? '<span class="px-2.5 py-1 rounded-full text-[10px] font-medium bg-red-500/90 text-white">Out of Stock</span>' : '') +
+              '</div>' +
+            '</div>' +
+            '<div class="p-4">' +
+              '<h3 class="font-medium text-sm mb-2 group-hover:text-gold-400 transition-colors line-clamp-2 cursor-pointer" data-action="details" data-id="' + pid.replace(/"/g,'') + '">' + pname + '</h3>' +
+              '<div class="space-y-0.5 mb-3 min-h-[3rem]">' + (sizeLines || '<div class="text-xs text-gray-500">No sizes</div>') + moreSizes + '</div>' +
+              '<div class="flex items-center justify-between gap-2 mb-3">' +
+                '<span class="text-gold-400 font-semibold text-sm">From ₹' + minPrice + '</span>' +
+                '<span class="text-[10px] text-gray-500">' + safeSizes.length + ' size(s)</span>' +
+              '</div>' +
+              actions +
+            '</div>' +
+          '</div>'
+        );
       }).join('');
     }
+
+    // Event delegation — works even if inline onclick fails
+    function bindProductsGridClicks() {
+      const grid = document.getElementById('products-grid');
+      if (!grid || grid.dataset.boundClicks === '1') return;
+      grid.dataset.boundClicks = '1';
+      grid.addEventListener('click', function(e) {
+        const t = e.target.closest('[data-action][data-id]');
+        if (!t || !grid.contains(t)) return;
+        const action = t.getAttribute('data-action');
+        const id = t.getAttribute('data-id');
+        if (!id) return;
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+          if (action === 'details') openProductModal(id);
+          else if (action === 'add') quickAddToCart(id);
+          else if (action === 'share') openShareSheetById(id);
+        } catch (err) {
+          console.error('product click', action, id, err);
+          if (typeof showToast === 'function') showToast('Action failed: ' + action);
+        }
+      });
+    }
+    document.addEventListener('DOMContentLoaded', bindProductsGridClicks);
+    setTimeout(bindProductsGridClicks, 500);
+    setTimeout(bindProductsGridClicks, 2000);
+
 
     let spickProduct = null;
     let spickSizeIndex = 0;
@@ -7362,7 +7398,7 @@ ${ogUrl}`;
       await saveProductToFirebase(p);
       closeEditProduct();
       renderSellerProducts();
-      renderProducts('all');
+      renderProducts('all'); try { bindProductsGridClicks(); } catch(e) {}
       refreshSellerStats();
       showToast('Product updated · Cloud synced');
     }
@@ -7374,7 +7410,7 @@ ${ogUrl}`;
       persistProductsCatalog();
       if (p.isCustom) saveProductToFirebase(p);
       renderSellerProducts();
-      renderProducts('all');
+      renderProducts('all'); try { bindProductsGridClicks(); } catch(e) {}
       showToast(p.outOfStock ? 'Marked Out of Stock' : 'Marked In Stock');
     }
 
@@ -7385,7 +7421,7 @@ ${ogUrl}`;
       persistProductsCatalog();
       if (p && p.isCustom) await deleteProductFromFirebase(p);
       renderSellerProducts();
-      renderProducts('all');
+      renderProducts('all'); try { bindProductsGridClicks(); } catch(e) {}
       refreshSellerStats();
       showToast('Product delete ho gaya');
     }
@@ -7492,7 +7528,7 @@ ${ogUrl}`;
         </div>`;
 
       renderSellerProducts();
-      renderProducts('all');
+      renderProducts('all'); try { bindProductsGridClicks(); } catch(e) {}
       try { renderFeaturedLuxury(); } catch (e) {}
       refreshSellerStats();
     }
@@ -7932,7 +7968,7 @@ ${ogUrl}`;
       var grid = document.getElementById('products-grid');
       if (!grid) return;
       if (!grid.children.length && typeof renderProducts === 'function' && typeof products !== 'undefined' && products.length) {
-        try { renderProducts('all'); } catch (e) { console.error(e); }
+        try { renderProducts('all'); try { bindProductsGridClicks(); } catch(e) {} } catch (e) { console.error(e); }
       }
       grid.querySelectorAll(':scope > div').forEach(function(el){
         el.style.opacity = '1';
