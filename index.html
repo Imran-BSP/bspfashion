@@ -1180,6 +1180,15 @@
   
     #floating-whatsapp { position:fixed!important; right:max(16px,env(safe-area-inset-right)); bottom:max(20px,env(safe-area-inset-bottom)); z-index:150!important; }
     @media(max-width:640px){ #floating-whatsapp .wa-label{display:none;} #floating-whatsapp{padding:14px!important;} }
+  
+    #products-grid, #products-grid > * {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    #products-grid > .product-card {
+      display: flex;
+      flex-direction: column;
+    }
   </style>
 
   <!-- Firebase SDK -->
@@ -4760,6 +4769,10 @@
         const localCustom = baseList.filter(p => p.isCustom);
         const pureBase = baseList.filter(p => !p.isCustom);
         products = cloud.concat(pureBase);
+        catalogPage = 1;
+        catalogFilter = 'all';
+        catalogSearch = '';
+        try { const se = document.getElementById('product-search'); if (se) se.value = ''; } catch (e) {}
         try {
           const vm = getProductViews();
           cloud.forEach(p => {
@@ -5618,7 +5631,18 @@
     }
     function applyCatalogPipeline(list) {
       let out = (list || []).slice();
-      if (catalogFilter && catalogFilter !== 'all') out = out.filter(p => p && p.category === catalogFilter);
+      if (catalogFilter && catalogFilter !== 'all') {
+        const f = String(catalogFilter).toLowerCase();
+        out = out.filter(p => {
+          const c = String(p.category || '').toLowerCase();
+          if (c === f) return true;
+          if (f === 'men' && (c === 'mens' || c === "men's" || c === 'male')) return true;
+          if (f === 'women' && (c === 'ladies' || c === 'woman' || c === 'female' || c === "women's")) return true;
+          if (f === 'kids' && (c === 'kid' || c === 'children' || c === 'baby')) return true;
+          if (f === 'winter' && (c === 'winter wear' || c === 'winterwear')) return true;
+          return false;
+        });
+      }
       if (catalogSearch) {
         const q = catalogSearch;
         out = out.filter(p => {
@@ -5649,9 +5673,20 @@ function renderProducts(filter) {
       filter = filter || 'all';
       catalogFilter = filter || catalogFilter || 'all';
       const filteredAll = applyCatalogPipeline(products);
-      const filtered = filteredAll.slice(0, (catalogPage||1) * (CATALOG_PAGE_SIZE||12));
+      // Show all products (lazy images still save data)
+      const filtered = filteredAll;
+      try {
+        const rc = document.getElementById('catalog-result-count');
+        if (rc) {
+          let msg = filteredAll.length + ' product' + (filteredAll.length === 1 ? '' : 's');
+          if (catalogSearch) msg += ' · search';
+          if (catalogFilter && catalogFilter !== 'all') msg += ' · ' + catalogFilter;
+          rc.textContent = msg;
+        }
+      } catch (e) {}
       if (!filtered.length) {
-        grid.innerHTML = '<div class="col-span-full text-center py-16 text-gray-500">No products in this category</div>';
+        grid.innerHTML = '<div class="col-span-full text-center py-16 text-gray-500">' +
+          (catalogSearch ? 'Search se koi product nahi mila' : 'No products in this category') + '</div>';
         return;
       }
 
