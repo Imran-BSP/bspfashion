@@ -1206,7 +1206,8 @@
       measurementId: "G-W169890F15"
     };
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    window.db = firebase.firestore();
+    var db = window.db;
   </script>
 </head>
 <body class="bg-dark-900 text-white overflow-x-hidden">
@@ -2673,6 +2674,9 @@
 
   <!-- ==================== JAVASCRIPT ==================== -->
   <script>
+    // ==================== FIRESTORE BIND ====================
+    var db = window.db || (typeof firebase !== 'undefined' && firebase.firestore ? firebase.firestore() : null);
+
     // ==================== PRODUCTS DATA ====================
     const baseProducts = [
             {
@@ -4742,9 +4746,31 @@
       return out;
     }
 
+    
+    async function refreshCatalogFromCloud() {
+      try {
+        if (typeof db === 'undefined' || !db) {
+          console.warn('db not ready');
+          showToast('Cloud connect pending…');
+          return false;
+        }
+        await loadProductsFromFirebase();
+        if (typeof renderProducts === 'function') renderProducts('all');
+        try { if (typeof bindProductsGridClicks === 'function') bindProductsGridClicks(); } catch (e) {}
+        console.log('Catalog products:', (products || []).length);
+        return true;
+      } catch (e) {
+        console.error('refreshCatalogFromCloud', e);
+        showToast('Cloud products load failed — showing local catalog');
+        return false;
+      }
+    }
+
     async function loadProductsFromFirebase() {
       try {
-        const snap = await db.collection('products').get();
+        const _db = window.db || db;
+        if (!_db) throw new Error('Firestore db not ready');
+        const snap = await _db.collection('products').get();
         const cloud = [];
         snap.forEach(doc => {
           const d = doc.data();
@@ -5392,10 +5418,25 @@
       loadVisitorCount();
       restoreSession();
       // Load cloud products + orders (sync across all phones)
-      loadProductsFromFirebase();
-      loadOrdersFromFirebase().then(() => {
-        if (typeof refreshSellerStats === 'function') refreshSellerStats();
-      });
+      function bootCloud() {
+        try {
+          if (!window.db && typeof firebase !== 'undefined' && firebase.firestore) {
+            window.db = firebase.firestore();
+          }
+          db = window.db || db;
+        } catch (e) {}
+        if (typeof refreshCatalogFromCloud === 'function') {
+          refreshCatalogFromCloud();
+        } else {
+          loadProductsFromFirebase();
+        }
+        loadOrdersFromFirebase().then(() => {
+          if (typeof refreshSellerStats === 'function') refreshSellerStats();
+        }).catch(function(e){ console.error(e); });
+      }
+      bootCloud();
+      setTimeout(bootCloud, 1500);
+      setTimeout(bootCloud, 4000);
 
       // Mobile menu
       const mobileBtn = document.getElementById('mobile-menu-btn');
@@ -7527,7 +7568,6 @@ ${ogUrl}`;
       refreshSellerStats();
     }
 
-    async 
     function orderStatusClass(st) {
       const s = String(st || 'Pending').toLowerCase();
       if (s === 'confirmed') return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
