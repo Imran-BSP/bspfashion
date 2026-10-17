@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1189,7 +1190,1247 @@
       display: flex;
       flex-direction: column;
     }
+  
+    /* ========== ADVANCED UI 2026 ========== */
+    :root {
+      --gold: #c9a227;
+      --gold-bright: #f0d78c;
+      --gold-dim: rgba(201,162,39,0.35);
+      --surface: rgba(255,255,255,0.035);
+      --surface-2: rgba(255,255,255,0.06);
+      --line: rgba(255,255,255,0.08);
+      --glow: 0 0 60px rgba(201,162,39,0.12);
+    }
+
+    body {
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(201,162,39,0.08), transparent 55%),
+        radial-gradient(900px 500px at 90% 20%, rgba(80,60,20,0.25), transparent 50%),
+        radial-gradient(800px 400px at 50% 100%, rgba(201,162,39,0.05), transparent 45%),
+        #0a0a0a !important;
+    }
+
+    /* Scroll progress */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0; height: 2px; z-index: 200;
+      width: 0%; background: linear-gradient(90deg, #8b6914, #f0d78c, #c9a227);
+      box-shadow: 0 0 12px rgba(240,215,140,0.5);
+      transition: width 0.05s linear;
+    }
+
+    /* Header glass upgrade */
+    #header, header.glass, .header-bar {
+      backdrop-filter: blur(20px) saturate(1.4) !important;
+      -webkit-backdrop-filter: blur(20px) saturate(1.4) !important;
+      border-bottom: 1px solid rgba(201,162,39,0.12) !important;
+      transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    }
+    #header.is-scrolled, header.is-scrolled {
+      background: rgba(10,10,10,0.85) !important;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,162,39,0.08);
+    }
+
+    /* Nav link underline animation */
+    nav a, .nav-link {
+      position: relative;
+      transition: color 0.25s ease;
+    }
+    nav a::after, .nav-link::after {
+      content: '';
+      position: absolute; left: 50%; bottom: -4px;
+      width: 0; height: 1.5px;
+      background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+    nav a:hover::after, .nav-link:hover::after,
+    nav a.active::after {
+      width: 100%; left: 0;
+    }
+
+    /* Premium buttons */
+    .btn-lux, a.bg-gold-500, button.bg-gold-500,
+    .bg-gradient-to-r.from-gold-500 {
+      position: relative; overflow: hidden;
+      box-shadow: 0 8px 28px rgba(201,162,39,0.28), inset 0 1px 0 rgba(255,255,255,0.25);
+      transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+    }
+    .btn-lux:hover, a.bg-gold-500:hover, button.bg-gold-500:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 36px rgba(201,162,39,0.4), 0 0 24px rgba(240,215,140,0.15);
+    }
+    .btn-lux::after, a.bg-gold-500::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+      transform: translateX(-120%);
+      transition: transform 0.6s ease;
+    }
+    .btn-lux:hover::after, a.bg-gold-500:hover::after {
+      transform: translateX(120%);
+    }
+
+    /* Product cards — advanced */
+    #products-grid > .product-card,
+    #products-grid > div {
+      position: relative;
+      border-radius: 1.25rem !important;
+      background: linear-gradient(165deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%) !important;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1),
+                  box-shadow 0.4s ease,
+                  border-color 0.35s ease !important;
+    }
+    #products-grid > .product-card::before,
+    #products-grid > div::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background: linear-gradient(135deg, rgba(201,162,39,0.12), transparent 40%);
+      opacity: 0; transition: opacity 0.4s ease;
+    }
+    @media (hover:hover) and (pointer:fine) {
+      #products-grid > .product-card:hover,
+      #products-grid > div:hover {
+        transform: translateY(-12px) scale(1.01) !important;
+        border-color: rgba(201,162,39,0.45) !important;
+        box-shadow:
+          0 24px 50px rgba(0,0,0,0.55),
+          0 0 0 1px rgba(201,162,39,0.2),
+          0 0 40px rgba(201,162,39,0.1) !important;
+      }
+      #products-grid > .product-card:hover::before,
+      #products-grid > div:hover::before { opacity: 1; }
+    }
+    #products-grid .product-img {
+      transition: transform 0.7s cubic-bezier(0.22,1,0.36,1) !important;
+    }
+    @media (hover:hover) {
+      #products-grid > div:hover .product-img {
+        transform: scale(1.1) !important;
+      }
+    }
+
+    /* Section headings */
+    section h2 {
+      letter-spacing: -0.02em;
+    }
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #f5e6b8 0%, #c9a227 45%, #8b6914 100%) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+    }
+
+    /* Glass panels */
+    .glass {
+      background: rgba(255,255,255,0.035) !important;
+      backdrop-filter: blur(18px) !important;
+      -webkit-backdrop-filter: blur(18px) !important;
+      border: 1px solid rgba(255,255,255,0.09) !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .glass-strong {
+      background: rgba(18,18,18,0.75) !important;
+      backdrop-filter: blur(28px) saturate(1.3) !important;
+      border: 1px solid rgba(201,162,39,0.18) !important;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), var(--glow);
+    }
+
+    /* Modals */
+    .modal-overlay.open .modal-content {
+      animation: modalIn 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.92) translateY(24px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Filter chips */
+    .filter-btn {
+      transition: all 0.25s ease !important;
+    }
+    .filter-btn:hover {
+      border-color: rgba(201,162,39,0.5) !important;
+      color: #f0d78c !important;
+    }
+    .filter-btn.active {
+      box-shadow: 0 0 20px rgba(201,162,39,0.25);
+    }
+
+    /* Search input glow */
+    #product-search:focus, #product-sort:focus {
+      border-color: rgba(201,162,39,0.55) !important;
+      box-shadow: 0 0 0 3px rgba(201,162,39,0.15), 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    /* B2B cards */
+    .b2b-card, #b2b-platforms a {
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease, border-color 0.3s ease !important;
+    }
+    .b2b-card:hover, #b2b-platforms a:hover {
+      transform: translateY(-6px);
+    }
+
+    /* Floating WhatsApp pulse */
+    #floating-whatsapp {
+      animation: waFloat 3s ease-in-out infinite;
+    }
+    @keyframes waFloat {
+      0%, 100% { transform: translateY(0); box-shadow: 0 8px 28px rgba(37,211,102,0.45); }
+      50% { transform: translateY(-6px); box-shadow: 0 16px 36px rgba(37,211,102,0.55), 0 0 0 8px rgba(37,211,102,0.1); }
+    }
+
+    /* Section reveal */
+    .lux-reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+    }
+    .lux-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hero ambient orbs */
+    #home {
+      position: relative;
+      overflow: hidden;
+    }
+    #home::before {
+      content: '';
+      position: absolute;
+      width: 480px; height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,162,39,0.14), transparent 70%);
+      top: 10%; left: -8%;
+      filter: blur(40px);
+      pointer-events: none;
+      animation: orbDrift 12s ease-in-out infinite alternate;
+      z-index: 0;
+    }
+    #home::after {
+      content: '';
+      position: absolute;
+      width: 360px; height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(240,215,140,0.08), transparent 70%);
+      bottom: 5%; right: 5%;
+      filter: blur(50px);
+      pointer-events: none;
+      animation: orbDrift 14s ease-in-out infinite alternate-reverse;
+      z-index: 0;
+    }
+    @keyframes orbDrift {
+      from { transform: translate(0, 0); }
+      to { transform: translate(40px, 30px); }
+    }
+    #home > * { position: relative; z-index: 1; }
+
+    /* Noise texture overlay (subtle) */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Cart badge pulse */
+    #cart-count, .cart-badge {
+      animation: badgePop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes badgePop {
+      from { transform: scale(0.5); }
+      to { transform: scale(1); }
+    }
+
+    /* Footer premium */
+    footer {
+      border-top: 1px solid rgba(201,162,39,0.1);
+      background: linear-gradient(180deg, transparent, rgba(201,162,39,0.03));
+    }
+
+    /* Smooth selection */
+    ::selection {
+      background: rgba(201,162,39,0.35);
+      color: #fff;
+    }
+
+    /* Product grid stagger already may exist - reinforce */
+    #products-grid > div {
+      animation: cardFadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    @keyframes cardFadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    #products-grid > div:nth-child(1) { animation-delay: 0.02s; }
+    #products-grid > div:nth-child(2) { animation-delay: 0.05s; }
+    #products-grid > div:nth-child(3) { animation-delay: 0.08s; }
+    #products-grid > div:nth-child(4) { animation-delay: 0.11s; }
+    #products-grid > div:nth-child(5) { animation-delay: 0.14s; }
+    #products-grid > div:nth-child(6) { animation-delay: 0.17s; }
+    #products-grid > div:nth-child(7) { animation-delay: 0.2s; }
+    #products-grid > div:nth-child(8) { animation-delay: 0.23s; }
+
+  
+    /* ========== 3D HERO ========== */
+    .hero-3d { min-height: 100vh; }
+    .hero3d-scene { pointer-events: none; }
+    .hero3d-void {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 30%, rgba(40,30,10,0.5), transparent 70%),
+        radial-gradient(ellipse 50% 40% at 70% 60%, rgba(201,162,39,0.06), transparent 60%),
+        #050505;
+    }
+    .hero3d-floor {
+      position: absolute; left: -20%; right: -20%; bottom: -5%; height: 55%;
+      background: linear-gradient(to top, #0a0a0a 0%, transparent 70%);
+      transform: perspective(600px) rotateX(55deg);
+      transform-origin: center bottom;
+      opacity: 0.9;
+    }
+    .hero3d-grid-floor {
+      position: absolute; left: -30%; right: -30%; bottom: 0; height: 50%;
+      background-image:
+        linear-gradient(rgba(201,162,39,0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,162,39,0.12) 1px, transparent 1px);
+      background-size: 48px 48px;
+      transform: perspective(500px) rotateX(62deg);
+      transform-origin: center bottom;
+      mask-image: linear-gradient(to top, rgba(0,0,0,0.7), transparent 75%);
+      -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.7), transparent 75%);
+      animation: gridMove 20s linear infinite;
+    }
+    @keyframes gridMove {
+      from { background-position: 0 0; }
+      to { background-position: 0 48px; }
+    }
+    .hero3d-glow {
+      position: absolute; width: 420px; height: 420px; border-radius: 50%;
+      filter: blur(80px); opacity: 0.35;
+    }
+    .hero3d-glow-l {
+      left: -5%; top: 20%;
+      background: radial-gradient(circle, rgba(201,162,39,0.35), transparent 70%);
+      animation: glowPulse 8s ease-in-out infinite;
+    }
+    .hero3d-glow-r {
+      right: -5%; top: 40%;
+      background: radial-gradient(circle, rgba(240,215,140,0.2), transparent 70%);
+      animation: glowPulse 10s ease-in-out infinite reverse;
+    }
+    @keyframes glowPulse {
+      0%,100% { opacity: 0.25; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(1.15); }
+    }
+
+    .perspective-hero {
+      perspective: 1200px;
+      perspective-origin: 50% 40%;
+    }
+    .hero3d-stage-wrap {
+      width: min(380px, 85vw);
+      height: min(460px, 105vw);
+      position: relative;
+      transform-style: preserve-3d;
+    }
+    @media (min-width: 1024px) {
+      .hero3d-stage-wrap { width: 400px; height: 500px; }
+    }
+
+    .hero3d-ring {
+      position: absolute; left: 50%; top: 50%;
+      border: 1px solid rgba(201,162,39,0.25);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotateX(70deg);
+      box-shadow: 0 0 30px rgba(201,162,39,0.08);
+    }
+    .hero3d-ring.r1 { width: 110%; height: 40%; animation: ringSpin 14s linear infinite; }
+    .hero3d-ring.r2 { width: 130%; height: 48%; border-color: rgba(201,162,39,0.12); animation: ringSpin 20s linear infinite reverse; }
+    .hero3d-ring.r3 { width: 150%; height: 56%; border-color: rgba(201,162,39,0.07); animation: ringSpin 28s linear infinite; }
+    @keyframes ringSpin {
+      from { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(0deg); }
+      to { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(360deg); }
+    }
+
+    .hero3d-card {
+      position: absolute; inset: 8% 10%;
+      transform-style: preserve-3d;
+      animation: cardFloat3d 6s ease-in-out infinite;
+      z-index: 5;
+    }
+    @keyframes cardFloat3d {
+      0%,100% { transform: rotateY(-12deg) rotateX(4deg) translateY(0); }
+      50% { transform: rotateY(12deg) rotateX(2deg) translateY(-14px); }
+    }
+    .hero3d-card-inner {
+      width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      border-radius: 1.25rem;
+      box-shadow:
+        0 40px 80px rgba(0,0,0,0.65),
+        0 0 0 1px rgba(201,162,39,0.35),
+        0 0 60px rgba(201,162,39,0.15);
+      overflow: hidden;
+      background: #111;
+    }
+    .hero3d-card-face {
+      width: 100%; height: 100%;
+      position: relative;
+      border-radius: 1.25rem;
+      overflow: hidden;
+    }
+    .hero3d-card-face img {
+      width: 100%; height: 100%; object-fit: cover;
+      transform: scale(1.05);
+      transition: transform 0.6s ease;
+    }
+    .hero3d-card:hover .hero3d-card-face img {
+      transform: scale(1.12);
+    }
+    .hero3d-card-shade {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(201,162,39,0.12) 0%, transparent 40%, rgba(0,0,0,0.4) 100%);
+      pointer-events: none;
+    }
+
+    /* Interactive tilt via JS class */
+    .hero3d-card.tilting {
+      animation: none;
+      transition: transform 0.15s ease-out;
+    }
+
+    .hero3d-float-badge {
+      position: absolute; z-index: 8;
+      display: flex; flex-direction: column; align-items: center;
+      animation: badgeFloat 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .hero3d-float-badge.b1 { top: 8%; right: -8%; animation-delay: 0s; }
+    .hero3d-float-badge.b2 { bottom: 22%; left: -12%; animation-delay: 1.2s; }
+    .hero3d-float-badge.b3 { top: 42%; right: -14%; animation-delay: 0.6s; }
+    @keyframes badgeFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .hero3d-title-glow {
+      filter: drop-shadow(0 0 24px rgba(201,162,39,0.35));
+    }
+
+    @media (max-width: 640px) {
+      .hero3d-float-badge.b2, .hero3d-float-badge.b3 { display: none; }
+      .hero3d-stage-wrap { height: min(400px, 100vw); }
+    }
+
+    /* reduce motion */
+    @media (prefers-reduced-motion: reduce) {
+      .hero3d-card, .hero3d-ring, .hero3d-grid-floor, .hero3d-float-badge {
+        animation: none !important;
+      }
+    }
+
+  
+    /* ========== LIGHT THEME DISABLED (was unprofessional) ========== */
+    body.theme-light-DISABLED {
+    /* light disabled */
+    body.theme-light::after { opacity: 0.02; }
+
+    /* Force readable text on light */
+    body.theme-light .text-white { color: #1a1814 !important; }
+    body.theme-light .text-gray-300 { color: #4a453c !important; }
+    body.theme-light .text-gray-400 { color: #6b6560 !important; }
+    body.theme-light .text-gray-500 { color: #8a847a !important; }
+    body.theme-light .text-gray-600 { color: #9c958a !important; }
+
+    body.theme-light .bg-dark-900,
+    body.theme-light .bg-dark-800,
+    body.theme-light .bg-dark-800\/50,
+    body.theme-light .bg-dark-700,
+    body.theme-light .bg-dark-700\/50,
+    body.theme-light .bg-dark-600 {
+      background-color: #fff !important;
+    }
+    body.theme-light .bg-dark-900\/80,
+    body.theme-light .bg-dark-900\/80 { background-color: rgba(255,255,255,0.92) !important; }
+
+    body.theme-light .border-white\/5,
+    body.theme-light .border-white\/10,
+    body.theme-light .border-white\/15 {
+      border-color: rgba(26,24,20,0.08) !important;
+    }
+
+    body.theme-light .glass {
+      background: rgba(255,255,255,0.72) !important;
+      border: 1px solid rgba(26,24,20,0.08) !important;
+      box-shadow: 0 8px 32px rgba(26,24,20,0.06) !important;
+      backdrop-filter: blur(16px) !important;
+    }
+    body.theme-light .glass-strong {
+      background: rgba(255,255,255,0.92) !important;
+      border: 1px solid rgba(184,134,11,0.2) !important;
+      box-shadow: 0 20px 50px rgba(26,24,20,0.1) !important;
+    }
+
+    body.theme-light #header,
+    body.theme-light header {
+      background: rgba(247,244,238,0.85) !important;
+      border-bottom: 1px solid rgba(184,134,11,0.15) !important;
+    }
+    body.theme-light #header.is-scrolled {
+      background: rgba(255,255,255,0.95) !important;
+      box-shadow: 0 8px 30px rgba(26,24,20,0.08) !important;
+    }
+
+    body.theme-light #scroll-progress {
+      background: linear-gradient(90deg, #b8860b, #e8d48b, #b8860b);
+    }
+
+    body.theme-light footer {
+      background: #efe9df !important;
+      border-top: 1px solid rgba(184,134,11,0.15);
+      color: #3d3a34;
+    }
+
+    body.theme-light .modal-overlay {
+      background: rgba(247,244,238,0.75) !important;
+    }
+    body.theme-light .modal-content {
+      color: #1a1814;
+    }
+
+    body.theme-light #products-grid > div {
+      background: #fff !important;
+      border: 1px solid rgba(26,24,20,0.07) !important;
+      box-shadow: 0 4px 20px rgba(26,24,20,0.05);
+    }
+    body.theme-light #products-grid > div:hover {
+      border-color: rgba(184,134,11,0.4) !important;
+      box-shadow: 0 20px 40px rgba(26,24,20,0.1), 0 0 0 1px rgba(184,134,11,0.15) !important;
+    }
+
+    body.theme-light .cart-sidebar {
+      background: #fffcf8 !important;
+      color: #1a1814;
+      border-left: 1px solid rgba(184,134,11,0.2);
+    }
+
+    body.theme-light input,
+    body.theme-light textarea,
+    body.theme-light select {
+      background: #fff !important;
+      color: #1a1814 !important;
+      border-color: rgba(26,24,20,0.12) !important;
+    }
+
+    /* AI VIDEO HERO */
+    .hero-ai-video {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+      background: #0c0b09;
+    }
+    .hero-ai-video .hv-video-wrap {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .hero-ai-video video {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: saturate(1.05) contrast(1.05);
+      transform: scale(1.04);
+    }
+    .hero-ai-video .hv-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background:
+        linear-gradient(105deg, rgba(12,11,9,0.88) 0%, rgba(12,11,9,0.55) 42%, rgba(12,11,9,0.25) 70%, rgba(247,244,238,0.15) 100%),
+        radial-gradient(ellipse at 70% 40%, rgba(201,162,39,0.15), transparent 50%);
+    }
+    .hero-ai-video .hv-ai-grid {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(240,215,140,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(240,215,140,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse at 60% 40%, black 20%, transparent 70%);
+    }
+    .hero-ai-video .hv-scan {
+      position: absolute; left: 0; right: 0; height: 120px; z-index: 2;
+      background: linear-gradient(to bottom, transparent, rgba(240,215,140,0.06), transparent);
+      animation: hvScan 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes hvScan {
+      0% { top: -20%; }
+      100% { top: 100%; }
+    }
+    .hero-ai-video .hv-content {
+      position: relative; z-index: 10;
+      color: #f5f0e6;
+    }
+    .hero-ai-video .hv-content .text-gray-400 { color: #c4bdb0 !important; }
+    .hero-ai-video h1 { color: #faf6ee !important; text-shadow: 0 4px 40px rgba(0,0,0,0.35); }
+
+    /* 3D product stage on light/video hero */
+    .hv-3d-wrap {
+      perspective: 1400px;
+      perspective-origin: 50% 45%;
+    }
+    .hv-3d-card {
+      position: relative;
+      width: min(340px, 78vw);
+      height: min(440px, 95vw);
+      margin: 0 auto;
+      transform-style: preserve-3d;
+      animation: hvFloat 7s ease-in-out infinite;
+    }
+    @keyframes hvFloat {
+      0%,100% { transform: rotateY(-14deg) rotateX(5deg) translateY(0); }
+      50% { transform: rotateY(14deg) rotateX(3deg) translateY(-16px); }
+    }
+    .hv-3d-card.tilting { animation: none; transition: transform 0.12s ease-out; }
+    .hv-3d-frame {
+      width: 100%; height: 100%;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      background: #111;
+      box-shadow:
+        0 40px 80px rgba(0,0,0,0.45),
+        0 0 0 1px rgba(240,215,140,0.35),
+        0 0 80px rgba(201,162,39,0.2);
+      transform-style: preserve-3d;
+    }
+    .hv-3d-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .hv-ring {
+      position: absolute; left: 50%; top: 50%;
+      border: 1px solid rgba(240,215,140,0.3);
+      border-radius: 50%;
+      transform: translate(-50%,-50%) rotateX(72deg);
+    }
+    .hv-ring.a { width: 120%; height: 42%; animation: hvRing 16s linear infinite; }
+    .hv-ring.b { width: 145%; height: 52%; opacity: 0.5; animation: hvRing 24s linear infinite reverse; }
+    @keyframes hvRing {
+      from { transform: translate(-50%,-50%) rotateX(72deg) rotateZ(0); }
+      to { transform: translate(-50%,-50%) rotateX(72deg) rotateZ(360deg); }
+    }
+    .hv-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(240,215,140,0.35);
+      backdrop-filter: blur(12px);
+      font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: #f0d78c; font-weight: 600;
+    }
+    .hv-chip .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #f0d78c;
+      box-shadow: 0 0 10px #f0d78c;
+      animation: pulse 2s ease infinite;
+    }
+
+    /* Light sections below hero */
+    body.theme-light #products,
+    body.theme-light #gallery,
+    body.theme-light #reviews,
+    body.theme-light #about,
+    body.theme-light #contact,
+    body.theme-light #b2b-platforms,
+    body.theme-light #offers {
+      background: transparent !important;
+    }
+
+    body.theme-light .text-gold-gradient {
+      background: linear-gradient(135deg, #8b6914, #c9a227 40%, #b8860b 100%) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+    }
+
+    /* Top bar */
+    body.theme-light .bg-\[\#0a0a0a\],
+    body.theme-light [class*="bg-[#050505]"] { background: #efe9df !important; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hv-3d-card, .hv-ring, .hv-scan { animation: none !important; }
+    }
+
+  
+    /* Professional hero product frame */
+    .hv-3d-frame {
+      border-radius: 1.25rem !important;
+      background: #f5f2eb !important;
+      box-shadow:
+        0 25px 50px rgba(0,0,0,0.35),
+        0 0 0 1px rgba(255,255,255,0.2),
+        0 0 0 8px rgba(255,255,255,0.04) !important;
+    }
+    .hv-3d-frame img {
+      object-fit: cover !important;
+      object-position: center top !important;
+      filter: saturate(1.05) contrast(1.02);
+    }
+    .hv-3d-card {
+      animation-duration: 8s !important;
+    }
+    /* subtler rings */
+    .hv-ring {
+      border-color: rgba(240,215,140,0.18) !important;
+    }
+    /* hide noisy scan if too much */
+    .hv-scan { opacity: 0.5; }
+
+  
+    /* Professional product cards */
+    #products-grid > div {
+      background: #141414 !important;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+      border-radius: 1rem !important;
+      overflow: hidden;
+      box-shadow: none !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    #products-grid > div:hover {
+      border-color: rgba(201,162,39,0.35) !important;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4) !important;
+      transform: translateY(-4px) !important;
+    }
+    #products-grid .product-img {
+      background: #1a1a1a;
+      object-fit: cover;
+      aspect-ratio: 3/4;
+    }
+    #products-grid img[src=""], #products-grid img:not([src]) {
+      background: #1a1a1a;
+    }
+    /* Hide broken blue circle share if any - style share gold */
+    #products-grid button.rounded-full.bg-blue-500,
+    #products-grid .bg-blue-500 {
+      background: #c9a227 !important;
+      color: #0a0a0a !important;
+    }
+
+  
+    /* ========== WINTER SEASON AI UI 2026 ========== */
+    body.winter-theme {
+      background:
+        radial-gradient(1400px 600px at 50% -15%, rgba(160,200,255,0.18), transparent 52%),
+        radial-gradient(900px 500px at 100% 30%, rgba(120,160,220,0.08), transparent 48%),
+        radial-gradient(700px 400px at 0% 80%, rgba(201,162,39,0.07), transparent 45%),
+        linear-gradient(180deg, #060a12 0%, #0a0a0a 40%, #07090e 100%) !important;
+    }
+
+    /* Snowfall layer — denser, soft 3D drift */
+    #snowfall {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 140;
+      overflow: hidden;
+    }
+    .snowflake {
+      position: absolute;
+      top: -20px;
+      color: rgba(255,255,255,0.9);
+      font-size: 10px;
+      text-shadow: 0 0 8px rgba(200,230,255,0.7), 0 0 2px rgba(255,255,255,0.9);
+      animation: snowfall-fall linear infinite;
+      user-select: none;
+      will-change: transform, opacity;
+      filter: drop-shadow(0 0 3px rgba(200,220,255,0.4));
+    }
+    .snowflake.big {
+      opacity: 0.95;
+      filter: blur(0.3px) drop-shadow(0 0 6px rgba(220,240,255,0.55));
+    }
+    @keyframes snowfall-fall {
+      0% { transform: translate3d(0, -12vh, 0) rotate(0deg) scale(0.85); opacity: 0; }
+      8% { opacity: 1; }
+      50% { transform: translate3d(calc(var(--sx, 20px) * 0.5), 50vh, 0) rotate(180deg) scale(1); }
+      92% { opacity: 0.8; }
+      100% { transform: translate3d(var(--sx, 20px), 108vh, 0) rotate(360deg) scale(0.9); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      /* user requested visible snow — keep light layer */
+      #snowfall { opacity: 0.35; }
+      #snow-canvas { opacity: 0.35; }
+    }
+    @media (max-width: 640px) {
+      .snowflake:nth-child(n+40) { display: none; }
+    }
+
+    /* Frost glass product cards */
+    #products-grid > div {
+      position: relative;
+      border-color: rgba(180,210,255,0.16) !important;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 10px 32px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.08) !important;
+      background: linear-gradient(165deg, rgba(30,38,52,0.95) 0%, rgba(12,14,18,0.98) 100%) !important;
+    }
+    #products-grid > div::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 6;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.16) 0%, transparent 30%),
+        linear-gradient(to bottom, rgba(220,235,255,0.1) 0%, transparent 22%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
+      opacity: 0.95;
+    }
+    #products-grid > div:hover {
+      border-color: rgba(180,210,255,0.35) !important;
+      box-shadow:
+        0 16px 44px rgba(0,0,0,0.5),
+        0 0 28px rgba(140,180,255,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.12) !important;
+    }
+
+    /* ===== PRODUCT CARD SNOW ACCUMULATION ===== */
+    .product-snow-cap {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 52px;
+      z-index: 6;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 48% 130% at 8% 0%, rgba(255,255,255,0.95) 0%, transparent 68%),
+        radial-gradient(ellipse 42% 120% at 28% 0%, rgba(255,255,255,0.88) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 125% at 50% 0%, rgba(255,255,255,0.92) 0%, transparent 68%),
+        radial-gradient(ellipse 40% 115% at 72% 0%, rgba(255,255,255,0.85) 0%, transparent 65%),
+        radial-gradient(ellipse 44% 120% at 92% 0%, rgba(255,255,255,0.9) 0%, transparent 68%),
+        linear-gradient(to bottom, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.12) 55%, transparent 100%);
+      filter: drop-shadow(0 2px 4px rgba(255,255,255,0.3));
+    }
+    .product-snow-cap::before {
+      content: '❄';
+      position: absolute;
+      top: 4px; left: 10%;
+      font-size: 11px;
+      color: rgba(255,255,255,0.9);
+      text-shadow: 0 0 6px rgba(200,230,255,0.8);
+      animation: snowCapTwinkle 3s ease-in-out infinite;
+    }
+    .product-snow-cap::after {
+      content: '❅';
+      position: absolute;
+      top: 6px; right: 12%;
+      font-size: 10px;
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 0 6px rgba(200,230,255,0.7);
+      animation: snowCapTwinkle 3.5s ease-in-out 0.8s infinite;
+    }
+    @keyframes snowCapTwinkle {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+    /* Extra snow bumps on image corners */
+    .product-snow-corner {
+      position: absolute;
+      z-index: 6;
+      pointer-events: none;
+      width: 36px;
+      height: 36px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.35) 40%, transparent 70%);
+      filter: blur(0.5px);
+    }
+    .product-snow-corner.tl { top: -2px; left: -2px; }
+    .product-snow-corner.tr { top: -2px; right: -2px; transform: scaleX(-1); }
+    /* Soft frost edge at bottom of image */
+    .product-frost-edge {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 28px;
+      z-index: 5;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(220,235,255,0.18) 0%, transparent 100%);
+    }
+    /* Card outer snow rim */
+    #products-grid > .product-card,
+    #products-grid > div.product-card {
+      box-shadow:
+        0 10px 32px rgba(0,0,0,0.4),
+        0 0 0 1px rgba(180,210,255,0.2),
+        inset 0 1px 0 rgba(255,255,255,0.12) !important;
+    }
+    #products-grid > .product-card:hover .product-snow-cap,
+    #products-grid > div:hover .product-snow-cap {
+      height: 56px;
+      filter: drop-shadow(0 3px 8px rgba(255,255,255,0.4));
+    }
+
+    /* Out of stock — B&W + badge watermark */
+    .product-img.oos-bw {
+      filter: grayscale(1) brightness(0.82) contrast(0.92) !important;
+    }
+    .oos-watermark {
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      background: rgba(0,0,0,0.22);
+    }
+    .oos-watermark img {
+      width: min(78%, 210px);
+      height: auto;
+      object-fit: contain;
+      opacity: 0.95;
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.55));
+      animation: oosPulse 2.8s ease-in-out infinite;
+    }
+    @keyframes oosPulse {
+      0%, 100% { transform: scale(1); opacity: 0.92; }
+      50% { transform: scale(1.03); opacity: 1; }
+    }
+
+    /* Winter header */
+    #header {
+      border-bottom-color: rgba(160,200,255,0.14) !important;
+      background: rgba(6,10,18,0.82) !important;
+    }
+    .winter-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: #e8f0ff;
+      background: linear-gradient(135deg, rgba(140,180,255,0.18), rgba(201,162,39,0.12));
+      border: 1px solid rgba(180,210,255,0.3);
+      box-shadow: 0 0 20px rgba(140,180,255,0.1);
+    }
+
+    /* Winter sale banner strip */
+    .winter-sale-banner {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, #0b1524 0%, #122038 40%, #1a2a44 60%, #0b1524 100%);
+      border-top: 1px solid rgba(180,210,255,0.2);
+      border-bottom: 1px solid rgba(201,162,39,0.25);
+    }
+    .winter-sale-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 120% at 20% 50%, rgba(160,200,255,0.12), transparent 60%),
+        radial-gradient(ellipse 40% 100% at 80% 50%, rgba(201,162,39,0.1), transparent 55%);
+      pointer-events: none;
+    }
+    .winter-sale-track {
+      display: flex;
+      width: max-content;
+      animation: winterSaleMarquee 28s linear infinite;
+    }
+    .winter-sale-track:hover { animation-play-state: paused; }
+    @keyframes winterSaleMarquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .winter-sale-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      white-space: nowrap;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #f0f6ff;
+      text-shadow: 0 0 20px rgba(160,200,255,0.35);
+    }
+    .winter-sale-chip .gift {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #c9a227, #f0d78c);
+      color: #111;
+      font-size: 14px;
+      box-shadow: 0 4px 14px rgba(201,162,39,0.4);
+    }
+    .winter-sale-chip .highlight {
+      color: #f0d78c;
+      background: linear-gradient(90deg, #f0d78c, #e8d48b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Icy filter chips */
+    body.winter-theme .filter-btn.active {
+      background: linear-gradient(135deg, rgba(140,180,255,0.25), rgba(201,162,39,0.18)) !important;
+      border-color: rgba(180,210,255,0.45) !important;
+      color: #e8f0ff !important;
+    }
+
+    /* Soft frost on glass panels */
+    body.winter-theme .glass {
+      border-color: rgba(180,210,255,0.1);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    body.winter-theme .glass-strong {
+      border-color: rgba(180,210,255,0.18);
+    }
+
+  
+    /* ============================================================
+       BSP FASHION — FULL WINTER SEASON REDESIGN 2026
+       Premium icy luxury · AI-agency look
+       ============================================================ */
+    body.winter-theme,
+    body {
+      --ice: #a8d4ff;
+      --ice-dim: #6ba3d4;
+      --frost: #e8f4ff;
+      --snow: #f5faff;
+      --navy: #0a1220;
+      --navy2: #0e1a2e;
+      --navy3: #132238;
+      --gold: #c9a227;
+      --gold-light: #f0d78c;
+      background:
+        radial-gradient(ellipse 120% 80% at 50% -30%, rgba(120,180,255,0.22), transparent 55%),
+        radial-gradient(ellipse 80% 50% at 100% 20%, rgba(90,140,220,0.1), transparent 50%),
+        radial-gradient(ellipse 60% 40% at 0% 90%, rgba(201,162,39,0.08), transparent 45%),
+        linear-gradient(180deg, #070e18 0%, #0a1220 35%, #0c1525 70%, #0a0f18 100%) !important;
+      color: #eef6ff;
+    }
+
+    #snowfall {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      pointer-events: none !important;
+      z-index: 9998 !important;
+      overflow: hidden !important;
+    }
+    .snowflake {
+      position: absolute;
+      top: -30px;
+      color: #fff;
+      text-shadow:
+        0 0 6px rgba(200,230,255,0.9),
+        0 0 12px rgba(160,210,255,0.4);
+      animation: snowFall linear infinite;
+      user-select: none;
+      will-change: transform, opacity;
+      opacity: 0.85;
+    }
+    .snowflake.flake-lg {
+      text-shadow: 0 0 10px rgba(220,240,255,1), 0 0 20px rgba(160,210,255,0.5);
+    }
+    @keyframes snowFall {
+      0%   { transform: translate3d(0,-5vh,0) rotate(0deg); opacity: 0; }
+      5%   { opacity: 0.9; }
+      40%  { transform: translate3d(calc(var(--sx,15px)*0.4), 40vh, 0) rotate(140deg); }
+      70%  { opacity: 0.75; }
+      100% { transform: translate3d(var(--sx,15px), 110vh, 0) rotate(360deg); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      /* user requested visible snow — keep light layer */
+      #snowfall { opacity: 0.35; }
+      #snow-canvas { opacity: 0.35; }
+    }
+
+    body.winter-theme .bg-dark-800.border-b,
+    body .bg-dark-800.border-b {
+      background: linear-gradient(90deg, rgba(10,18,32,0.95), rgba(14,26,46,0.95)) !important;
+      border-bottom-color: rgba(140,190,255,0.2) !important;
+    }
+
+    header#header, #header, .site-header {
+      background: rgba(8,14,24,0.78) !important;
+      backdrop-filter: blur(22px) saturate(1.3) !important;
+      -webkit-backdrop-filter: blur(22px) saturate(1.3) !important;
+      border-bottom: 1px solid rgba(140,190,255,0.18) !important;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 40px rgba(100,160,255,0.06) !important;
+    }
+    .nav-link:hover { color: #c8e4ff !important; text-shadow: 0 0 18px rgba(140,190,255,0.45); }
+    .nav-link::after { background: linear-gradient(90deg, #7eb8ff, #f0d78c) !important; }
+
+    #home {
+      background:
+        radial-gradient(ellipse 90% 70% at 70% 20%, rgba(100,160,255,0.15), transparent 55%),
+        radial-gradient(ellipse 60% 50% at 10% 80%, rgba(201,162,39,0.08), transparent 50%),
+        linear-gradient(165deg, #060d18 0%, #0a1528 50%, #0c1220 100%) !important;
+      min-height: 92vh !important;
+    }
+    #home::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 60% 15%, rgba(200,230,255,0.35), transparent),
+        radial-gradient(1.5px 1.5px at 80% 60%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 40% 75%, rgba(180,220,255,0.25), transparent);
+      pointer-events: none;
+      z-index: 0;
+      animation: starTwinkle 8s ease-in-out infinite alternate;
+    }
+    @keyframes starTwinkle {
+      0% { opacity: 0.4; }
+      100% { opacity: 0.85; }
+    }
+    #home h1, #home .font-serif {
+      color: #f0f7ff !important;
+      text-shadow: 0 4px 40px rgba(0,0,0,0.5), 0 0 60px rgba(120,180,255,0.15) !important;
+    }
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #e8f4ff 0%, #a8d4ff 30%, #f0d78c 70%, #c9a227 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+    }
+
+    #products, #reviews, #contact {
+      background: linear-gradient(180deg, rgba(10,18,32,0.9) 0%, rgba(12,20,36,0.95) 100%) !important;
+    }
+    #gallery, #about, #b2b-platforms {
+      background: transparent !important;
+    }
+    section h2.font-serif {
+      color: #f0f7ff !important;
+    }
+
+    section .group.relative.h-80,
+    section .group.relative.h-96 {
+      border: 1px solid rgba(140,190,255,0.15);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+    }
+
+    #products-grid > div,
+    #products-grid > .product-card {
+      background: linear-gradient(165deg, rgba(18,30,48,0.96) 0%, rgba(10,16,28,0.98) 100%) !important;
+      border: 1px solid rgba(140,190,255,0.16) !important;
+      box-shadow:
+        0 10px 32px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.06) !important;
+    }
+    #products-grid > div:hover,
+    #products-grid > .product-card:hover {
+      border-color: rgba(160,210,255,0.4) !important;
+      box-shadow:
+        0 18px 48px rgba(0,0,0,0.5),
+        0 0 32px rgba(100,170,255,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.1) !important;
+      transform: translateY(-8px) !important;
+    }
+    #products-grid > div::after {
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 32%),
+        linear-gradient(to bottom, rgba(200,230,255,0.12) 0%, transparent 25%) !important;
+    }
+    /* product-snow-cap enhanced above */
+
+
+    .filter-btn {
+      border-color: rgba(140,190,255,0.2) !important;
+      color: #c8dcf0 !important;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: linear-gradient(135deg, rgba(100,160,255,0.28), rgba(201,162,39,0.15)) !important;
+      border-color: rgba(160,210,255,0.5) !important;
+      color: #f0f8ff !important;
+      box-shadow: 0 0 24px rgba(100,160,255,0.2) !important;
+    }
+
+    .winter-sale-banner {
+      background: linear-gradient(90deg, #0a1628 0%, #122848 35%, #1a3458 50%, #122848 65%, #0a1628 100%) !important;
+      border-top: 1px solid rgba(160,210,255,0.3) !important;
+      border-bottom: 1px solid rgba(240,215,140,0.3) !important;
+      box-shadow: 0 0 40px rgba(80,140,220,0.15);
+    }
+    .winter-sale-chip {
+      font-size: 0.95rem;
+      padding: 16px 32px !important;
+    }
+
+    .bg-gradient-to-r.from-gold-600 {
+      background: linear-gradient(90deg, #8a6d1a, #c9a227, #e8d48b, #c9a227, #8a6d1a) !important;
+    }
+
+    .glass {
+      background: rgba(255,255,255,0.04) !important;
+      border-color: rgba(140,190,255,0.12) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06) !important;
+    }
+    .glass-strong {
+      background: rgba(12,20,36,0.92) !important;
+      border-color: rgba(140,190,255,0.2) !important;
+    }
+
+    footer {
+      background: linear-gradient(180deg, #0a1220 0%, #060d16 100%) !important;
+      border-top: 1px solid rgba(140,190,255,0.12) !important;
+    }
+
+    #cartSidebar, #cart-sidebar {
+      background: linear-gradient(180deg, rgba(12,20,36,0.98), rgba(8,14,24,0.99)) !important;
+      border-left-color: rgba(140,190,255,0.2) !important;
+    }
+    .modal-content, .modal-overlay .glass-strong {
+      border-color: rgba(140,190,255,0.18) !important;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 40px rgba(80,140,220,0.08) !important;
+    }
+
+    #scroll-progress {
+      background: linear-gradient(90deg, #5a9fd4, #a8d4ff, #f0d78c) !important;
+      height: 3px !important;
+      box-shadow: 0 0 12px rgba(140,190,255,0.5);
+    }
+
+    .winter-section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #c8e4ff;
+      background: rgba(100,160,255,0.12);
+      border: 1px solid rgba(140,190,255,0.28);
+      margin-bottom: 12px;
+    }
+
+    #offers {
+      background: linear-gradient(180deg, rgba(10,18,32,0.6), rgba(12,20,36,0.9)) !important;
+      border-color: rgba(140,190,255,0.15) !important;
+    }
+    .offer-banner-card {
+      border-color: rgba(140,190,255,0.2) !important;
+    }
+    .offer-banner-card:hover {
+      border-color: rgba(160,210,255,0.45) !important;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 30px rgba(100,160,255,0.12) !important;
+    }
+
+    #floating-whatsapp { z-index: 9999 !important; }
+    #toast { z-index: 10000 !important; }
+    .modal-overlay.open, .lightbox.open { z-index: 10001 !important; }
+
+
   </style>
+
+
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -1210,10 +2451,12 @@
     var db = window.db;
   </script>
 </head>
-<body class="bg-dark-900 text-white overflow-x-hidden">
+<body class="text-white overflow-x-hidden winter-theme">
+  <div id="snowfall" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:99998;overflow:hidden;"></div>
+  <div id="scroll-progress" aria-hidden="true"></div>
 
   <!-- ==================== TOP BAR ==================== -->
-  <div class="bg-dark-800 border-b border-gold-500/20 py-2 text-xs">
+  <div class="border-b py-2 text-xs" style="background:linear-gradient(90deg,#0a1628,#122848,#0a1628);border-color:rgba(140,190,255,0.25)">
     <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-between items-center gap-2">
       <div class="flex items-center gap-4 text-gray-400">
         <span class="flex items-center gap-1.5">
@@ -1275,7 +2518,7 @@
         <!-- Desktop Nav -->
         <nav class="hidden lg:flex items-center gap-8 text-sm font-medium">
           <a href="#home" class="nav-link text-gold-400 relative after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-gold-400" data-i18n="nav_home">Home</a>
-          <a href="#products" class="nav-link text-gray-300 hover:text-gold-400 transition-colors" data-i18n="nav_products">Products</a>
+          <a href="#products" class="nav-link text-gray-300 hover:text-gold-400 transition-colors btn-lux" data-i18n="nav_products">Products</a>
           <a href="gallery.html" class="nav-link text-gray-300 hover:text-gold-400 transition-colors" data-i18n="nav_gallery">Gallery</a>
           <a href="#reviews" class="nav-link text-gray-300 hover:text-gold-400 transition-colors" data-i18n="nav_reviews">Reviews</a>
           <a href="#about" class="nav-link text-gray-300 hover:text-gold-400 transition-colors" data-i18n="nav_about">About</a>
@@ -1310,7 +2553,7 @@
     <div id="mobile-menu" class="hidden lg:hidden border-t border-gold-500/10 bg-dark-800/95 backdrop-blur-xl">
       <nav class="flex flex-col px-4 py-4 gap-1 text-sm font-medium">
         <a href="#home" class="mobile-nav-link px-4 py-3 rounded-lg text-gold-400 bg-gold-500/10" data-i18n="nav_home">Home</a>
-        <a href="#products" class="mobile-nav-link px-4 py-3 rounded-lg text-gray-300 hover:bg-white/5 hover:text-gold-400">Products</a>
+        <a href="#products" class="mobile-nav-link px-4 py-3 rounded-lg text-gray-300 hover:bg-white/5 hover:text-gold-400 btn-lux">Products</a>
         <a href="gallery.html" class="mobile-nav-link px-4 py-3 rounded-lg text-gray-300 hover:bg-white/5 hover:text-gold-400">Gallery</a>
         <a href="#reviews" class="mobile-nav-link px-4 py-3 rounded-lg text-gray-300 hover:bg-white/5 hover:text-gold-400">Reviews</a>
         <a href="#about" class="mobile-nav-link px-4 py-3 rounded-lg text-gray-300 hover:bg-white/5 hover:text-gold-400">About</a>
@@ -1324,140 +2567,141 @@
     </div>
   </header>
 
-  <!-- ==================== HERO — DARK LUXURY (Concept 1) ==================== -->
-  <section id="home" class="relative min-h-[88vh] lg:min-h-[92vh] overflow-hidden flex flex-col">
-    <!-- AI Modern Hero Background -->
-    <div class="absolute inset-0 z-0 overflow-hidden ai-hero-bg">
-      <div class="absolute inset-0 bg-[#050505]"></div>
-      <!-- Animated mesh gradients -->
-      <div class="ai-mesh ai-mesh-1"></div>
-      <div class="ai-mesh ai-mesh-2"></div>
-      <div class="ai-mesh ai-mesh-3"></div>
-      <!-- Floating orbs -->
-      <div class="ai-orb ai-orb-1"></div>
-      <div class="ai-orb ai-orb-2"></div>
-      <div class="ai-orb ai-orb-3"></div>
-      <!-- Grid overlay -->
-      <div class="ai-grid"></div>
-      <!-- Scan line -->
-      <div class="ai-scanline"></div>
-      <!-- Vignette -->
-      <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse 80% 70% at 50% 40%, transparent 20%, rgba(5,5,5,0.75) 100%);"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/70 to-transparent pointer-events-none"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]/60 pointer-events-none"></div>
+  <!-- ==================== HERO — CINEMATIC WINTER 2026 ==================== -->
+  <section id="home" class="relative min-h-screen flex flex-col overflow-hidden">
+    <!-- Full-bleed winter background -->
+    <div class="absolute inset-0 z-0" aria-hidden="true">
+      <img src="https://ik.imagekit.io/bsp/BSP%20Fashion%20Winter%20Collection%20Banner.png"
+           alt=""
+           class="w-full h-full object-cover"
+           style="filter:brightness(0.35) saturate(0.85) contrast(1.1);">
+      <div class="absolute inset-0" style="background:
+        linear-gradient(180deg, rgba(6,13,24,0.75) 0%, rgba(8,18,32,0.55) 40%, rgba(6,13,24,0.92) 100%),
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(120,180,255,0.2), transparent %);"></div>
+      <!-- Ice orbs -->
+      <div class="absolute top-[15%] left-[8%] w-64 h-64 rounded-full blur-[90px]" style="background:rgba(100,170,255,0.15)"></div>
+      <div class="absolute bottom-[20%] right-[10%] w-80 h-80 rounded-full blur-[100px]" style="background:rgba(201,162,39,0.12)"></div>
     </div>
 
-    <!-- Main hero content -->
-    <div class="relative z-20 flex-1 flex items-center">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 w-full py-16 md:py-20">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
-          
-          <!-- Left copy -->
-          <div class="lg:col-span-5 order-2 lg:order-1">
-            <p class="text-gold-400/90 text-[11px] sm:text-xs font-medium tracking-[0.35em] uppercase mb-5">Indian Ethnic Wear</p>
-            <h1 class="font-serif text-[2.35rem] sm:text-5xl md:text-6xl leading-[1.08] font-bold text-[#f3e6c0] mb-5">
-              Heritage<br class="hidden sm:block"/> Reimagined<br/>
-              <span class="text-gold-gradient">For a New Generation</span>
-            </h1>
-            <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-8 max-w-md">
-              Premium ethnic wear for kids, men &amp; ladies. Timeless designs. Wholesale excellence since 2017.
-            </p>
-            <div class="flex flex-wrap gap-3">
-              <a href="#products" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#c9a227] to-[#e8d48b] text-dark-900 font-semibold text-sm tracking-wide shadow-lg shadow-gold-500/30 hover:shadow-gold-500/50 hover:scale-[1.03] transition-all">
-                Explore Collection
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-              </a>
-              <a href="#about" class="inline-flex items-center px-6 py-3.5 rounded-full border border-gold-500/30 text-gold-400/90 text-sm font-medium hover:bg-gold-500/10 transition-all">Our Story</a>
-            </div>
-          </div>
+    <div class="relative z-10 flex-1 flex flex-col items-center justify-center px-4 pt-28 pb-20 text-center">
+      <!-- Top badges -->
+      <div class="flex flex-wrap items-center justify-center gap-3 mb-6">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-bold tracking-[0.2em] uppercase text-[#0a1220] bg-white shadow-lg shadow-white/20">
+          ❄ WINTER 2026
+        </span>
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-bold tracking-[0.15em] uppercase text-dark-900 bg-gradient-to-r from-[#c9a227] to-[#f0d78c] shadow-lg shadow-gold-500/30">
+          🎁 GIFT ON ₹50,000+
+        </span>
+      </div>
 
-          <!-- Center — AI product stage -->
-          <div class="lg:col-span-5 order-1 lg:order-2 relative flex justify-center items-center">
-            <div class="ai-stage relative w-full max-w-md">
-              <div class="ai-stage-ring"></div>
-              <div class="ai-stage-ring ai-stage-ring-2"></div>
-              <div class="relative rounded-2xl overflow-hidden border border-gold-500/30 shadow-[0_0_60px_rgba(201,162,39,0.15)] bg-[#0a0a0a]/80 backdrop-blur-sm aspect-[4/5]">
-                <img id="hero-stage-img" src="https://images.unsplash.com/photo-1601924999987-b6eaf0bf1a4c?w=900&q=85" alt="BSP Fashion" class="w-full h-full object-cover object-top opacity-90" onerror="this.src='https://ik.imagekit.io/bsp/1788066275504-clean.png'">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
-                <div class="absolute top-3 left-3 right-3 flex justify-between items-center">
-                  <span class="px-2.5 py-1 rounded-md text-[9px] tracking-[0.2em] uppercase border border-gold-500/40 text-gold-400 bg-black/40 backdrop-blur">AI STUDIO</span>
-                  <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)] animate-pulse"></span>
-                </div>
-                <div class="absolute bottom-4 left-4 right-4">
-                  <div class="text-[10px] text-gold-400/80 tracking-widest uppercase mb-1">Live Catalog</div>
-                  <div class="h-0.5 w-full bg-white/10 rounded overflow-hidden">
-                    <div class="h-full w-2/3 bg-gradient-to-r from-gold-500 to-gold-300 rounded ai-progress"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <!-- Big headline -->
+      <h1 class="font-serif font-bold leading-[1.05] mb-5 max-w-4xl mx-auto"
+          style="font-size:clamp(2.4rem,6vw,4.25rem);color:#f5faff;text-shadow:0 4px 40px rgba(0,0,0,0.5),0 0 80px rgba(120,180,255,0.15)">
+        Winter Season<br/>
+        <span class="text-gold-gradient">Wholesale Sale</span>
+      </h1>
 
-          <!-- Right feature icons -->
-          <div class="lg:col-span-2 order-3 flex lg:flex-col flex-row flex-wrap justify-center lg:justify-center gap-6 lg:gap-10 lg:pl-2">
-            <div class="flex flex-col items-center text-center gap-2 max-w-[100px]">
-              <div class="w-12 h-12 rounded-full border border-gold-500/40 flex items-center justify-center text-gold-400 bg-gold-500/5">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-              </div>
-              <span class="text-[10px] tracking-widest uppercase text-gray-400 leading-tight">Premium<br/>Quality</span>
+      <p class="text-sky-100/75 text-base sm:text-lg max-w-xl mx-auto mb-8 leading-relaxed">
+        Kids · Men · Ladies · Winter wear — Kolkata manufacturer since 2017.<br class="hidden sm:block"/>
+        GST registered · MOQ ₹5000 · Pan-India shipping
+      </p>
+
+      <!-- CTA row -->
+      <div class="flex flex-wrap items-center justify-center gap-4 mb-12">
+        <a href="#products"
+           class="inline-flex items-center gap-2 px-9 py-4 rounded-full font-bold text-sm tracking-wide text-dark-900 transition-transform hover:scale-[1.03]"
+           style="background:linear-gradient(135deg,#f0d78c,#c9a227);box-shadow:0 8px 32px rgba(201,162,39,0.45)">
+          Explore Winter Collection →
+        </a>
+        <a href="https://wa.me/918981839702?text=Hello%20BSP%20Fashion%20-%20Winter%20Sale"
+           target="_blank" rel="noopener"
+           class="inline-flex items-center gap-2 px-7 py-4 rounded-full font-semibold text-sm border-2 border-white/30 text-white hover:bg-white/10 transition-colors">
+          WhatsApp Order
+        </a>
+      </div>
+
+      <!-- Floating offer card — clearly new UI -->
+      <div class="w-full max-w-3xl mx-auto">
+        <div class="relative rounded-2xl overflow-hidden border border-sky-300/25 backdrop-blur-xl"
+             style="background:linear-gradient(135deg,rgba(12,28,48,0.85),rgba(18,36,58,0.9));box-shadow:0 25px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(160,210,255,0.1),inset 0 1px 0 rgba(255,255,255,0.08)">
+          <!-- snow edge -->
+          <div class="absolute top-0 left-0 right-0 h-8 pointer-events-none" style="background:linear-gradient(to bottom,rgba(255,255,255,0.2),transparent);border-radius:1rem 1rem 0 0"></div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-sky-300/15">
+            <div class="p-6 sm:p-7 text-center">
+              <div class="text-3xl mb-2">❄</div>
+              <div class="font-serif text-xl font-bold text-white mb-1">Winter Drop</div>
+              <div class="text-xs text-sky-200/60">Fresh stock · Kids & Adults</div>
             </div>
-            <div class="flex flex-col items-center text-center gap-2 max-w-[100px]">
-              <div class="w-12 h-12 rounded-full border border-gold-500/40 flex items-center justify-center text-gold-400 bg-gold-500/5">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              </div>
-              <span class="text-[10px] tracking-widest uppercase text-gray-400 leading-tight">Exclusive<br/>Designs</span>
+            <div class="p-6 sm:p-7 text-center">
+              <div class="text-3xl mb-2">🎁</div>
+              <div class="font-serif text-xl font-bold text-gold-400 mb-1">Free Gift</div>
+              <div class="text-xs text-sky-200/60">On purchase ₹50,000 &amp; above</div>
             </div>
-            <div class="flex flex-col items-center text-center gap-2 max-w-[100px]">
-              <div class="w-12 h-12 rounded-full border border-gold-500/40 flex items-center justify-center text-gold-400 bg-gold-500/5">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-              </div>
-              <span class="text-[10px] tracking-widest uppercase text-gray-400 leading-tight">Wholesale<br/>Trust</span>
+            <div class="p-6 sm:p-7 text-center">
+              <div class="text-3xl mb-2">🚚</div>
+              <div class="font-serif text-xl font-bold text-white mb-1">Pan India</div>
+              <div class="text-xs text-sky-200/60">Delhivery · DTDC · India Post · VRL</div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Curated strip — live products -->
-    <div class="relative z-20 border-t border-gold-500/15 bg-black/40 backdrop-blur-md">
-      <div class="max-w-7xl mx-auto px-4 py-6 md:py-8">
-        <div class="flex items-center justify-center gap-3 mb-5">
-          <div class="h-px flex-1 max-w-[80px] bg-gradient-to-r from-transparent to-gold-500/50"></div>
-          <p class="text-[10px] sm:text-xs tracking-[0.3em] uppercase text-gold-400/90 font-medium">Curated for Wholesale Partners</p>
-          <div class="h-px flex-1 max-w-[80px] bg-gradient-to-l from-transparent to-gold-500/50"></div>
+      <!-- Stats strip -->
+      <div class="mt-12 flex flex-wrap items-center justify-center gap-8 sm:gap-12 text-center">
+        <div>
+          <div class="font-serif text-2xl sm:text-3xl font-bold text-gold-400">2017</div>
+          <div class="text-[10px] uppercase tracking-widest text-sky-200/50 mt-1">Established</div>
         </div>
-        <div id="featured-luxury-grid" class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-          <!-- filled by JS from uploaded products -->
+        <div class="w-px h-10 bg-sky-300/20 hidden sm:block"></div>
+        <div>
+          <div class="font-serif text-2xl sm:text-3xl font-bold text-gold-400">₹5K</div>
+          <div class="text-[10px] uppercase tracking-widest text-sky-200/50 mt-1">Min Order</div>
+        </div>
+        <div class="w-px h-10 bg-sky-300/20 hidden sm:block"></div>
+        <div>
+          <div class="font-serif text-2xl sm:text-3xl font-bold text-gold-400">GST</div>
+          <div class="text-[10px] uppercase tracking-widest text-sky-200/50 mt-1">Registered</div>
+        </div>
+        <div class="w-px h-10 bg-sky-300/20 hidden sm:block"></div>
+        <div>
+          <div class="font-serif text-2xl sm:text-3xl font-bold text-gold-400">B2B</div>
+          <div class="text-[10px] uppercase tracking-widest text-sky-200/50 mt-1">Wholesale Only</div>
         </div>
       </div>
     </div>
+
+    <!-- Bottom fade into next section -->
+    <div class="absolute bottom-0 left-0 right-0 h-24 z-[5] pointer-events-none"
+         style="background:linear-gradient(to top, #070e18, transparent)"></div>
   </section>
 
 
   <!-- ==================== MARQUEE ==================== -->
   <div class="bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 py-3 overflow-hidden">
     <div class="marquee flex whitespace-nowrap text-dark-900 font-semibold text-sm tracking-wide">
+      <span class="mx-8">❄ Winter Season Sale Live</span>
+      <span class="mx-8">🎁 Gift on Purchase ₹50,000+</span>
       <span class="mx-8">✦ Manufacturer Since 2017</span>
-      <span class="mx-8">✦ Kids • Men's • Ladies Wear</span>
+      <span class="mx-8">✦ Kids • Men's • Ladies • Winter Wear</span>
       <span class="mx-8">✦ MOQ Only ₹5000</span>
       <span class="mx-8">✦ Pan India Shipping</span>
-      <span class="mx-8">✦ Advance + Cash on Delivery</span>
-      <span class="mx-8">✦ Delhivery • DTDC • India Post</span>
+      <span class="mx-8">❄ Winter Season Sale Live</span>
+      <span class="mx-8">🎁 Gift on Purchase ₹50,000+</span>
       <span class="mx-8">✦ Manufacturer Since 2017</span>
-      <span class="mx-8">✦ Kids • Men's • Ladies Wear</span>
+      <span class="mx-8">✦ Kids • Men's • Ladies • Winter Wear</span>
       <span class="mx-8">✦ MOQ Only ₹5000</span>
       <span class="mx-8">✦ Pan India Shipping</span>
-      <span class="mx-8">✦ Advance + Cash on Delivery</span>
-      <span class="mx-8">✦ Delhivery • DTDC • India Post</span>
     </div>
   </div>
 
+ 
   <!-- ==================== CATEGORIES ==================== -->
   <section class="py-16 md:py-24">
     <div class="max-w-7xl mx-auto px-4">
       <div class="text-center mb-12">
+        <span class="winter-section-label">Shop by Category</span>
         <h2 class="font-serif text-3xl md:text-5xl font-bold mb-3"><span data-i18n="sec_category">Category ke Hisaab se</span> <span class="text-gold-gradient" data-i18n="sec_category_hl">Dekho</span></h2>
-        <p class="text-gray-400 max-w-xl mx-auto">Family ke liye premium quality kapde — wholesale rates pe</p>
+        <p class="text-sky-100/50 max-w-xl mx-auto">Winter collection · Kids · Men · Ladies — wholesale rates pe</p>
       </div>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -1611,7 +2855,7 @@
   </section>
 
   <!-- ==================== PRODUCTS ==================== -->
-  <section id="products" class="py-16 md:py-24 bg-dark-800/50">
+  <section id="products" class="py-16 md:py-24">
     <div class="max-w-7xl mx-auto px-4">
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
@@ -4707,64 +5951,50 @@
 
     // ==================== FIREBASE SYNC ====================
 
-    function normalizeSizes(d) {
-      // Accept sizes, size, or single size+price fields from Firestore
+        function normalizeSizes(d) {
+      if (!d) return [];
       let raw = d.sizes || d.size || d.Size || d.Sizes || [];
+      if (typeof raw === 'string') {
+        try { raw = JSON.parse(raw); } catch (e) { raw = []; }
+      }
       if (!Array.isArray(raw)) {
-        // single map object
-        if (raw && typeof raw === 'object') raw = [raw];
-        else raw = [];
+        if (raw && typeof raw === 'object') {
+          // map like { "20x30": 285, "32x34": 300 }
+          const keys = Object.keys(raw);
+          if (keys.length && raw.size == null && raw.price == null) {
+            raw = keys.map(k => ({ size: k, price: raw[k] }));
+          } else {
+            raw = [raw];
+          }
+        } else raw = [];
       }
       const out = [];
       raw.forEach(item => {
         if (item == null) return;
-        if (typeof item === 'string' || typeof item === 'number') {
-          // skip invalid
-          return;
-        }
-        // item may be { size, price } or { "20x30": 285 } wrong format
-        let sizeVal = item.size != null ? item.size : (item.Size != null ? item.Size : null);
-        let priceVal = item.price != null ? item.price : (item.Price != null ? item.Price : null);
+        if (typeof item === 'string' || typeof item === 'number') return;
+        let sizeVal = item.size != null ? item.size : (item.Size != null ? item.Size : (item.label != null ? item.label : null));
+        let priceVal = item.price != null ? item.price : (item.Price != null ? item.Price : (item.rate != null ? item.rate : null));
         if (sizeVal == null || priceVal == null) {
-          // try first key/value pair as size/price
-          const keys = Object.keys(item).filter(k => k !== 'size' && k !== 'price');
-          if (keys.length && sizeVal == null) {
-            sizeVal = keys[0];
-            priceVal = item[keys[0]];
+          const keys = Object.keys(item);
+          for (let ki = 0; ki < keys.length; ki++) {
+            const k = keys[ki];
+            if (/size|label/i.test(k) && sizeVal == null) sizeVal = item[k];
+            else if (/price|rate|mrp/i.test(k) && priceVal == null) priceVal = item[k];
           }
         }
-        const priceNum = Number(priceVal);
-        if (sizeVal != null && String(sizeVal).trim() !== '' && !isNaN(priceNum) && priceNum > 0) {
-          out.push({ size: String(sizeVal).trim(), price: priceNum });
+        const pn = Number(priceVal);
+        if (sizeVal != null && String(sizeVal).trim() && !isNaN(pn) && pn > 0) {
+          out.push({ size: String(sizeVal).trim(), price: pn });
         }
       });
-      // fallback: top-level size + price on document
-      if (!out.length && d.price != null && (d.sizeLabel || d.sizeName)) {
+      // fallback single fields on document
+      if (!out.length && d.price != null && (d.sizeLabel || d.sizeName || d.size)) {
         const pn = Number(d.price);
-        if (!isNaN(pn) && pn > 0) out.push({ size: String(d.sizeLabel || d.sizeName), price: pn });
+        if (!isNaN(pn) && pn > 0) out.push({ size: String(d.sizeLabel || d.sizeName || d.size), price: pn });
       }
       return out;
     }
 
-    
-    async function refreshCatalogFromCloud() {
-      try {
-        if (typeof db === 'undefined' || !db) {
-          console.warn('db not ready');
-          showToast('Cloud connect pending…');
-          return false;
-        }
-        await loadProductsFromFirebase();
-        if (typeof renderProducts === 'function') renderProducts('all');
-        try { if (typeof bindProductsGridClicks === 'function') bindProductsGridClicks(); } catch (e) {}
-        console.log('Catalog products:', (products || []).length);
-        return true;
-      } catch (e) {
-        console.error('refreshCatalogFromCloud', e);
-        showToast('Cloud products load failed — showing local catalog');
-        return false;
-      }
-    }
 
     async function loadProductsFromFirebase() {
       try {
@@ -4774,27 +6004,51 @@
         const cloud = [];
         snap.forEach(doc => {
           const d = doc.data();
+          let createdMs = 0;
+          try {
+            if (d.createdAt && d.createdAt.toMillis) createdMs = d.createdAt.toMillis();
+            else if (d.createdAt && d.createdAt.seconds) createdMs = d.createdAt.seconds * 1000;
+            else if (d.updatedAt && d.updatedAt.toMillis) createdMs = d.updatedAt.toMillis();
+            else if (typeof d.createdAt === 'number') createdMs = d.createdAt;
+          } catch (e) {}
           cloud.push({
-            id: d.localId || doc.id,
+            id: d.localId != null ? d.localId : doc.id,
             firestoreId: doc.id,
             name: d.name || '',
             description: d.description || '',
-            category: d.category || 'kids',
+            category: String(d.category || 'kids').toLowerCase(),
             moq: Number(d.moq) || 12,
-            images: Array.isArray(d.images) ? d.images : (d.image ? [d.image] : []),
+            images: Array.isArray(d.images) ? d.images.filter(Boolean) : (d.image ? [d.image] : []),
             sizes: normalizeSizes(d),
             outOfStock: !!d.outOfStock,
             viewCount: Number(d.viewCount) || 0,
-            isCustom: true
+            isCustom: true,
+            _created: createdMs
           });
         });
-        // Merge: cloud custom products first, then base (avoid duplicate ids)
+        // Merge: cloud first (newest first), then local-only custom, then base catalog
         const cloudIds = new Set(cloud.map(p => String(p.id)));
-        const baseList = loadProductsCatalog().filter(p => !p.isCustom || !cloudIds.has(String(p.id)));
-        // Prefer cloud version of custom products
-        const localCustom = baseList.filter(p => p.isCustom);
+        // Newest uploads on top
+        cloud.sort((a, b) => {
+          const ta = Number(a._created) || 0;
+          const tb = Number(b._created) || 0;
+          if (tb !== ta) return tb - ta;
+          return String(b.id).localeCompare(String(a.id));
+        });
+        const baseList = loadProductsCatalog();
+        const localCustom = baseList.filter(p => p.isCustom && !cloudIds.has(String(p.id)));
+        // Also pull custom from overrides if any
+        let ovCustom = [];
+        try {
+          const ov = JSON.parse(localStorage.getItem('bsp_product_overrides') || '{}');
+          if (Array.isArray(ov.custom)) {
+            ovCustom = ov.custom.filter(p => p && !cloudIds.has(String(p.id)) && !localCustom.some(x => String(x.id) === String(p.id)));
+            ovCustom.forEach(p => { p.isCustom = true; });
+          }
+        } catch (e) {}
         const pureBase = baseList.filter(p => !p.isCustom);
-        products = cloud.concat(pureBase);
+        products = cloud.concat(localCustom).concat(ovCustom).concat(pureBase);
+        console.log('Merge catalog: cloud=' + cloud.length + ' localCustom=' + localCustom.length + ' ovCustom=' + ovCustom.length + ' base=' + pureBase.length);
         catalogPage = 1;
         catalogFilter = 'all';
         catalogSearch = '';
@@ -4825,7 +6079,8 @@
         renderProducts('all'); try { bindProductsGridClicks(); } catch(e) {}
       try { renderFeaturedLuxury(); updateHeroStageFromProducts(); } catch(e) {}
         if (typeof refreshSellerStats === 'function') refreshSellerStats();
-        console.log('Firebase products loaded:', cloud.length);
+        console.log('Firebase products loaded:', cloud.length, 'total', products.length);
+        try { showToast('Catalog: ' + products.length + ' products (' + cloud.length + ' cloud)'); } catch (e) {}
       } catch (e) {
         console.error('Firebase product load failed', e);
         showToast('Cloud products load failed — showing local catalog');
@@ -5504,9 +6759,33 @@
     function updateHeroStageFromProducts() {
       try {
         const img = document.getElementById('hero-stage-img');
+        const label = document.getElementById('hero-stage-label');
         if (!img || !products || !products.length) return;
-        const p = products.find(x => x.images && x.images[0]) || products[0];
-        if (p && p.images && p.images[0]) img.src = p.images[0];
+        const scored = products
+          .filter(x => x && x.images && x.images[0] && String(x.images[0]).indexOf('placeholder') < 0)
+          .map(function(x) {
+            const src = String(x.images[0]);
+            let score = 0;
+            if (src.indexOf('ik.imagekit.io') >= 0) score += 5;
+            if (src.indexOf('ibb.co') >= 0) score += 3;
+            if (x.isCustom) score += 2;
+            if ((x.images || []).length > 1) score += 1;
+            if (x.name) score += 1;
+            return { p: x, score: score, src: src };
+          })
+          .sort(function(a, b) { return b.score - a.score; });
+        const best = scored[0];
+        if (best) {
+          // prefer optimized mid size for hero
+          var src = best.src;
+          if (src.indexOf('ik.imagekit.io') >= 0 && src.indexOf('tr=') < 0) {
+            src = src + (src.indexOf('?') >= 0 ? '&' : '?') + 'tr=w-900,q-85,f-auto';
+          }
+          img.src = src;
+          if (label && best.p.name) {
+            label.textContent = best.p.name.length > 42 ? best.p.name.slice(0, 40) + '…' : best.p.name;
+          }
+        }
       } catch (e) {}
     }
 
@@ -5761,8 +7040,13 @@ function renderProducts(filter) {
         return (
           '<div class="product-card glass rounded-2xl overflow-hidden group ' + (oos ? 'opacity-70' : '') + '" data-id="' + pid.replace(/"/g,'') + '">' +
             '<div class="aspect-[3/4] overflow-hidden bg-dark-700 relative cursor-pointer" data-action="details" data-id="' + pid.replace(/"/g,'') + '">' +
-              '<img src="' + img0.replace(/"/g, '&quot;') + '" alt="' + pname + '" class="product-img w-full h-full object-cover" loading="lazy" decoding="async" width="480" height="640" onerror="this.src=\'https://via.placeholder.com/400x500?text=BSP+Fashion\'">' +
-              '<div class="absolute top-3 left-3 flex flex-col gap-1.5">' +
+              '<img src="' + img0.replace(/"/g, '&quot;') + '" alt="' + pname + '" class="product-img w-full h-full object-cover' + (oos ? ' oos-bw' : '') + '" loading="lazy" decoding="async" width="480" height="640" onerror="this.style.background=\'#1a1a1a\'">' +
+              '<div class="product-snow-cap" aria-hidden="true"></div>' +
+              '<div class="product-snow-corner tl" aria-hidden="true"></div>' +
+              '<div class="product-snow-corner tr" aria-hidden="true"></div>' +
+              '<div class="product-frost-edge" aria-hidden="true"></div>' +
+              (oos ? '<div class="oos-watermark"><img src="https://ik.imagekit.io/bsp/Out%20of%20Stock%20Fashion%20Badge-Photoroom.png" alt="Out of Stock" loading="lazy"></div>' : '') +
+              '<div class="absolute top-3 left-3 flex flex-col gap-1.5 z-10">' +
                 '<span class="px-2.5 py-1 rounded-full text-[10px] font-medium uppercase tracking-wider bg-dark-900/70 backdrop-blur text-gold-400">' + String(cat).replace(/</g,'') + '</span>' +
                 '<span class="px-2.5 py-1 rounded-full text-[10px] font-medium bg-gold-500/90 text-dark-900">MOQ ' + (p.moq || 1) + '</span>' +
                 (getViewCount(p.id) > 0 ? '<span class="px-2.5 py-1 rounded-full text-[10px] font-medium bg-sky-500/90 text-white">👁 ' + getViewCount(p.id) + ' views</span>' : '') +
@@ -7636,6 +8920,7 @@ ${ogUrl}`;
             <button type="button" onclick="updateOrderStatus('${o.id}','Pending')" class="text-[11px] px-3 py-1.5 rounded-lg border ${(orderStatusLabel(o.status)==='Pending') ? 'border-amber-400 bg-amber-500/20 text-amber-300' : 'border-white/10 text-gray-400 hover:border-amber-400/40'}">Pending</button>
             <button type="button" onclick="updateOrderStatus('${o.id}','Confirmed')" class="text-[11px] px-3 py-1.5 rounded-lg border ${(orderStatusLabel(o.status)==='Confirmed') ? 'border-blue-400 bg-blue-500/20 text-blue-300' : 'border-white/10 text-gray-400 hover:border-blue-400/40'}">Confirmed</button>
             <button type="button" onclick="updateOrderStatus('${o.id}','Dispatched')" class="text-[11px] px-3 py-1.5 rounded-lg border ${(orderStatusLabel(o.status)==='Dispatched') ? 'border-emerald-400 bg-emerald-500/20 text-emerald-300' : 'border-white/10 text-gray-400 hover:border-emerald-400/40'}">Dispatched</button>
+            <button type="button" onclick="if(confirm('Cancel this order? Customer ko Cancelled dikhega.')) updateOrderStatus('${o.id}','Cancelled')" class="text-[11px] px-3 py-1.5 rounded-lg border ${(orderStatusLabel(o.status)==='Cancelled') ? 'border-red-400 bg-red-500/20 text-red-300' : 'border-white/10 text-gray-400 hover:border-red-400/40'}">Cancelled</button>
           </div>
           <div class="bg-dark-700/40 rounded-xl p-3 mb-4 text-sm space-y-1">
             <div class="text-xs text-gold-400 font-medium uppercase tracking-wide mb-1">Customer Details</div>
@@ -8160,8 +9445,7 @@ ${ogUrl}`;
           '<button onclick="window.print()" style="padding:10px 18px;background:#8a6d1a;color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer">Print / Save as PDF</button> ' +
           '<button onclick="window.close()" style="padding:10px 18px;border:1px solid #ccc;border-radius:8px;cursor:pointer;background:#fff">Close</button>' +
         '</div>' +
-        (invoices || '<p style="text-align:center">No orders</p>') +
-        '</body></html>';
+        (invoices || '<p style="text-align:center">No orders</p>') + '</body></html>';
     }
 
     async function downloadOrderPdf(orderId) {
@@ -8246,12 +9530,17 @@ ${ogUrl}`;
               <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] border ${orderStatusClass(o.status)}">${orderStatusLabel(o.status)}</span>
               ${o.paymentMode ? `<span class="ml-2 text-[10px] text-gray-500">${o.paymentMode === 'cod' ? 'COD' : 'Prepaid'}</span>` : ''}
             </div>
-            <div class="flex items-center gap-1 mb-3 text-[10px]">
-              <span class="${['Pending','Confirmed','Dispatched'].indexOf(orderStatusLabel(o.status))>=0 ? 'text-amber-400' : 'text-gray-600'}">● Pending</span>
-              <span class="text-gray-600">—</span>
-              <span class="${['Confirmed','Dispatched'].indexOf(orderStatusLabel(o.status))>=0 ? 'text-blue-400' : 'text-gray-600'}">● Confirmed</span>
-              <span class="text-gray-600">—</span>
-              <span class="${orderStatusLabel(o.status)==='Dispatched' ? 'text-emerald-400' : 'text-gray-600'}">● Dispatched</span>
+            <div class="flex flex-wrap items-center gap-1 mb-3 text-[10px]">
+              ${orderStatusLabel(o.status)==='Cancelled' ? `
+                <span class="text-red-400 font-semibold">● Order Cancelled</span>
+                <span class="text-gray-500 ml-1">— Yeh order cancel kar diya gaya hai</span>
+              ` : `
+                <span class="${['Pending','Confirmed','Dispatched'].indexOf(orderStatusLabel(o.status))>=0 ? 'text-amber-400' : 'text-gray-600'}">● Pending</span>
+                <span class="text-gray-600">—</span>
+                <span class="${['Confirmed','Dispatched'].indexOf(orderStatusLabel(o.status))>=0 ? 'text-blue-400' : 'text-gray-600'}">● Confirmed</span>
+                <span class="text-gray-600">—</span>
+                <span class="${orderStatusLabel(o.status)==='Dispatched' ? 'text-emerald-400' : 'text-gray-600'}">● Dispatched</span>
+              `}
             </div>
             <div class="space-y-2 mb-3">
               ${(o.items || []).map(i => `
@@ -8559,5 +9848,143 @@ ${ogUrl}`;
     });
   })();
   </script>
+
+  <script>
+  (function(){
+    var bar = document.getElementById('scroll-progress');
+    var header = document.getElementById('header') || document.querySelector('header');
+    function onScroll(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      var p = max > 0 ? (h.scrollTop / max) * 100 : 0;
+      if (bar) bar.style.width = p + '%';
+      if (header) {
+        if (window.scrollY > 40) header.classList.add('is-scrolled');
+        else header.classList.remove('is-scrolled');
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+  </script>
+
+
+  <script>
+  /* ===== BSP WINTER SNOWFALL — guaranteed visible ===== */
+  (function () {
+    function startSnow() {
+      // Prefer canvas for smooth continuous snow
+      var old = document.getElementById('snowfall');
+      if (old) old.innerHTML = '';
+
+      var canvas = document.getElementById('snow-canvas');
+      if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.id = 'snow-canvas';
+        canvas.setAttribute('aria-hidden', 'true');
+        canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:99999;display:block;';
+        document.body.appendChild(canvas);
+      }
+
+      var ctx = canvas.getContext('2d');
+      var flakes = [];
+      var W = 0, H = 0, dpr = 1;
+      var running = true;
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = Math.floor(W * dpr);
+        canvas.height = Math.floor(H * dpr);
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        // rebuild flake count for screen size
+        var target = W < 480 ? 80 : (W < 900 ? 120 : 160);
+        flakes = [];
+        for (var i = 0; i < target; i++) {
+          flakes.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: 1 + Math.random() * 3.2,
+            sp: 0.6 + Math.random() * 2.2,
+            drift: (Math.random() - 0.5) * 1.2,
+            op: 0.45 + Math.random() * 0.55,
+            phase: Math.random() * Math.PI * 2
+          });
+        }
+      }
+
+      function tick() {
+        if (!running) return;
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < flakes.length; i++) {
+          var f = flakes[i];
+          f.phase += 0.02;
+          f.y += f.sp;
+          f.x += f.drift + Math.sin(f.phase) * 0.4;
+          if (f.y > H + 8) {
+            f.y = -8;
+            f.x = Math.random() * W;
+          }
+          if (f.x > W + 8) f.x = -8;
+          if (f.x < -8) f.x = W + 8;
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(255,255,255,' + f.op + ')';
+          ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(tick);
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+      requestAnimationFrame(tick);
+
+      // Also fill #snowfall with emoji flakes as backup visible layer
+      var box = document.getElementById('snowfall');
+      if (!box) {
+        box = document.createElement('div');
+        box.id = 'snowfall';
+        box.setAttribute('aria-hidden', 'true');
+        document.body.prepend(box);
+      }
+      box.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:99998;overflow:hidden;';
+      var n = window.innerWidth < 640 ? 35 : 55;
+      var html = '';
+      var chars = ['❄', '❅', '❆', '•'];
+      for (var j = 0; j < n; j++) {
+        var left = Math.random() * 100;
+        var dur = 7 + Math.random() * 14;
+        var delay = Math.random() * 10;
+        var size = 10 + Math.random() * 16;
+        var sx = (Math.random() * 80 - 40).toFixed(0);
+        html += '<span style="position:absolute;top:-20px;left:' + left + '%;font-size:' + size + 'px;color:#fff;opacity:0.85;text-shadow:0 0 8px rgba(200,230,255,0.9);animation:bspSnowFall ' + dur + 's linear ' + delay + 's infinite;--sx:' + sx + 'px">' + chars[j % chars.length] + '</span>';
+      }
+      box.innerHTML = html;
+
+      // Inject keyframes if missing
+      if (!document.getElementById('bsp-snow-style')) {
+        var st = document.createElement('style');
+        st.id = 'bsp-snow-style';
+        st.textContent = '@keyframes bspSnowFall{0%{transform:translate3d(0,-5vh,0) rotate(0deg);opacity:0}8%{opacity:1}100%{transform:translate3d(var(--sx,20px),110vh,0) rotate(360deg);opacity:0}}';
+        document.head.appendChild(st);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startSnow);
+    } else {
+      startSnow();
+    }
+    // safety re-run
+    setTimeout(startSnow, 800);
+  })();
+  </script>
+
+
 </body>
 </html>
+Grok finished responding
+Website UI Winter Season 3D Snowfall Redesign - Grok
